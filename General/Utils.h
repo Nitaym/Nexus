@@ -27,7 +27,11 @@ using namespace std;
 typedef HANDLE HTHREAD;
 typedef LPTHREAD_START_ROUTINE typeCallbackFunc;
 
+#define strcpy _tcscpy
+#define strlen _tcsclen
+
 #else
+#define HANDLE int
 
 typedef pthread_t HTHREAD;
 
@@ -36,6 +40,8 @@ typedef void* (*typeCallbackFunc)(void *a_pParam);
 HTHREAD CreateThread(typeCallbackFunc a_pFunction, void *a_pParam)
 void Sleep(DWORD dwMilliseconds);
 DWORD GetTickCount();
+
+#define _TCHAR char
 #endif
 
 HTHREAD NexusCreateThread(typeCallbackFunc a_pFunction, void *a_pParam);
