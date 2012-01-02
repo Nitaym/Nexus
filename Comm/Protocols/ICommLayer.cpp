@@ -57,7 +57,7 @@ void ICommLayer::SetUnderlyingComm(ICommBase *a_pNewUnderlyingComm)
 *
 *	Return Value:
 *		TCommErr
-*			E_OK - Everything is OK
+*			E_NEXUS_OK - Everything is OK
 *			E_NO_UNDERLYING_LAYER - No underlying layer
 *		
 *****************************************************************/
@@ -66,9 +66,9 @@ TCommErr ICommLayer::Connect()
 	if (m_pUnderlyingComm != NULL)
 	{
 		m_bIsConnected = true;
-		return E_OK;
+		return E_NEXUS_OK;
 	}
-	else return E_NO_UNDERLYING_COMM;
+	else return E_NEXUS_NO_UNDERLYING_COMM;
 }
 
 /*****************************************************************
@@ -82,7 +82,7 @@ TCommErr ICommLayer::Connect()
 *
 *	Return Value:
 *		TCommErr
-*			E_OK - Everything is OK
+*			E_NEXUS_OK - Everything is OK
 *			E_NOT_CONNECTED
 *		
 *****************************************************************/
@@ -91,9 +91,9 @@ TCommErr ICommLayer::Disconnect()
 	if (m_bIsConnected)
 	{
 		m_bIsConnected = false;
-		return E_OK;
+		return E_NEXUS_OK;
 	}
-	else return E_NOT_CONNECTED;
+	else return E_NEXUS_NOT_CONNECTED;
 }
 
 
@@ -131,7 +131,7 @@ bool ICommLayer::IsConnected()
 *
 *	Return Value:
 *		TCommErr
-*			E_OK - Everything is OK
+*			E_NEXUS_OK - Everything is OK
 *			E_NOT_CONNECTED
 *			Other error from the underlying layer
 *		
@@ -140,7 +140,7 @@ TCommErr ICommLayer::Send(IN CData *a_pData, IN IMetaData *a_pMetaData /* = NULL
 {
 	if (!m_bIsConnected)
 	{
-		return E_NOT_CONNECTED;
+		return E_NEXUS_NOT_CONNECTED;
 	}
 
 	return m_pUnderlyingComm->Send(a_pData, a_pMetaData, a_dwTimeoutMS);
@@ -163,7 +163,7 @@ TCommErr ICommLayer::Send(IN CData *a_pData, IN IMetaData *a_pMetaData /* = NULL
 *
 *	Return Value:
 *		TCommErr
-*			E_OK - Everything is OK
+*			E_NEXUS_OK - Everything is OK
 *			E_NOT_CONNECTED
 *			Other error from the underlying layer
 *		
@@ -172,7 +172,7 @@ TCommErr ICommLayer::Receive(OUT CData *a_pData, OUT IMetaData *a_pMetaData /* =
 {
 	if (!m_bIsConnected)
 	{
-		return E_NOT_CONNECTED;
+		return E_NEXUS_NOT_CONNECTED;
 	}
 
 	return m_pUnderlyingComm->Receive(a_pData, a_pMetaData, a_dwTimeoutMs);

@@ -16,9 +16,9 @@ TCommErr CLoggerComm::Connect()
 	m_hFile = CreateFile(L"ICommLog.txt", GENERIC_WRITE | GENERIC_READ, FILE_SHARE_READ, NULL, CREATE_ALWAYS, 0, NULL);
 
 	if (m_hFile == INVALID_HANDLE_VALUE)
-		return E_OPEN_FAIL;
+		return E_NEXUS_OPEN_FAIL;
 
-	return E_OK;
+	return E_NEXUS_OK;
 }
 
 
@@ -30,20 +30,20 @@ TCommErr CLoggerComm::Send(IN CData *a_pData, IN IMetaData *a_pMetaData, IN DWOR
 	a_pData->GetData(Buffer, 0, l_iBufferSize);
 	BOOL l_bRes = WriteFile(m_hFile, Buffer, l_iBufferSize, &l_iBytesWritten, NULL);
 	if (!l_bRes)
-		return E_BUSY;
+		return E_NEXUS_BUSY;
 
 	WriteFile(m_hFile, "\r\n", 2, &l_iBytesWritten, NULL);
 
-	return E_OK;
+	return E_NEXUS_OK;
 }
 
 
 TCommErr CLoggerComm::Disconnect()
 {
-	return E_BUSY;
+	return E_NEXUS_BUSY;
 }
 
 TCommErr CLoggerComm::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData, IN DWORD a_dwTimeoutMs)
 {
-	return E_BUSY;
+	return E_NEXUS_BUSY;
 }

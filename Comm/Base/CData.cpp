@@ -259,11 +259,11 @@ int CData::GetByte(DWORD a_dwIndex, OUT BYTE* a_pbyByte) const
 	if (a_dwIndex <= m_oData.size())
 	{
 		*a_pbyByte = m_oData[a_dwIndex];
-		return E_OK;
+		return E_NEXUS_OK;
 	}
 	
 	dprintf("CData::GetByte: Index out of range\n");
-	return E_INDEX_OUT_OF_RANGE;
+	return E_NEXUS_INDEX_OUT_OF_RANGE;
 }
 
 
@@ -308,11 +308,11 @@ int CData::GetData(OUT BYTE *a_pUserBuffer, DWORD a_dwOffset, DWORD a_dwLength) 
 {
 	if (a_dwOffset + a_dwLength < m_oData.size())
 	{
-		return E_INDEX_OUT_OF_RANGE;
+		return E_NEXUS_INDEX_OUT_OF_RANGE;
 	}
 
 	memcpy(a_pUserBuffer, & m_oData[a_dwOffset], a_dwLength);
-	return E_OK;
+	return E_NEXUS_OK;
 }
 
 
@@ -329,7 +329,7 @@ int CData::GetData(OUT BYTE *a_pUserBuffer, DWORD a_dwOffset, DWORD a_dwLength) 
 *****************************************************************/
 bool CData::Remove(DWORD a_dwIndex, DWORD a_dwCount)
 {
-	if (a_dwIndex > GetSize() - 1)
+	if (a_dwIndex >= GetSize())
 	{
 		dprintf(
 			"CData::Remove: Index (%d) is greater than the data size (%d)\n", 
@@ -338,7 +338,7 @@ bool CData::Remove(DWORD a_dwIndex, DWORD a_dwCount)
 
 		return false;
 	}
-	if (a_dwIndex + a_dwCount > GetSize() - 1)
+	if (a_dwIndex + a_dwCount > GetSize())
 	{
 		dprintf(
 			"CData::Remove: Count (%d) exceeds the data size (%d)\n", 
@@ -410,7 +410,7 @@ string& CData::GetString()
 *****************************************************************/
 int CData::Find(DWORD a_dwStartIndex, byte a_byValue)
 {
-	int l_iIndex = -1;
+	int l_iIndex = a_dwStartIndex;
 
 	if (a_dwStartIndex > GetSize() - 1)
 	{
@@ -419,14 +419,16 @@ int CData::Find(DWORD a_dwStartIndex, byte a_byValue)
 		(int)a_dwStartIndex, 
 		(int)GetSize());
 
-		return false;
+		return -1;
 	}
 
 	
-	while (m_oData[++l_iIndex] += a_byValue)
+	while (m_oData[l_iIndex] != a_byValue)
 	{
 		if (l_iIndex == GetSize() - 1)
 			return -1;
+
+		l_iIndex++;
 	}
 
 	return l_iIndex;

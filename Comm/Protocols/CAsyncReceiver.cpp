@@ -70,13 +70,13 @@ TCommErr CAsyncReceiver::Connect()
 	dprintf("CAsyncReceiver::Connect\n");
 
 	if (m_bIsConnected)
-		return E_ALREADY_CONNECTED;
+		return E_NEXUS_ALREADY_CONNECTED;
 
 	m_bIsConnected = true;
 
 	m_iReceiveThread = NexusCreateThread((typeCallbackFunc)ReceiveThread, this);
 
-	return E_OK;
+	return E_NEXUS_OK;
 }
 
 /*****************************************************************
@@ -97,11 +97,11 @@ TCommErr CAsyncReceiver::Disconnect()
 	dprintf("CAsyncReceiver::Disconnect\n");
 
 	if (!m_bIsConnected)
-		return E_NOT_CONNECTED;
+		return E_NEXUS_NOT_CONNECTED;
 
 	m_bIsConnected = false;
 
-	return E_OK;
+	return E_NEXUS_OK;
 }
 
 /*****************************************************************
@@ -151,10 +151,10 @@ TCommErr CAsyncReceiver::Receive(OUT CData *a_pData, OUT IMetaData *a_pMetaData 
 		m_qIncomingPackets.pop();
 		m_bOperatOnQueue = false;
 
-		// Get size of the pacekt that we got from the queue
+		// Get size of the packet that we got from the queue
 		if (l_stPacket.a_pData->GetSize() == 0)
 		{
-			return E_INVALID_PACKET;
+			return E_NEXUS_INVALID_PACKET;
 		}
 
 		// Fill user supplied buffers with the information
@@ -166,9 +166,9 @@ TCommErr CAsyncReceiver::Receive(OUT CData *a_pData, OUT IMetaData *a_pMetaData 
 		SAFE_DELETE(l_stPacket.a_pData);
 		SAFE_DELETE(l_stPacket.a_pMetaData);
 
-		return E_OK;
+		return E_NEXUS_OK;
 	}
-	else return E_NOTHING_TO_READ;
+	else return E_NEXUS_NOTHING_TO_READ;
 }
 
 
@@ -210,12 +210,12 @@ void* CAsyncReceiver::ReceiveThread(void *a_pvParam)
 		if (l_pThis->m_pUnderlyingComm != NULL)
 			l_iRes = l_pThis->m_pUnderlyingComm->Receive(l_stPacket.a_pData, l_stPacket.a_pMetaData, DEFAULT_TIMEOUT);
 
-		if (l_iRes == E_TIMEOUT)
+		if (l_iRes == E_NEXUS_TIMEOUT)
 		{
 			continue;
 		}
 
-		if (l_iRes == E_OK)
+		if (l_iRes == E_NEXUS_OK)
 		{
 			if (l_pThis->m_pUserCallback != NULL)
 			{

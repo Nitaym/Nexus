@@ -112,7 +112,7 @@ TCommErr CUart::Connect()
 	{
 		// Not connected
 		dprintf("Uart::Connect> Already connected\n");
-		return E_ALREADY_CONNECTED;
+		return E_NEXUS_ALREADY_CONNECTED;
 	}
 	else
 	{
@@ -136,7 +136,7 @@ TCommErr CUart::Connect()
 		{
 			// Failed to open COM port
 			dprintf("Uart::Connect> Could not open port %s (error %d: %s)\n", m_strPortName, errno, strerror(errno));
-			return E_OPEN_FAIL;
+			return E_NEXUS_OPEN_FAIL;
 		}
 		else
 		{
@@ -150,7 +150,7 @@ TCommErr CUart::Connect()
 			if (!SetCommTimeouts(m_fd, &l_oTimeouts))
 			{
 				dprintf("Uart::Connect> Could not set comm timeouts %s (error %d: %s)\n", m_strPortName, errno, strerror(errno));
-				return E_OPEN_FAIL;
+				return E_NEXUS_OPEN_FAIL;
 			}
 
 			GetCommState(m_fd, &l_oDCB);
@@ -162,7 +162,7 @@ TCommErr CUart::Connect()
 			if (!SetCommState(m_fd, &l_oDCB))
 			{
 				dprintf("Uart::Connect> Could not set comm state %s (error %d: %s)\n", m_strPortName, errno, strerror(errno));
-				return E_OPEN_FAIL;
+				return E_NEXUS_OPEN_FAIL;
 			}
 #else
 			// Change baud rate
@@ -210,7 +210,7 @@ TCommErr CUart::Connect()
 #endif
 			m_bIsConnected = true;
 			dprintf("Uart::Connect> Connected.\n");	
-			return E_OK;
+			return E_NEXUS_OK;
 		}
 		
 	}
@@ -245,13 +245,13 @@ TCommErr CUart::Disconnect()
 #endif
 		m_bIsConnected = false;
 		dprintf("Uart::Disconnect> Disconnected\n");
-		return E_OK;
+		return E_NEXUS_OK;
 	}
 	else
 	{
 		// Not connected
 		dprintf("Uart::Disconnect> Not connected\n");
-		return E_NOT_CONNECTED;
+		return E_NEXUS_NOT_CONNECTED;
 	}
 }
 
@@ -291,7 +291,7 @@ bool CUart::IsConnected()
 *
 *	Return Value
 *		TCommErr
-*			E_OK
+*			E_NEXUS_OK
 *			E_NOT_CONNECTED
 *			E_INVALID_PACKET
 *			E_WRITE_ERROR
@@ -306,13 +306,13 @@ TCommErr CUart::Send(IN CData *a_pData, IN IMetaData *a_pMetaData /* = NULL */, 
 	if (!m_bIsConnected)
 	{
 		dprintf("Uart::Send> Not connected\n");
-		return E_NOT_CONNECTED;
+		return E_NEXUS_NOT_CONNECTED;
 	}
 
 	// Get size
 	DWORD l_dwSize = a_pData->GetSize();
 	if (l_dwSize == 0)
-		return E_INVALID_PACKET;
+		return E_NEXUS_INVALID_PACKET;
 
 	// Write
 	int l_intBytesWritten;
@@ -325,10 +325,10 @@ TCommErr CUart::Send(IN CData *a_pData, IN IMetaData *a_pMetaData /* = NULL */, 
 #endif
 	{
 		dprintf("Uart::Send> Write error (error %d: %s)\n", errno, strerror(errno));
-		return E_WRITE_ERROR;
+		return E_NEXUS_WRITE_ERROR;
 	}
 
-	return E_OK;
+	return E_NEXUS_OK;
 }
 
 
@@ -348,7 +348,7 @@ TCommErr CUart::Send(IN CData *a_pData, IN IMetaData *a_pMetaData /* = NULL */, 
 *
 *	Return Value
 *		TCommErr
-*			E_OK - Great
+*			E_NEXUS_OK - Great
 *			E_NOT_CONNECTED
 *			E_READ_ERROR
 *			E_TIMEOUT
@@ -359,13 +359,13 @@ TCommErr CUart::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData /* = NU
 {
 	if (!m_bIsConnected)
 	{
-		return E_NOT_CONNECTED;
+		return E_NEXUS_NOT_CONNECTED;
 	}
 
 	if (a_pData == NULL)
 	{
 		dprintf("Uart::Receive> a_pData can't be NULL\n");
-		return E_INVALID_PARAMS;
+		return E_NEXUS_INVALID_PARAMS;
 	}
 
 	int iBytesRead = 0;
@@ -376,7 +376,7 @@ TCommErr CUart::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData /* = NU
 	if (pBuffer == NULL)
 	{
 		dprintf("Uart::Receive> Error allocating memory for receive buffer at size %d\n", dwMaxSize);
-		return E_ALLOCATION_ERROR;
+		return E_NEXUS_ALLOCATION_ERROR;
 	}
 
 	do 
@@ -384,7 +384,7 @@ TCommErr CUart::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData /* = NU
 		// Assuming read for uart is non blocking
 #ifdef WIN32
 		
-		if (ReadFile(m_fd, pBuffer, dwMaxSize, (LPDWORD)&iBytesRead, NULL))
+		if (ReadFile(m_fd, pBuffer, dwMaxSize, (LPDWORD)&iBytesRead, NULL) == 0)
 #else
 		iBytesRead = read(m_fd, pBuffer, dwMaxSize);
 		// Error
@@ -393,7 +393,7 @@ TCommErr CUart::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData /* = NU
 		{
 			dprintf("Uart::Receive> Error in read (errno %d: %s)\n", errno, strerror(errno));
 			delete[] pBuffer;
-			return E_READ_ERROR;
+			return E_NEXUS_READ_ERROR;
 		}
 
 		// Read something
@@ -402,7 +402,7 @@ TCommErr CUart::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData /* = NU
 			dprintf("Uart::Receive> Received %d bytes\n", iBytesRead);
 			a_pData->SetData(pBuffer, iBytesRead);
 			delete[] pBuffer;
-			return E_OK;
+			return E_NEXUS_OK;
 		}
 		
 		// Wait for data (iBytesRead == 0)
@@ -411,5 +411,5 @@ TCommErr CUart::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData /* = NU
 	} while (a_dwTimeoutMs == INFINITE_TIMEOUT || (GetTickCount() - dwStartTime) < a_dwTimeoutMs);
 
 	delete[] pBuffer;
-	return E_TIMEOUT;
+	return E_NEXUS_TIMEOUT;
 }
