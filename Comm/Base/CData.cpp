@@ -156,6 +156,7 @@ bool CData::SetData(BYTE* a_pbyNewData, DWORD a_dwNewSize)
 		return false;
 	}
 
+	// This obviously clears all the data
 	FreeData();
 
 	// Insert the buffer the vector way
@@ -163,6 +164,59 @@ bool CData::SetData(BYTE* a_pbyNewData, DWORD a_dwNewSize)
 
 	return true;
 }
+
+
+/*****************************************************************
+*	bool CData::Append(BYTE *a_pUserBuffer, int a_dwSize);
+*
+*	Description:
+*		Appends a buffer in the end of the data
+*
+*	Arguments:
+*
+*	Return Value:
+*		None
+*		
+*****************************************************************/
+bool CData::Append(BYTE *a_pUserBuffer, int a_dwSize)
+{
+	if (a_dwSize + GetSize() > GetMaxSize())
+	{
+		dprintf(
+			"CData::Append: New data size (%d) is greater than the max size (%d)\n", 
+			(int)a_dwSize + GetSize(), 
+			(int)GetMaxSize());
+
+		return false;
+	}
+
+	// Insert the buffer the vector way
+	m_oData.insert(m_oData.end(), a_pUserBuffer, a_pUserBuffer + a_dwSize);
+
+	return true;
+}
+
+bool CData::Append(CData *a_pData)
+{
+	if (a_pData->GetSize() + GetSize() > GetMaxSize())
+	{
+		dprintf(
+			"CData::Append: New data size (%d) is greater than the max size (%d)\n", 
+			(int)a_pData->GetSize() + GetSize(), 
+			(int)GetMaxSize());
+
+		return false;
+	}
+
+	byte* l_abyBuffer = new byte[a_pData->GetSize()];
+	a_pData->GetData(l_abyBuffer, 0, a_pData->GetSize());
+
+	// Insert the buffer the vector way
+	return Append(l_abyBuffer, a_pData->GetSize());
+}
+
+
+
 
 /*****************************************************************
 *	void CData::FreeData()
@@ -263,6 +317,45 @@ int CData::GetData(OUT BYTE *a_pUserBuffer, DWORD a_dwOffset, DWORD a_dwLength) 
 
 
 /*****************************************************************
+*	bool CData::Remove(DWORD a_dwIndex, DWORD a_dwCount)
+*
+*	Description:
+*		Remove - Removes a range of bytes from the data
+*
+*	Arguments:
+*
+*	Return Value:
+*		
+*****************************************************************/
+bool CData::Remove(DWORD a_dwIndex, DWORD a_dwCount)
+{
+	if (a_dwIndex > GetSize() - 1)
+	{
+		dprintf(
+			"CData::Remove: Index (%d) is greater than the data size (%d)\n", 
+			(int)a_dwIndex, 
+			(int)GetSize());
+
+		return false;
+	}
+	if (a_dwIndex + a_dwCount > GetSize() - 1)
+	{
+		dprintf(
+			"CData::Remove: Count (%d) exceeds the data size (%d)\n", 
+			(int)a_dwCount, 
+			(int)GetSize());
+
+		return false;
+	}
+
+	// Remove the needed range
+	m_oData.erase(m_oData.begin() + a_dwIndex, m_oData.begin() + a_dwIndex + a_dwCount);
+
+	return true;
+}
+
+
+/*****************************************************************
 *	void CData::SetString(const string &a_strData)
 *
 *	Description:
@@ -299,6 +392,44 @@ string& CData::GetString()
 {
 	m_sStringData.assign((char*)&(m_oData[0]), m_oData.size());
 	return (m_sStringData);
+}
+
+
+/*****************************************************************
+*	int CData::Find(DWORD a_dwStartIndex, byte a_byValue)
+*
+*	Description:
+*		Returns the index of a byte in the data
+*
+*	Arguments:
+*		None
+*
+*	Return Value:
+*		None
+*		
+*****************************************************************/
+int CData::Find(DWORD a_dwStartIndex, byte a_byValue)
+{
+	int l_iIndex = -1;
+
+	if (a_dwStartIndex > GetSize() - 1)
+	{
+		dprintf(
+		"CData::Find: Start Index (%d) is greater than the data size (%d)\n", 
+		(int)a_dwStartIndex, 
+		(int)GetSize());
+
+		return false;
+	}
+
+	
+	while (m_oData[++l_iIndex] += a_byValue)
+	{
+		if (l_iIndex == GetSize() - 1)
+			return -1;
+	}
+
+	return l_iIndex;
 }
 
 

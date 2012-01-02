@@ -40,6 +40,10 @@ public:
 	// SetData - Allocate memory and copy a given data at a given a a_dwNewSize
 	bool SetData(BYTE *a_pbyNewData, DWORD a_dwNewSize);
 
+	// Append - Appends a buffer in the end of the data
+	bool Append(BYTE *a_pUserBuffer, int a_dwSize);
+	bool Append(CData *a_pData);
+
 	// FreeData - free the allocated memory for data
 	void FreeData();
 
@@ -49,7 +53,7 @@ public:
 	// GetSize - returns the size of the buffer, 0 if not allocated or empty
 	DWORD GetSize() const;
 
-	// GetMaxSize - returns the max data size. Defualt value is 256
+	// GetMaxSize - returns the max data size. Default value is 256
 	DWORD GetMaxSize() const {return m_dwMaxDataSize;}
 
 	// SetMaxSize - sets the max data size.
@@ -58,15 +62,23 @@ public:
 	// GetData - copy data to a user supplied buffer
 	int GetData(OUT BYTE *a_pUserBuffer, DWORD a_dwOffset, DWORD a_dwLength) const;
 
+	// Remove - Removes a range of bytes from the data
+	bool Remove(DWORD a_dwIndex, DWORD a_dwCount);
+
 	// SetString - copy user supplied string to an internal string
 	void SetString(const string &a_strData);
 
 	// GetString - returns a copy of the internal string
 	string& GetString();
 
+	// Find - Returns the index of a byte in the data
+	int Find(DWORD a_dwStartIndex, byte a_byValue);
+
 	// Print - prints data content
 	void Print() const;
 
 	// PrintHex - prints the data as Hex
 	void PrintHex() const;
+
+	byte operator[](int i) { return m_oData[i]; }
 };
