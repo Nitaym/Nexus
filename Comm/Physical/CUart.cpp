@@ -39,7 +39,11 @@
 *************************************************************/
 CUart::CUart()
 {
+#ifdef WIN32
+	m_fd = INVALID_HANDLE_VALUE;
+#else
 	m_fd = -1;
+#endif
 	m_bIsConnected = false;
 	m_eBaudRate = DEFAULT_RATE;
 	strcpy(m_strPortName, DEFAULT_PORT);
@@ -76,9 +80,9 @@ void CUart::SetBaudRate(EUartBaudRate a_eBaudRate)
 *		None
 *
 *************************************************************/
-void CUart::SetPortName(const char *a_strPortName)
+void CUart::SetPortName(const char* a_strPortName)
 {
-	if (_tcslen(a_strPortName) < MAX_PORT_NAME_LEN)
+	if (strlen(a_strPortName) < MAX_PORT_NAME_LEN)
 	{
 		strcpy(m_strPortName, a_strPortName);
 	}
@@ -115,7 +119,7 @@ TCommErr CUart::Connect()
 	{
 		// Open COM port
 #ifdef WIN32
-		m_fd = CreateFile(
+		m_fd = CreateFileA(
 			m_strPortName,
 			GENERIC_READ | GENERIC_WRITE,
 			0,
@@ -204,9 +208,9 @@ TCommErr CUart::Connect()
 				return E_SET_BAUDRATE_FAILED;
 			}
 			
+#endif
 			m_bIsConnected = true;
 			dprintf("Uart::Connect> Connected.\n");	
-#endif
 			return E_OK;
 		}
 		
@@ -233,8 +237,13 @@ TCommErr CUart::Disconnect()
 	// Check if we are connected 
 	if (m_bIsConnected)
 	{
+#ifdef WIN32
+		CloseHandle(m_fd);
+		m_fd = INVALID_HANDLE_VALUE;
+#else
 		close(m_fd);
 		m_fd = -1;
+#endif
 		m_bIsConnected = false;
 		dprintf("Uart::Disconnect> Disconnected\n");
 		return E_OK;
@@ -289,7 +298,7 @@ bool CUart::IsConnected()
 *			E_WRITE_ERROR
 *
 *************************************************************/
-TCommErr CUart::Send(IN CData *a_pData, IN IMetaData *a_pMetaData = NULL, IN DWORD a_dwTimeoutMs = DEFAULT_TIMEOUT)
+TCommErr CUart::Send(IN CData *a_pData, IN IMetaData *a_pMetaData /* = NULL */, IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
 {
 	// UNREFENCED_PARAMETER(a_pMetaData);
 	// UNREFENCED_PARAMETER(a_dwTimeoutMs);
@@ -297,7 +306,7 @@ TCommErr CUart::Send(IN CData *a_pData, IN IMetaData *a_pMetaData = NULL, IN DWO
 	// Check if we are connected
 	if (!m_bIsConnected)
 	{
-		dprinft("Uart::Send> Not connected\n");
+		dprintf("Uart::Send> Not connected\n");
 		return E_NOT_CONNECTED;
 	}
 
@@ -307,13 +316,14 @@ TCommErr CUart::Send(IN CData *a_pData, IN IMetaData *a_pMetaData = NULL, IN DWO
 		return E_INVALID_PACKET;
 
 	// Write
-	int l_intRetval;
+	int l_intBytesWritten;
 #ifdef WIN32
-	l_intRetval = WriteFile(m_fd, a_pData->get)
+	BOOL l_bResult = WriteFile(m_fd, a_pData->GetString().c_str(), l_dwSize, ((LPDWORD)&l_intBytesWritten), NULL);
+	if (!l_bResult)
 #else
-	l_intRetval = write(m_fd, a_pData->GetString().c_str(), l_dwSize);
+	l_intBytesWritten = write(m_fd, a_pData->GetString().c_str(), l_dwSize);
+	if (l_intBytesWritten < 0)
 #endif
-	if (l_intRetval < 0)
 	{
 		dprintf("Uart::Send> Write error (error %d: %s)\n", errno, strerror(errno));
 		return E_WRITE_ERROR;
@@ -346,7 +356,7 @@ TCommErr CUart::Send(IN CData *a_pData, IN IMetaData *a_pMetaData = NULL, IN DWO
 *			E_ALLOCATION_ERROR - Memory allocation failed
 *
 *************************************************************/
-TCommErr CUart::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData = NULL, IN DWORD a_dwTimeoutMs = DEFAULT_TIMEOUT)
+TCommErr CUart::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData /* = NULL */, IN DWORD a_dwTimeoutMs /*= DEFAULT_TIMEOUT */)
 {
 	if (!m_bIsConnected)
 	{
@@ -373,12 +383,16 @@ TCommErr CUart::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData = NULL,
 	do 
 	{
 		// Assuming read for uart is non blocking
+#ifdef WIN32
+		
+		if (ReadFile(m_fd, pBuffer, dwMaxSize, (LPDWORD)&iBytesRead, NULL))
+#else
 		iBytesRead = read(m_fd, pBuffer, dwMaxSize);
-
 		// Error
 		if (iBytesRead < 0 && errno != EAGAIN)
+#endif
 		{
-			dprintf("Uart::Receive> Error in read %d (errno %d: %s)\n", errno, strerror(errno));
+			dprintf("Uart::Receive> Error in read (errno %d: %s)\n", errno, strerror(errno));
 			delete[] pBuffer;
 			return E_READ_ERROR;
 		}

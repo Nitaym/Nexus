@@ -42,7 +42,7 @@ private:
 	// Uart file descriptor
 	HANDLE m_fd;
 	// Uart port name 
-	_TCHAR m_strPortName[MAX_PORT_NAME_LEN];
+	char m_strPortName[MAX_PORT_NAME_LEN];
 	// Baud rate
 	EUartBaudRate m_eBaudRate; 
 
@@ -52,7 +52,9 @@ public:
 	// Connect - Connecting if not already connected
 	TCommErr Connect();
 	void SetBaudRate(EUartBaudRate a_eBaudRate);
-	void SetPortName(const char *a_strPortName);
+	void SetPortName(const char* a_strPortName);
+
+	bool IsConnected();
 
 	// Disconnect - Disconnects if not already disconnected
 	TCommErr Disconnect();
