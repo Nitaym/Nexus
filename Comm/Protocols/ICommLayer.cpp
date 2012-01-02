@@ -65,7 +65,7 @@ TCommErr ICommLayer::Connect()
 {
 	if (m_pUnderlyingComm != NULL)
 	{
-		m_bIsConnected == true;
+		m_bIsConnected = true;
 		return E_OK;
 	}
 	else return E_NO_UNDERLYING_COMM;
