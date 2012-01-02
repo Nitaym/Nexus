@@ -10,8 +10,8 @@
 // For changing baud rate
 #include <termios.h>
 #endif
-#include "Comm/Base/ICommBase.h"
 #include "General/Utils.h"
+#include "Comm/Base/ICommBase.h"
 
 #define MAX_PORT_NAME_LEN 20
 

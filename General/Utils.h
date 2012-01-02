@@ -6,10 +6,6 @@
 
 #pragma once
 
-#include "General/General.h"
-#include <stdio.h>
-#include <string>
-
 // Include stuff for windows & linux
 #ifdef WIN32
 // Windows
@@ -19,6 +15,12 @@
 // Linux
 #include <pthread.h>
 #endif
+
+
+#include "General/General.h"
+#include <stdio.h>
+#include <string>
+
 
 using namespace std;
 

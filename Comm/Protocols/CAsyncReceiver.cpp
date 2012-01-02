@@ -5,10 +5,7 @@
 *	automatically by its own thread
 *************************************************************************************/
 
-#include <signal.h>
 #include "CAsyncReceiver.h"
-#include "General/Utils.h"
-#include "General/General.h"
 
 //#define dprintf if (m_pDebug != NULL) m_pDebug -> Write
 #define dprintf printf

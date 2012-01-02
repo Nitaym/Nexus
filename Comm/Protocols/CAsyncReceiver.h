@@ -10,9 +10,9 @@
 #define NOMINMAX
 
 #include <queue>
-#include "Comm/Protocols/ICommLayer.h"
 #include "General/Utils.h"
 #include "General/General.h"
+#include "Comm/Protocols/ICommLayer.h"
 #include "CallbackValues.h"
 
 using namespace std; // for the queue

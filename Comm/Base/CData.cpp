@@ -454,7 +454,7 @@ void CData::Print() const
 	}
 	else
 	{
-		for (int i = 0; i < m_oData.size(); i++)
+		for (DWORD i = 0; i < m_oData.size(); i++)
 		{
 			cout << m_oData[i];
 		}
