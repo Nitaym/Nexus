@@ -127,6 +127,28 @@ CData* CData::Clone() const
 	return retData;
 }
 
+
+/*****************************************************************
+*	void CData::CopyFrom(CData* a_oData)
+*
+*	Description:
+*		CopyFrom - Copies the data from another CData to this one
+*
+*	Arguments:
+*
+*	Return Value:
+*		
+*****************************************************************/
+void CData::CopyFrom(CData* a_oData)
+{
+	int l_iSize = a_oData->GetSize();
+	byte *l_abBuffer = new byte[l_iSize];
+
+	a_oData->GetData(l_abBuffer, 0, l_iSize);
+	SetData(l_abBuffer, l_iSize);
+}
+
+
 /*****************************************************************
 *	bool CData::SetData(BYTE* a_pbyNewData, DWORD a_dwNewSize)
 *

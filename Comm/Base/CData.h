@@ -37,6 +37,9 @@ public:
 	// when not needed anymore!
 	CData* Clone() const;
 
+	// CopyFrom - Copies the data from another CData to this one
+	void CopyFrom(CData* a_oData);
+
 	// SetData - Allocate memory and copy a given data at a given a a_dwNewSize
 	bool SetData(BYTE *a_pbyNewData, DWORD a_dwNewSize);
 
