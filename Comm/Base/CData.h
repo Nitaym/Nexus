@@ -45,6 +45,7 @@ public:
 
 	// Append - Appends a buffer in the end of the data
 	bool Append(BYTE *a_pUserBuffer, int a_dwSize);
+	bool Append(byte a_byByte);
 	bool Append(unsigned short a_wShort);
 	bool Append(int a_iInt);
 	bool Append(CData *a_pData);
@@ -54,7 +55,9 @@ public:
 
 	// GetByte - returns one byte of the requested index
 	int GetByte(DWORD a_dwIndex, OUT BYTE* a_pbyByte) const;
-
+	int GetWord(DWORD a_dwIndex, OUT unsigned short *a_pwWord) const;
+	int GetDword(DWORD a_dwIndex, OUT DWORD* a_pdwDWord) const;
+	
 	// GetSize - returns the size of the buffer, 0 if not allocated or empty
 	DWORD GetSize() const;
 

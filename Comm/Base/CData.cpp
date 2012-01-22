@@ -219,6 +219,11 @@ bool CData::Append(BYTE *a_pUserBuffer, int a_dwSize)
 }
 
 
+bool CData::Append(byte a_byByte)
+{
+	return Append((byte*)&a_byByte, 1);
+}
+
 bool CData::Append(unsigned short a_wShort)
 {
 	return Append((byte*)&a_wShort, 2);
@@ -240,6 +245,10 @@ bool CData::Append(CData *a_pData)
 
 		return false;
 	}
+
+	// An empty CData is valid
+	if (a_pData->GetSize() == 0)
+		return true;
 
 	byte* l_abyBuffer = new byte[a_pData->GetSize()];
 	a_pData->GetData(l_abyBuffer, 0, a_pData->GetSize());
@@ -289,7 +298,7 @@ void CData::FreeData()
 *****************************************************************/
 int CData::GetByte(DWORD a_dwIndex, OUT BYTE* a_pbyByte) const
 {
-	if (a_dwIndex <= m_oData.size())
+	if (a_dwIndex < m_oData.size())
 	{
 		*a_pbyByte = m_oData[a_dwIndex];
 		return E_NEXUS_OK;
@@ -297,6 +306,16 @@ int CData::GetByte(DWORD a_dwIndex, OUT BYTE* a_pbyByte) const
 	
 	dprintf("CData::GetByte: Index out of range\n");
 	return E_NEXUS_INDEX_OUT_OF_RANGE;
+}
+
+int CData::GetWord(DWORD a_dwIndex, OUT unsigned short *a_pwWord) const
+{
+	return GetData((byte*)a_pwWord, a_dwIndex, 2);
+}
+
+int CData::GetDword(DWORD a_dwIndex, OUT DWORD* a_pdwDWord) const
+{
+	return GetData((byte*)a_pdwDWord, a_dwIndex, 4);
 }
 
 
@@ -339,7 +358,7 @@ DWORD CData::GetSize() const
 *****************************************************************/
 int CData::GetData(OUT BYTE *a_pUserBuffer, DWORD a_dwOffset, DWORD a_dwLength) const
 {
-	if (a_dwOffset + a_dwLength < m_oData.size())
+	if (a_dwOffset + a_dwLength > m_oData.size())
 	{
 		return E_NEXUS_INDEX_OUT_OF_RANGE;
 	}
