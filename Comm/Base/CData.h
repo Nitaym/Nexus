@@ -45,6 +45,8 @@ public:
 
 	// Append - Appends a buffer in the end of the data
 	bool Append(BYTE *a_pUserBuffer, int a_dwSize);
+	bool Append(unsigned short a_wShort);
+	bool Append(int a_iInt);
 	bool Append(CData *a_pData);
 
 	// FreeData - free the allocated memory for data

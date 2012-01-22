@@ -218,6 +218,17 @@ bool CData::Append(BYTE *a_pUserBuffer, int a_dwSize)
 	return true;
 }
 
+
+bool CData::Append(unsigned short a_wShort)
+{
+	return Append((byte*)&a_wShort, 2);
+}
+
+bool CData::Append(int a_iInt)
+{
+	return Append((byte*)&a_iInt, 4);
+}
+
 bool CData::Append(CData *a_pData)
 {
 	if (a_pData->GetSize() + GetSize() > GetMaxSize())

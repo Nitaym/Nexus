@@ -1,0 +1,18 @@
+Nexus Communication Infrastructure
+==================================
+
+1. Getting Started
+1.1 Windows
+1.2 Linux
+
+*******************
+1. Getting Started
+*******************
+
+1.1 WINDOWS:
+------------
+If you're using the Socket module you need to link your project with the Ws2_32.lib. See http://msdn.microsoft.com/en-us/library/windows/desktop/ms737629(v=vs.85).aspx
+
+1.2 LINUX
+---------
+To be continued...
