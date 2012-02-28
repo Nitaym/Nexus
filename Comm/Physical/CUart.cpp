@@ -70,7 +70,7 @@ void CUart::SetBaudRate(EUartBaudRate a_eBaudRate)
 *	void CUart::SetPortName(const char *a_strPortName)
 *
 *	Description:
-*		Constructor - Initialize Module
+*		
 *
 *	Arguments:
 *		None
@@ -86,6 +86,43 @@ void CUart::SetPortName(const char* a_strPortName)
 		strcpy(m_strPortName, a_strPortName);
 	}
 }
+
+/************************************************************
+*	void CUart::SetStopBits(EUartStopBits a_eStopBits)
+*
+*	Description:
+*		
+*
+*	Arguments:
+*		None
+*
+*	Return Value
+*		None
+*
+*************************************************************/
+void CUart::SetStopBits(EUartStopBits a_eStopBits)
+{
+	m_eStopBits = a_eStopBits;
+}
+
+/************************************************************
+*	void CUart::SetParity(EUartParity a_eParity)
+*
+*	Description:
+*		
+*
+*	Arguments:
+*		None
+*
+*	Return Value
+*		None
+*
+*************************************************************/
+void CUart::SetParity(EUartParity a_eParity)
+{
+	m_eParity = a_eParity;
+}
+
 
 /************************************************************
 *	TCommErr CUart::Connect()
@@ -154,10 +191,10 @@ TCommErr CUart::Connect()
 			}
 
 			GetCommState(m_fd, &l_oDCB);
-			l_oDCB.BaudRate = 19200;
-			l_oDCB.StopBits = ONESTOPBIT;
+			l_oDCB.BaudRate = m_eBaudRate;
+			l_oDCB.StopBits = m_eStopBits;
 			l_oDCB.ByteSize = 8;
-			l_oDCB.Parity = NOPARITY;
+			l_oDCB.Parity = m_eParity;
 			l_oDCB.fParity = false;
 			if (!SetCommState(m_fd, &l_oDCB))
 			{

@@ -34,6 +34,30 @@ enum EUartBaudRate
 #endif
 };
 
+enum EUartStopBits
+{
+#ifdef WIN32
+	esbOne = 0,
+	esbOne5 = 1,
+	esbTwo = 2,
+#else
+#endif
+};
+
+enum EUartParity
+{
+#ifdef WIN32
+	eupNoParity          = 0,
+	eupOddParity         = 1,
+	eupEvenParity        = 2,
+	eupMarkParity        = 3,
+	eupSpaceParity       = 4,
+#else
+#endif
+};
+
+
+
 class CUart : public ICommBase
 {
 private:
@@ -46,6 +70,10 @@ private:
 	// Baud rate
 	EUartBaudRate m_eBaudRate; 
 
+	// Parity & Stop bits
+	EUartParity m_eParity;
+	EUartStopBits m_eStopBits;
+
 public:
 	CUart();
 
@@ -53,6 +81,8 @@ public:
 	TCommErr Connect();
 	void SetBaudRate(EUartBaudRate a_eBaudRate);
 	void SetPortName(const char* a_strPortName);
+	void SetStopBits(EUartStopBits a_eStopBits);
+	void SetParity(EUartParity a_eParity);
 
 	bool IsConnected();
 
