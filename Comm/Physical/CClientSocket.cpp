@@ -63,7 +63,7 @@ TCommErr CClientSocket::Connect()
 
 	if (m_hSocket == INVALID_SOCKET)
 	{
-		printf("CSocket::CSocket> Error at socket(): %ld\n", WSAGetLastError());
+		dprintf("CSocket::CSocket> Error at socket(): %ld\n", WSAGetLastError());
 		WSACleanup();
 		freeaddrinfo(l_pAddrInfo);
 		return E_NEXUS_FAIL;
