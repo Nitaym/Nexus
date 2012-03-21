@@ -258,7 +258,54 @@ bool CData::Append(CData *a_pData)
 }
 
 
+/*****************************************************************
+*	bool CData::Insert(byte* a_iBuffer, int a_iIndex, int a_iCount)
+*
+*	Description:
+*		Inserts bytes in the middle of the CData
+*
+*	Arguments:
+*
+*	Return Value:
+*		None
+*		
+*****************************************************************/
+bool CData::Insert(BYTE* a_iBuffer, int a_iIndex, int a_iCount)
+{
+	if (this->GetSize() < a_iIndex)
+	{
+		dprintf(
+			"CData::Insert: Index (%d) must be smaller or equal to the CData size (%d)\n", 
+			(int)a_iIndex,
+			(int)this->GetSize());
 
+		return false;
+	}
+
+	m_oData.insert(m_oData.begin() + a_iIndex, a_iBuffer, a_iBuffer + a_iCount);
+
+	return true;
+}
+
+bool CData::Insert(CData *a_pData, int a_iIndex)
+{
+	byte *buffer = new byte[a_pData->GetSize()];
+
+	a_pData->GetData(buffer, 0, a_pData->GetSize());
+
+	bool l_bResult = Insert(buffer, a_iIndex, a_pData->GetSize());
+
+	SAFE_DELETE_ARRAY(buffer);
+	return l_bResult;
+}
+
+bool CData::Insert(byte a_iByte, int a_iIndex)
+{
+	byte l_abBytes[1];
+	l_abBytes[0] = a_iByte;
+
+	return this->Insert((byte*)&l_abBytes, a_iIndex, 1);
+}
 
 /*****************************************************************
 *	void CData::FreeData()
@@ -540,3 +587,13 @@ void CData::PrintHex() const
 
 	dprintf("\n");
 }
+
+void CData::Dump(std::string a_sFilename)
+{
+	FILE * l_pFile;
+	l_pFile = fopen(a_sFilename.c_str(), "wb");
+	
+	fwrite(&(m_oData)[0], 1, this->GetSize(), l_pFile);
+	fclose(l_pFile);
+}
+

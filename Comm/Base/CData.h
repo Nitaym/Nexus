@@ -50,6 +50,11 @@ public:
 	bool Append(int a_iInt);
 	bool Append(CData *a_pData);
 
+	// Insert - Inserts bytes in the middle of the CData
+	bool Insert(BYTE *a_iBuffer, int a_iIndex, int a_iCount);
+	bool Insert(CData *a_pData, int a_iIndex);
+	bool Insert(byte a_iByte, int a_iIndex);
+
 	// FreeData - free the allocated memory for data
 	void FreeData();
 
@@ -87,6 +92,9 @@ public:
 
 	// PrintHex - prints the data as Hex
 	void PrintHex() const;
+
+	// Dump - Dumps the data to a file
+	void Dump(std::string a_sFilename);
 
 	byte operator[](int i) { return m_oData[i]; }
 };
