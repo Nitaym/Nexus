@@ -30,6 +30,7 @@ using namespace std;
 **************************************************************/
 CData::CData()
 {
+	m_bSwitchEndianity = false;
 	m_oData.clear();
 	SetMaxSize(4096);
 }
@@ -53,6 +54,8 @@ CData::CData()
 *****************************************************************/
 CData::CData(const char *a_strText, DWORD a_dwMaxDataSize)
 {
+	m_bSwitchEndianity = false;
+
 	SetMaxSize(a_dwMaxDataSize);
 
 	if (a_strText)
@@ -79,6 +82,8 @@ CData::CData(const char *a_strText, DWORD a_dwMaxDataSize)
 *****************************************************************/
 CData::CData(BYTE *a_pBuffer, DWORD a_dwLength, DWORD a_dwMaxDataSize)
 {
+	m_bSwitchEndianity = false;
+
 	SetMaxSize(a_dwMaxDataSize);
 
 	if (a_pBuffer && a_dwLength > 0)
@@ -226,11 +231,19 @@ bool CData::Append(byte a_byByte)
 
 bool CData::Append(unsigned short a_wShort)
 {
+	if (m_bSwitchEndianity)
+	{
+		SwapEndianity(&a_wShort);
+	}
 	return Append((byte*)&a_wShort, 2);
 }
 
 bool CData::Append(int a_iInt)
 {
+	if (m_bSwitchEndianity)
+	{
+		SwapEndianity((unsigned int*)&a_iInt);
+	}
 	return Append((byte*)&a_iInt, 4);
 }
 
@@ -272,7 +285,7 @@ bool CData::Append(CData *a_pData)
 *****************************************************************/
 bool CData::Insert(BYTE* a_iBuffer, int a_iIndex, int a_iCount)
 {
-	if (this->GetSize() < a_iIndex)
+	if (this->GetSize() < (DWORD)a_iIndex)
 	{
 		dprintf(
 			"CData::Insert: Index (%d) must be smaller or equal to the CData size (%d)\n", 
@@ -343,7 +356,7 @@ void CData::FreeData()
 *		TCommErr that states the error value
 *		
 *****************************************************************/
-int CData::GetByte(DWORD a_dwIndex, OUT BYTE* a_pbyByte) const
+int CData::GetByte(DWORD a_dwIndex, OUT BYTE* a_pbyByte)
 {
 	if (a_dwIndex < m_oData.size())
 	{
@@ -355,13 +368,31 @@ int CData::GetByte(DWORD a_dwIndex, OUT BYTE* a_pbyByte) const
 	return E_NEXUS_INDEX_OUT_OF_RANGE;
 }
 
-int CData::GetWord(DWORD a_dwIndex, OUT unsigned short *a_pwWord) const
+int CData::GetWord(DWORD a_dwIndex, OUT unsigned short *a_pwWord)
 {
+	if (m_bSwitchEndianity)
+	{
+		if (GetData((byte*)a_pwWord, a_dwIndex, 2) == E_NEXUS_OK)
+		{
+			SwapEndianity(a_pwWord);
+			return E_NEXUS_OK;
+		}
+	}
+
 	return GetData((byte*)a_pwWord, a_dwIndex, 2);
 }
 
-int CData::GetDword(DWORD a_dwIndex, OUT DWORD* a_pdwDWord) const
+int CData::GetDword(DWORD a_dwIndex, OUT DWORD* a_pdwDWord)
 {
+	if (m_bSwitchEndianity)
+	{
+		if (GetData((byte*)a_pdwDWord, a_dwIndex, 4) == E_NEXUS_OK)
+		{
+			SwapEndianity((unsigned int*)a_pdwDWord);
+			return E_NEXUS_OK;
+		}
+	}
+
 	return GetData((byte*)a_pdwDWord, a_dwIndex, 4);
 }
 
@@ -414,6 +445,23 @@ int CData::GetData(OUT BYTE *a_pUserBuffer, DWORD a_dwOffset, DWORD a_dwLength) 
 	return E_NEXUS_OK;
 }
 
+
+
+/*****************************************************************
+*	void CData::ForceEndianity(EEndianity a_eEndianity)
+*
+*	Description:
+*		ForceEndianity - Set the endianity of the CData object no matter of the architecture
+*
+*	Arguments:
+*
+*	Return Value:
+*		
+*****************************************************************/
+void CData::ForceEndianity(EEndianity a_eEndianity)
+{
+	m_bSwitchEndianity = (a_eEndianity == ENDIANITY_SWITCH);
+}
 
 /*****************************************************************
 *	bool CData::Remove(DWORD a_dwIndex, DWORD a_dwCount)

@@ -10,16 +10,39 @@
 #include "General/General.h"
 #include <vector>
 
+enum EEndianity
+{
+	ENDIANITY_NORMAL,
+	ENDIANITY_SWITCH,
+};
+
 using namespace std;
 
 class CData
 {
 private:
+	bool m_bSwitchEndianity;
 	DWORD m_dwMaxDataSize;	// Max size of the data
 	vector<byte> m_oData;	// Data vector
 	string m_sStringData;	// This string is for the GetString function. It is not really needed.
 							// But we like to be able to do GetString() without worrying about 
 							// freeing the string afterwards
+
+	void SwapEndianity(unsigned short *a_shNumber)
+	{
+		*a_shNumber = 
+			(*a_shNumber>>8) | 
+			(*a_shNumber<<8);
+	}
+	void SwapEndianity(unsigned int *a_iNumber)
+	{
+		*a_iNumber = 
+			(*a_iNumber >> 24) | 
+			((*a_iNumber << 8) & 0x00FF0000) |
+			((*a_iNumber >> 8) & 0x0000FF00) |
+			(*a_iNumber << 24);
+	}
+
 public:
 	// Constructor of an empty packet
 	CData();
@@ -59,9 +82,9 @@ public:
 	void FreeData();
 
 	// GetByte - returns one byte of the requested index
-	int GetByte(DWORD a_dwIndex, OUT BYTE* a_pbyByte) const;
-	int GetWord(DWORD a_dwIndex, OUT unsigned short *a_pwWord) const;
-	int GetDword(DWORD a_dwIndex, OUT DWORD* a_pdwDWord) const;
+	int GetByte(DWORD a_dwIndex, OUT BYTE* a_pbyByte);
+	int GetWord(DWORD a_dwIndex, OUT unsigned short *a_pwWord);
+	int GetDword(DWORD a_dwIndex, OUT DWORD* a_pdwDWord);
 	
 	// GetSize - returns the size of the buffer, 0 if not allocated or empty
 	DWORD GetSize() const;
@@ -74,6 +97,9 @@ public:
 
 	// GetData - copy data to a user supplied buffer
 	int GetData(OUT BYTE *a_pUserBuffer, DWORD a_dwOffset, DWORD a_dwLength) const;
+
+	// ForceEndianity - Set the endianity of the CData object no matter of the architecture
+	void ForceEndianity(EEndianity a_eEndianity);
 
 	// Remove - Removes a range of bytes from the data
 	bool Remove(DWORD a_dwIndex, DWORD a_dwCount);
