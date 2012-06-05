@@ -45,6 +45,14 @@ DWORD GetTickCount();
 
 HTHREAD NexusCreateThread(typeCallbackFunc a_pFunction, void *a_pParam);
 
+inline void BinToHexString(byte* a_bBuffer, char* a_sString, int a_iLength)
+{
+	for (int i = 0; i < a_iLength; i++)
+	{
+		sprintf(a_sString + i*3, "%02x ", a_bBuffer[i]);
+	}
+}
+
 inline void PrintStringAsHex(string strData)
 {
 	printf("[%d]", strData.size());
