@@ -122,5 +122,5 @@ public:
 	// Dump - Dumps the data to a file
 	void Dump(std::string a_sFilename);
 
-	byte operator[](int i) { return m_oData[i]; }
+	byte& operator[](int i) { return m_oData[i]; }
 };
