@@ -4,8 +4,10 @@
 
 CClientSocket::CClientSocket()
 {
+#ifdef WIN32
 	m_hSocket = INVALID_SOCKET;
 	m_iBufferSize = 4096;
+#endif
 }
 
 bool CClientSocket::SetConnectionParameters(std::string a_sIP, WORD a_wPort)
@@ -97,6 +99,7 @@ TCommErr CClientSocket::Connect()
 
 TCommErr CClientSocket::Disconnect()
 {
+#ifdef WIN32
 	// shutdown the send half of the connection since no more data will be sent
 	int l_iResult = shutdown(m_hSocket, SD_SEND);
 	if (l_iResult == SOCKET_ERROR) {
@@ -109,7 +112,7 @@ TCommErr CClientSocket::Disconnect()
 	// cleanup
 	closesocket(m_hSocket);
 	WSACleanup();
-
+#endif
 	return E_NEXUS_OK;
 }
 
@@ -121,6 +124,7 @@ TCommErr CClientSocket::Send(IN CData *a_pData, IN IMetaData *a_pMetaData /* = N
 	byte *l_pBuffer = new byte[l_iBufferLength];
 	a_pData->GetData(l_pBuffer, 0, l_iBufferLength);
 
+#ifdef WIN32
 	int l_iResult = send(m_hSocket, (char*)l_pBuffer, l_iBufferLength, 0);
 	if (l_iResult == SOCKET_ERROR)
 	{
@@ -132,13 +136,14 @@ TCommErr CClientSocket::Send(IN CData *a_pData, IN IMetaData *a_pMetaData /* = N
 		return E_NEXUS_FAIL;
 	}
 
+#endif
 	return E_NEXUS_OK;
 }
 
 TCommErr CClientSocket::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData /* = NULL */, IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
 {
 	byte *l_pBuffer = new byte[m_iBufferSize];
-
+#ifdef WIN32
 	int l_iResult = recv(m_hSocket, (char*)l_pBuffer, m_iBufferSize - 1, 0);
 	if (l_iResult > 0)
 	{
@@ -156,6 +161,6 @@ TCommErr CClientSocket::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData
 
 		return E_NEXUS_FAIL;
 	}
-
+#endif
 	return E_NEXUS_OK;
 }

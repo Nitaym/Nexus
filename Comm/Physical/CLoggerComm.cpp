@@ -13,10 +13,17 @@ bool CLoggerComm::IsConnected()
 
 TCommErr CLoggerComm::Connect()
 {
+#ifdef WIN32
 	m_hFile = CreateFile(L"ICommLog.txt", GENERIC_WRITE | GENERIC_READ, FILE_SHARE_READ, NULL, CREATE_ALWAYS, 0, NULL);
 
 	if (m_hFile == INVALID_HANDLE_VALUE)
 		return E_NEXUS_OPEN_FAIL;
+
+#else
+	m_hFile = open("ICommLog.txt", O_WRONLY);
+	if (m_hFile == -1)
+		return E_NEXUS_OPEN_FAIL;
+#endif
 
 	return E_NEXUS_OK;
 }
@@ -33,6 +40,7 @@ TCommErr CLoggerComm::Send(IN CData *a_pData, IN IMetaData *a_pMetaData, IN DWOR
 	char *StringBuffer = new char[l_iBufferSize * 3];
 	BinToHexString(Buffer, StringBuffer, l_iBufferSize);
 
+#ifdef WIN32
 	BOOL l_bRes = WriteFile(m_hFile, StringBuffer, l_iBufferSize * 3, &l_iBytesWritten, NULL);
 	if (!l_bRes)
 		return E_NEXUS_BUSY;
@@ -40,13 +48,23 @@ TCommErr CLoggerComm::Send(IN CData *a_pData, IN IMetaData *a_pMetaData, IN DWOR
 	WriteFile(m_hFile, "\r\n", 2, &l_iBytesWritten, NULL);
 	FlushFileBuffers(m_hFile);
 
+#else
+	l_iBytesWritten = write(m_hFile, StringBuffer, l_iBufferSize * 3);
+	if (l_iBytesWritten < 0)
+		return E_NEXUS_BUSY;
+#endif
+
 	return E_NEXUS_OK;
 }
 
 
 TCommErr CLoggerComm::Disconnect()
 {
+#ifdef WIN32
 	CloseHandle(m_hFile);
+#else
+	close(m_hFile);
+#endif
 
 	return E_NEXUS_OK;
 }

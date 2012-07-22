@@ -166,7 +166,7 @@ TCommErr CUart::Connect()
 		if (m_fd == INVALID_HANDLE_VALUE)
 
 #else
-		m_fd = open(m_strPortName, 0_RDWR | 0_NOCITY | 0_NONBLOCK);
+		m_fd = open(m_strPortName, O_RDWR | O_NOCTTY | O_NONBLOCK);
 
 		if (m_fd == -1)
 #endif
@@ -210,7 +210,7 @@ TCommErr CUart::Connect()
 			if (tcgetattr(m_fd, &l_tAttribs) < 0)
 			{
 				dprintf("Uart::Connect> tcgetattr faild (error %d: %s)\n", errno, strerror(errno));
-				return E_SET_BAUDRATE_FAILED;
+				return E_NEXUS_OPEN_FAIL;
 			}
 
 			// Set everything ourselves, so there will be no surprises (leftovers from other processes)!
@@ -228,20 +228,20 @@ TCommErr CUart::Connect()
 			if (cfsetospeed(&l_tAttribs, m_eBaudRate) < 0)
 			{
 				dprintf("Uart::Connect> cfsetospeed failed (error %d: %s)\n", errno, strerror(errno));
-				return E_SET_BAUDRATE_FAILED;
+				return E_NEXUS_OPEN_FAIL;
 			}
 
 			// Update in-speed in the info struct
 			if (cfsetispeed(&l_tAttribs, m_eBaudRate) < 0)
 			{
 				dprintf("Uart::Connect> cfsetispeed failed (error %d: %s)\n", errno, strerror(errno));
-				return E_SET_BAUDRATE_FAILED;
+				return E_NEXUS_OPEN_FAIL;
 			}
 
 			if (tcsetattr(m_fd, TCSANOW, &l_tAttribs) < 0)
 			{
-				dprintf("Uart::Connect> tcsetattr failed (error %d: %s)\n" errno, strerror(errno));
-				return E_SET_BAUDRATE_FAILED;
+				dprintf("Uart::Connect> tcsetattr failed (error %d: %s)\n", errno, strerror(errno));
+				return E_NEXUS_OPEN_FAIL;
 			}
 			
 #endif
