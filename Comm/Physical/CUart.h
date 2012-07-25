@@ -36,23 +36,21 @@ enum EUartBaudRate
 
 enum EUartStopBits
 {
-#ifdef WIN32
 	esbOne = 0,
+#ifdef WIN32
 	esbOne5 = 1,
-	esbTwo = 2,
-#else
 #endif
+	esbTwo = 2,
 };
 
 enum EUartParity
 {
-#ifdef WIN32
 	eupNoParity          = 0,
 	eupOddParity         = 1,
 	eupEvenParity        = 2,
+#ifdef WIN32
 	eupMarkParity        = 3,
 	eupSpaceParity       = 4,
-#else
 #endif
 };
 

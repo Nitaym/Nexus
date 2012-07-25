@@ -219,6 +219,29 @@ TCommErr CUart::Connect()
 			l_tAttribs.c_cflag = CS8|CREAD|CLOCAL; // CREAD, CLOCAL neded for read(), open()
 			l_tAttribs.c_lflag = 0;
 
+			// Set Parity
+			if (m_eParity != eupNoParity)
+			{
+				l_tAttribs.c_cflag = l_tAttribs.c_cflag | PARENB;
+
+				switch (m_eParity)
+				{
+				case eupOddParity:
+					l_tAttribs.c_cflag = l_tAttribs.c_cflag | PARODD;
+					break;
+				case eupEvenParity:
+					// Do nothing. Even parity is the default one
+					break;
+				}
+			}
+
+			// Set Stop Bits
+			if (m_eStopBits == esbTwo)
+			{
+				// One is the default
+				l_tAttribs.c_cflag = l_tAttribs.c_cflag | CSTOPB;
+			}
+
 			// One input byte is enough to return from read()
 			// Inter-charactar timer off
 			l_tAttribs.c_cc[VMIN] = 1;
