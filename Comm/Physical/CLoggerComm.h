@@ -12,6 +12,8 @@ private:
 	// file descriptor
 	HANDLE m_hFile;
 
+	TCommErr WriteToFile(IN CData *a_pData, char* a_sPrefix);
+
 public:
 	CLoggerComm();
 
