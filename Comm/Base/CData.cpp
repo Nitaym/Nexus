@@ -436,7 +436,7 @@ DWORD CData::GetSize() const
 *****************************************************************/
 int CData::GetData(OUT BYTE *a_pUserBuffer, DWORD a_dwOffset, DWORD a_dwLength) const
 {
-	if (a_dwOffset + a_dwLength > m_oData.size())
+	if ((a_dwOffset + a_dwLength > m_oData.size()) || a_dwLength == 0)
 	{
 		return E_NEXUS_INDEX_OUT_OF_RANGE;
 	}
