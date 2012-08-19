@@ -37,7 +37,7 @@ typedef pthread_t HTHREAD;
 
 typedef void* (*typeCallbackFunc)(void *a_pParam);
 
-HTHREAD CreateThread(typeCallbackFunc a_pFunction, void *a_pParam)
+HTHREAD CreateThread(typeCallbackFunc a_pFunction, void *a_pParam);
 void Sleep(DWORD dwMilliseconds);
 DWORD GetTickCount();
 

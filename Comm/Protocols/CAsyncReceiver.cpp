@@ -192,7 +192,7 @@ void* CAsyncReceiver::ReceiveThread(void *a_pvParam)
 
 	CAsyncReceiver *l_pThis = (CAsyncReceiver*)a_pvParam;
 	TReceivePacket l_stPacket;
-	int l_iRes = E_FAIL;
+	int l_iRes = E_NEXUS_FAIL;
 	TReceiveCallback eCallbackRes;
 
 	l_stPacket.a_pData = 0;

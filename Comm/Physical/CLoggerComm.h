@@ -1,16 +1,24 @@
 #pragma once
 
-#include "General/Utils.h"
+#include "../../General/Utils.h"
 #include "Comm/Base/ICommBase.h"
 
+#ifndef WIN32
+#include <fcntl.h>
+#endif
 
 class CLoggerComm : public ICommBase
 {
 private:
 	// True if the module is connected
 	bool m_bIsConnected;
+
 	// file descriptor
+#ifdef WIN32
 	HANDLE m_hFile;
+#else
+	int m_hFile;
+#endif
 
 	TCommErr WriteToFile(IN CData *a_pData, char* a_sPrefix);
 

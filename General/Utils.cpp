@@ -48,7 +48,7 @@ HTHREAD NexusCreateThread(typeCallbackFunc a_pFunction, void *a_pParam)
 *			Handle to the newly created thread		
 *
 *****************************************************************/
-HTHREAD CreateThread(typeCallbackFunc a_pFunction, void *a_pParam)
+HTHREAD NexusCreateThread(typeCallbackFunc a_pFunction, void *a_pParam)
 {
 	HTHREAD l_iThread = 0;
 	int l_iResult = pthread_create(&l_iThread, NULL, a_pFunction, NULL);
