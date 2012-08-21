@@ -16,6 +16,8 @@ public:
 	TCommErr Connect();
 	TCommErr Disconnect();
 
+	bool IsConnected();
+
 	void SetOtherUnderlyingComm(ICommBase *a_pNewUnderlyingComm);
 	
 	TCommErr Send(IN CData *a_pData, IN IMetaData *a_pMetaData = NULL, IN DWORD a_dwTimeoutMS = DEFAULT_TIMEOUT);

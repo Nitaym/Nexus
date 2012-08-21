@@ -56,3 +56,8 @@ void CTComm::SetOtherUnderlyingComm(ICommBase *a_pNewUnderlyingComm)
 {
 	m_pOtherUnderlyingComm = a_pNewUnderlyingComm;
 }
+
+bool CTComm::IsConnected()
+{
+	return true;
+}
