@@ -20,7 +20,6 @@ private:
 	int m_hFile;
 #endif
 
-	TCommErr WriteToFile(IN CData *a_pData, char* a_sPrefix);
 
 public:
 	CLoggerComm();
@@ -28,6 +27,10 @@ public:
 	// Connect - Connecting if not already connected
 	TCommErr Connect();
 	bool IsConnected();
+
+	bool WriteMessage(char* a_sMessage);
+	bool WriteMessage(std::string a_sMessage);
+	bool WriteMessage(IN CData *a_pData, char* a_sPrefix);
 
 	// Disconnect - Disconnects if not already disconnected
 	TCommErr Disconnect();
