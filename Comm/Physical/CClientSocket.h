@@ -24,6 +24,9 @@
 #pragma comment (lib, "AdvApi32.lib")
 #endif
 
+namespace Nexus
+{
+
 class CClientSocket : public ICommBase
 {
 private:
@@ -61,3 +64,4 @@ public:
 	//			 a_pData->MaxSize = Read up to size MaxSize bytes
 	TCommErr Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData = NULL, IN DWORD a_dwTimeoutMs = DEFAULT_TIMEOUT);
 };
+}

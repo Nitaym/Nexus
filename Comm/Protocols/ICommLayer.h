@@ -9,6 +9,9 @@
 
 #include "Comm/Base/ICommBase.h"
 
+namespace Nexus
+{
+
 class ICommLayer : public ICommBase
 {
 protected:
@@ -27,3 +30,5 @@ public:
 	virtual TCommErr Send(IN CData *a_pData, IN IMetaData *a_pMetaData = NULL, IN DWORD a_dwTimeoutMS = DEFAULT_TIMEOUT);
 	virtual TCommErr Receive(OUT CData *a_pData, OUT IMetaData *a_pMetaData = NULL, IN DWORD a_dwTimeoutMs = DEFAULT_TIMEOUT);
 };
+
+}

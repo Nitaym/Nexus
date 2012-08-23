@@ -1,5 +1,5 @@
 /*******************************************************************************************
-* Comm/Protocols/CAsyncReceiver.h
+* Comm/Protocols/CAsyncSender.h
 * Description:
 *	Incoming packet buffer - Manages an incoming packets queue, receives packet 
 *	automatically by its own thread
@@ -17,6 +17,9 @@
 
 using namespace std; // for the queue
 
+namespace Nexus
+{
+
 // Struct for the queue elements
 struct TPacket
 {
@@ -27,4 +30,6 @@ struct TPacket
 
 typedef TSendCallback (*typeAsyncSenderCallback)(CData *a_pData, IMetaData *a_pMetaData);
 
-class CAsync
+//class CAsync
+
+}

@@ -25,6 +25,9 @@
 using namespace std;
 
 
+namespace Nexus
+{
+
 #ifdef WIN32
 
 typedef HANDLE HTHREAD;
@@ -68,4 +71,6 @@ inline void PrintArrayAsHex(BYTE *pArray, DWORD dwSize)
 	for (int i = 0; i < (int)dwSize; i++)
 		printf(" %02X", pArray[i]);
 	printf("\n");
+}
+
 }

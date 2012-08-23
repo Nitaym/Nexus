@@ -6,6 +6,8 @@
 
 #include "ICommLayer.h"
 
+using namespace Nexus;
+
 /*****************************************************************
 *	ICommLayer::ICommLayer()
 *

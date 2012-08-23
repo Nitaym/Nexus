@@ -10,6 +10,9 @@
 #include "General/General.h"
 #include <vector>
 
+namespace Nexus
+{
+
 enum EEndianity
 {
 	ENDIANITY_NORMAL,
@@ -124,3 +127,5 @@ public:
 
 	byte& operator[](int i) { return m_oData[i]; }
 };
+
+}

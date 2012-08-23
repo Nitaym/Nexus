@@ -1,5 +1,6 @@
 #include "TComm.h"
 
+using namespace Nexus;
 
 CTComm::CTComm(void)
 {

@@ -6,6 +6,9 @@
 
 #pragma once
 
+namespace Nexus
+{
+
 // User receive callback return values
 enum TReceiveCallback
 {
@@ -18,3 +21,5 @@ enum TSendCallback
 {
 	TSendCallback_FreePacket = 0,
 };
+
+}

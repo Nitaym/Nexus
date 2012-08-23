@@ -17,6 +17,8 @@
 
 using namespace std; // for the queue
 
+namespace Nexus
+{
 // Struct for the queue elements
 struct TReceivePacket
 {
@@ -62,3 +64,5 @@ public:
 private:
 	static void* ReceiveThread(void *a_pvParam);
 };
+
+}

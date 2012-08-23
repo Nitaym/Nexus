@@ -15,6 +15,9 @@
 #define INFINITE_TIMEOUT 100
 #define DEFAULT_TIMEOUT 40
 
+namespace Nexus
+{
+
 class CDebug;
 
 class ICommBase
@@ -39,3 +42,4 @@ public:
 	ICommBase()						{ m_pDebug = NULL; }
 	void SetDebug(CDebug *a_pDebug)	{ m_pDebug = a_pDebug; }
 };
+}

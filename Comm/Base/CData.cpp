@@ -12,6 +12,7 @@
 #include "CommErrors.h"
 
 using namespace std;
+using namespace Nexus;
 
 #define dprintf printf // prints directly to stdout, has no logger.
 

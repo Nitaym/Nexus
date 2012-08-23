@@ -6,6 +6,9 @@
 
 #pragma once
 
+namespace Nexus
+{
+
 class IMetaData
 {
 public:
@@ -15,3 +18,4 @@ public:
 	// Copy - Copies known fields from source to this instance (by dynamic casting).
 	virtual void CopyFrom(IMetaData *a_pSource) = 0;
 };
+}

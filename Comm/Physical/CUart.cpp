@@ -23,6 +23,9 @@
 #define dprintf if (m_pDebug != NULL) m_pDebug->Write
 #define MAX_READ_BUFFER_SIZE 256 // It is only for spare. Normally only a few bytes will return
 
+using namespace Nexus;
+
+
 /************************************************************
 *	CUart()
 *

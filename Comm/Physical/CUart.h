@@ -15,6 +15,9 @@
 
 #define MAX_PORT_NAME_LEN 20
 
+namespace Nexus
+{
+
 enum EUartBaudRate
 {
 #ifdef WIN32
@@ -93,3 +96,6 @@ public:
 	//			 a_pData->MaxSize = Read up to size MaxSize bytes
 	TCommErr Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData = NULL, IN DWORD a_dwTimeoutMs = DEFAULT_TIMEOUT);
 };
+
+
+}

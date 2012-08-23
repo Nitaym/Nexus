@@ -1,5 +1,7 @@
 #include "Comm/Protocols/ICommLayer.h"
 
+namespace Nexus
+{
 
 class CTComm : public ICommLayer
 {
@@ -28,3 +30,4 @@ public:
 
 };
 
+}

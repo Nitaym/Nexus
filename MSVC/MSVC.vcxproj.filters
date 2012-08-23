@@ -47,31 +47,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Comm\Base\CData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Comm\Base\CDebug.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Comm\Base\CommErrors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Comm\Base\ICommBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Comm\Base\IMetaData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Comm\Physical\CClientSocket.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Comm\Physical\CLoggerComm.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Comm\Physical\CUart.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\Comm\Protocols\CallbackValues.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\General\Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Comm\Protocols\CAsyncReceiver.h">
@@ -80,25 +59,46 @@
     <ClInclude Include="..\Comm\Protocols\CAsyncSender.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Comm\Protocols\ICommLayer.h">
+    <ClInclude Include="..\Comm\Physical\CClientSocket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Comm\Protocols\TComm.h">
+    <ClInclude Include="..\Comm\Base\CData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Comm\Base\CDebug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Comm\Physical\CLoggerComm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Comm\Physical\CLoopbackComm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Comm\Base\CommErrors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Comm\Physical\CUart.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\General\General.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Comm\Base\ICommBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Comm\Protocols\ICommLayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Comm\Base\IMetaData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\General\Macros.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Comm\Protocols\TComm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\General\Types.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\General\Utils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Comm\Physical\CLoopbackComm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

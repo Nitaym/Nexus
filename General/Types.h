@@ -152,6 +152,9 @@ typedef void (*LPVOIDFUNC)(void);
 typedef void (*LPVOIDLPVOIDFUNC)(void *);
 
 
+namespace Nexus
+{
+
 // Unions - Little Endian
 // ----------------------
 // Word decomposition into bytes
@@ -175,3 +178,5 @@ typedef union {
 	DWORD dwValue;
 	TDwordWords stWords;
 } UDword;
+
+}

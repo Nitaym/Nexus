@@ -17,6 +17,8 @@
 #define WRITE_TIMEOUT_MS 1000
 
 
+using namespace Nexus;
+
 /*****************************************************************
 *	CDebug::CDebug(ICommBase *a_pComm)
 *

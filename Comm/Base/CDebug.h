@@ -8,6 +8,10 @@
 
 #include "Comm/Base/ICommBase.h"
 
+namespace Nexus
+{
+
+
 class ICommBase;
 
 class CDebug
@@ -27,3 +31,5 @@ public:
 	// The write method. Same arguments as printf
 	void Write(const char *format, ...);
 };
+
+}

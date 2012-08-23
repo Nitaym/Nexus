@@ -10,6 +10,10 @@
 #else
 #endif
 
+namespace Nexus
+{
+
+
 class CLoggerComm : public ICommBase
 {
 private:
@@ -45,3 +49,5 @@ public:
 
 	TCommErr SendReceive(IN CData *a_pDataIn, OUT CData *a_pDataOut, IN IMetaData *a_pMetaDataIn = NULL, OUT IMetaData *a_pMetaDataOut = NULL, IN DWORD a_dwTimeoutMs = INFINITE_TIMEOUT);
 };
+
+}

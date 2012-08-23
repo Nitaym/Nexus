@@ -5,6 +5,9 @@
 
 #pragma once
 
+namespace Nexus
+{
+
 #define ASSIGNED(f) (f != 0)
 
 // Fetch high or low byte from word
@@ -68,3 +71,6 @@ enum { HIGH_WORD, MID_WORD, LOW_WORD };
 #define SAFE_DELETE(x)			{if ((x) != NULL) delete (x); (x)=NULL;}
 #define SAFE_DELETE_ARRAY(x)	{if ((x) != NULL) delete[] (x); (x)=NULL;}
 
+
+
+}

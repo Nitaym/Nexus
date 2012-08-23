@@ -1,5 +1,7 @@
 #include "Comm/Physical/CLoopbackComm.h"
 
+using namespace Nexus;
+
 
 CLoopbackComm::CLoopbackComm(void)
 {

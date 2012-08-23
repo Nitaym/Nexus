@@ -1,5 +1,8 @@
 #include "Comm/Protocols/ICommLayer.h"
 
+namespace Nexus
+{
+
 
 /****************************************************************************
 * Comm/Physical/CLoopbackComm.h
@@ -28,3 +31,4 @@ public:
 
 };
 
+}

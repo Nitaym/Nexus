@@ -2,6 +2,8 @@
 
 #define dprintf if (m_pDebug != NULL) m_pDebug->Write
 
+using namespace Nexus;
+
 CClientSocket::CClientSocket()
 {
 #ifdef WIN32

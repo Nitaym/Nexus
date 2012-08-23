@@ -1,5 +1,8 @@
 #include "CLoggerComm.h"
 
+using namespace Nexus;
+
+
 CLoggerComm::CLoggerComm()
 {
 

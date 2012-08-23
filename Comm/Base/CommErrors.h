@@ -6,6 +6,9 @@
 
 #pragma once
 
+namespace Nexus
+{
+
 // Communication infra error values
 enum TCommErr
 {
@@ -43,3 +46,5 @@ enum TCommErr
 	E_NEXUS_INVALID_DIRECTION		= -31,
 	E_NEXUS_MORE_DATA_AVAILABLE		= -32,
 };
+
+}

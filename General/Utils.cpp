@@ -9,6 +9,8 @@
 #ifdef WIN32
 #include <Windows.h>
 
+using namespace Nexus;
+
 HTHREAD NexusCreateThread(typeCallbackFunc a_pFunction, void *a_pParam)
 {
 	HTHREAD l_hThread = CreateThread(
