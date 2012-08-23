@@ -63,7 +63,7 @@ TCommErr CLoggerComm::SendReceive(IN CData *a_pDataIn, OUT CData *a_pDataOut, IN
 
 
 bool CLoggerComm::WriteMessage(char* a_sMessage)
-{	
+{
 	DWORD l_iBytesWritten = 0;
 
 #ifdef WIN32
@@ -75,10 +75,10 @@ bool CLoggerComm::WriteMessage(char* a_sMessage)
 	FlushFileBuffers(m_hFile);
 
 #else
-	l_iBytesWritten = write(m_hFile, StringBuffer, l_iStringBufferLen);
+	l_iBytesWritten = write(m_hFile, a_sMessage, strlen(a_sMessage));
 	if (l_iBytesWritten < 0)
 		return false;
-#endif	
+#endif
 
 	return true;
 }

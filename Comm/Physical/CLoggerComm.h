@@ -5,6 +5,9 @@
 
 #ifndef WIN32
 #include <fcntl.h>
+#include <unistd.h>
+#include <string.h>
+#else
 #endif
 
 class CLoggerComm : public ICommBase
