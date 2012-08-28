@@ -14,8 +14,8 @@ using namespace Nexus;
 HTHREAD NexusCreateThread(typeCallbackFunc a_pFunction, void *a_pParam)
 {
 	HTHREAD l_hThread = CreateThread(
-		NULL, 
-		0, 
+		NULL,
+		0,
 		a_pFunction,
 		a_pParam,
 		0,				// Start running
@@ -40,17 +40,17 @@ HTHREAD NexusCreateThread(typeCallbackFunc a_pFunction, void *a_pParam)
 *		Creates a thread at the provided callback function
 *
 *	Arguments:
-*		typeCallbackFunc pFunction		
+*		typeCallbackFunc pFunction
 *			Address of callback function
 *		void *pParam
 *			Parameter to pass to the callback
 *
 *	Return Value:
 *		HTHREAD
-*			Handle to the newly created thread		
+*			Handle to the newly created thread
 *
 *****************************************************************/
-HTHREAD NexusCreateThread(typeCallbackFunc a_pFunction, void *a_pParam)
+HTHREAD Nexus::NexusCreateThread(typeCallbackFunc a_pFunction, void *a_pParam)
 {
 	HTHREAD l_iThread = 0;
 	int l_iResult = pthread_create(&l_iThread, NULL, a_pFunction, NULL);
@@ -75,7 +75,7 @@ HTHREAD NexusCreateThread(typeCallbackFunc a_pFunction, void *a_pParam)
 *
 *	Return Value:
 *		void
-*		
+*
 *****************************************************************/
 void Sleep(DWORD a_dwMilliseconds)
 {
@@ -95,14 +95,14 @@ void Sleep(DWORD a_dwMilliseconds)
 *	Return Value:
 *		DWORD
 *			Number of milliseconds
-*		
+*
 *****************************************************************/
 DWORD GetTickCount()
 {
 	struct timeval l_tTime;
 	gettimeofday(&l_tTime, 0);
 	// Convert to milliseconds
-	return l_tTime.tv_sec * 1000 + (l_tTime.tv_usec / 1000); 
+	return l_tTime.tv_sec * 1000 + (l_tTime.tv_usec / 1000);
 }
 
 #endif

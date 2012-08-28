@@ -1,7 +1,7 @@
 /*******************************************************************************************
 * Comm/Protocols/CAsyncReceiver.h
 * Description:
-*	Incoming packet buffer - Manages an incoming packets queue, receives packet 
+*	Incoming packet buffer - Manages an incoming packets queue, receives packet
 *	automatically by its own thread
 *******************************************************************************************/
 
@@ -13,7 +13,7 @@
 #include "General/Utils.h"
 #include "General/General.h"
 #include "Comm/Protocols/ICommLayer.h"
-#include "CallbackValues.h"
+#include "Comm/Protocols/CallbackValues.h"
 
 using namespace std; // for the queue
 
@@ -43,7 +43,7 @@ private:
 	HTHREAD m_iReceiveThread;
 
 public:
-	// We have 2 constructorsL one for implementation with a user callback and one without
+	// We have 2 constructors: one for implementation with a user callback and one without
 	CAsyncReceiver();
 	CAsyncReceiver(typeAsyncReceiverCallback pUserCallbackFunc);
 

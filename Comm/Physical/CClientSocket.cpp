@@ -38,7 +38,7 @@ TCommErr CClientSocket::Connect()
 
 	// Initialize Winsock
 	int l_iResult = WSAStartup(MAKEWORD(2,2), &l_oWSAData);
-	if (l_iResult != 0) 
+	if (l_iResult != 0)
 	{
 		dprintf("CSocket::CSocket> WSAStartup failed: %d\n", l_iResult);
 		return E_NEXUS_FAIL;
@@ -144,7 +144,6 @@ TCommErr CClientSocket::Send(IN CData *a_pData, IN IMetaData *a_pMetaData /* = N
 
 TCommErr CClientSocket::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData /* = NULL */, IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
 {
-	byte *l_pBuffer = new byte[m_iBufferSize];
 #ifdef WIN32
 	int l_iResult = recv(m_hSocket, (char*)l_pBuffer, m_iBufferSize - 1, 0);
 	if (l_iResult > 0)

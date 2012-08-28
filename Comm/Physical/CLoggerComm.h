@@ -37,7 +37,7 @@ public:
 
 	bool WriteMessage(char* a_sMessage);
 	bool WriteMessage(std::string a_sMessage);
-	bool WriteMessage(IN CData *a_pData, char* a_sPrefix);
+	bool WriteMessage(IN CData *a_pData, std::string a_sPrefix);
 
 	// Disconnect - Disconnects if not already disconnected
 	TCommErr Disconnect();

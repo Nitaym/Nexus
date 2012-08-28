@@ -25,8 +25,6 @@
 using namespace std;
 
 
-namespace Nexus
-{
 
 #ifdef WIN32
 
@@ -45,6 +43,10 @@ void Sleep(DWORD dwMilliseconds);
 DWORD GetTickCount();
 
 #endif
+
+
+namespace Nexus
+{
 
 HTHREAD NexusCreateThread(typeCallbackFunc a_pFunction, void *a_pParam);
 

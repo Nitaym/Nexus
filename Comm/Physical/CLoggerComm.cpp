@@ -91,21 +91,20 @@ bool CLoggerComm::WriteMessage(std::string a_sMessage)
 	return WriteMessage(a_sMessage.c_str());
 }
 
-bool CLoggerComm::WriteMessage(IN CData *a_pData, char* a_sPrefix)
+bool CLoggerComm::WriteMessage(IN CData *a_pData, std::string a_sPrefix)
 {
 	if (!a_pData)
 		return false;
 
 	int l_iBufferSize = a_pData->GetSize();
-	DWORD l_iBytesWritten = 0;
 	byte *Buffer = new byte[l_iBufferSize];
 	a_pData->GetData(Buffer, 0, l_iBufferSize);
 
 	// For each byte we have 2 chars and a space
-	int l_iStringBufferLen = (l_iBufferSize * 3) + strlen(a_sPrefix);
+	int l_iStringBufferLen = (l_iBufferSize * 3) + a_sPrefix.length();
 	char *StringBuffer = new char[l_iStringBufferLen];
-	strcpy(StringBuffer, a_sPrefix);
-	BinToHexString(Buffer, StringBuffer + strlen(a_sPrefix), l_iBufferSize);
+	strcpy(StringBuffer, a_sPrefix.c_str());
+	BinToHexString(Buffer, StringBuffer + a_sPrefix.length(), l_iBufferSize);
 	// Null Terminate
 	StringBuffer[l_iStringBufferLen] = 0;
 

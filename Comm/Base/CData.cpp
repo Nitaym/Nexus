@@ -18,7 +18,7 @@ using namespace Nexus;
 
 /*************************************************************
 *	CData()
-* 
+*
 *	Description:
 *		Constructor of an empty packet
 *
@@ -51,7 +51,7 @@ CData::CData()
 *
 *	Return Value:
 *		None
-*		
+*
 *****************************************************************/
 CData::CData(const char *a_strText, DWORD a_dwMaxDataSize)
 {
@@ -79,7 +79,7 @@ CData::CData(const char *a_strText, DWORD a_dwMaxDataSize)
 *
 *	Return Value:
 *		None
-*		
+*
 *****************************************************************/
 CData::CData(BYTE *a_pBuffer, DWORD a_dwLength, DWORD a_dwMaxDataSize)
 {
@@ -103,7 +103,7 @@ CData::CData(BYTE *a_pBuffer, DWORD a_dwLength, DWORD a_dwMaxDataSize)
 *
 *	Return Value:
 *		None
-*		
+*
 *****************************************************************/
 CData::~CData()
 {
@@ -122,7 +122,7 @@ CData::~CData()
 *
 *	Return Value:
 *		The newly allocated CData instance
-*		
+*
 *****************************************************************/
 CData* CData::Clone() const
 {
@@ -143,7 +143,7 @@ CData* CData::Clone() const
 *	Arguments:
 *
 *	Return Value:
-*		
+*
 *****************************************************************/
 void CData::CopyFrom(CData* a_oData)
 {
@@ -170,15 +170,15 @@ void CData::CopyFrom(CData* a_oData)
 *
 *	Return Value:
 *		True if the operation completed. False if couldn't allocate memory
-*		
+*
 *****************************************************************/
 bool CData::SetData(BYTE* a_pbyNewData, DWORD a_dwNewSize)
 {
 	if (a_dwNewSize > GetMaxSize())
 	{
 		dprintf(
-			"CData::SetData: New data size (%d) is greater than the max size (%d)\n", 
-			(int)a_dwNewSize, 
+			"CData::SetData: New data size (%d) is greater than the max size (%d)\n",
+			(int)a_dwNewSize,
 			(int)GetMaxSize());
 
 		return false;
@@ -204,15 +204,15 @@ bool CData::SetData(BYTE* a_pbyNewData, DWORD a_dwNewSize)
 *
 *	Return Value:
 *		None
-*		
+*
 *****************************************************************/
 bool CData::Append(BYTE *a_pUserBuffer, int a_dwSize)
 {
 	if (a_dwSize + GetSize() > GetMaxSize())
 	{
 		dprintf(
-			"CData::Append: New data size (%d) is greater than the max size (%d)\n", 
-			(int)a_dwSize + GetSize(), 
+			"CData::Append: New data size (%d) is greater than the max size (%d)\n",
+			(int)(a_dwSize + GetSize()),
 			(int)GetMaxSize());
 
 		return false;
@@ -253,8 +253,8 @@ bool CData::Append(CData *a_pData)
 	if (a_pData->GetSize() + GetSize() > GetMaxSize())
 	{
 		dprintf(
-			"CData::Append: New data size (%d) is greater than the max size (%d)\n", 
-			(int)a_pData->GetSize() + GetSize(), 
+			"CData::Append: New data size (%d) is greater than the max size (%d)\n",
+			(int)(a_pData->GetSize() + GetSize()),
 			(int)GetMaxSize());
 
 		return false;
@@ -282,14 +282,14 @@ bool CData::Append(CData *a_pData)
 *
 *	Return Value:
 *		None
-*		
+*
 *****************************************************************/
 bool CData::Insert(BYTE* a_iBuffer, int a_iIndex, int a_iCount)
 {
 	if (this->GetSize() < (DWORD)a_iIndex)
 	{
 		dprintf(
-			"CData::Insert: Index (%d) must be smaller or equal to the CData size (%d)\n", 
+			"CData::Insert: Index (%d) must be smaller or equal to the CData size (%d)\n",
 			(int)a_iIndex,
 			(int)this->GetSize());
 
@@ -333,7 +333,7 @@ bool CData::Insert(byte a_iByte, int a_iIndex)
 *
 *	Return Value:
 *		void
-*		
+*
 *****************************************************************/
 void CData::FreeData()
 {
@@ -355,7 +355,7 @@ void CData::FreeData()
 *
 *	Return Value:
 *		TCommErr that states the error value
-*		
+*
 *****************************************************************/
 int CData::GetByte(DWORD a_dwIndex, OUT BYTE* a_pbyByte)
 {
@@ -364,7 +364,7 @@ int CData::GetByte(DWORD a_dwIndex, OUT BYTE* a_pbyByte)
 		*a_pbyByte = m_oData[a_dwIndex];
 		return E_NEXUS_OK;
 	}
-	
+
 	dprintf("CData::GetByte: Index out of range\n");
 	return E_NEXUS_INDEX_OUT_OF_RANGE;
 }
@@ -409,7 +409,7 @@ int CData::GetDword(DWORD a_dwIndex, OUT DWORD* a_pdwDWord)
 *
 *	Return Value:
 *		DWORD - The size of the buffer
-*		
+*
 *****************************************************************/
 DWORD CData::GetSize() const
 {
@@ -433,7 +433,7 @@ DWORD CData::GetSize() const
 *
 *	Return Value:
 *		TCommErr that states the error value
-*		
+*
 *****************************************************************/
 int CData::GetData(OUT BYTE *a_pUserBuffer, DWORD a_dwOffset, DWORD a_dwLength) const
 {
@@ -457,7 +457,7 @@ int CData::GetData(OUT BYTE *a_pUserBuffer, DWORD a_dwOffset, DWORD a_dwLength) 
 *	Arguments:
 *
 *	Return Value:
-*		
+*
 *****************************************************************/
 void CData::ForceEndianity(EEndianity a_eEndianity)
 {
@@ -473,15 +473,15 @@ void CData::ForceEndianity(EEndianity a_eEndianity)
 *	Arguments:
 *
 *	Return Value:
-*		
+*
 *****************************************************************/
 bool CData::Remove(DWORD a_dwIndex, DWORD a_dwCount)
 {
 	if (a_dwIndex >= GetSize())
 	{
 		dprintf(
-			"CData::Remove: Index (%d) is greater than the data size (%d)\n", 
-			(int)a_dwIndex, 
+			"CData::Remove: Index (%d) is greater than the data size (%d)\n",
+			(int)a_dwIndex,
 			(int)GetSize());
 
 		return false;
@@ -489,8 +489,8 @@ bool CData::Remove(DWORD a_dwIndex, DWORD a_dwCount)
 	if (a_dwIndex + a_dwCount > GetSize())
 	{
 		dprintf(
-			"CData::Remove: Count (%d) exceeds the data size (%d)\n", 
-			(int)a_dwCount, 
+			"CData::Remove: Count (%d) exceeds the data size (%d)\n",
+			(int)a_dwCount,
 			(int)GetSize());
 
 		return false;
@@ -515,7 +515,7 @@ bool CData::Remove(DWORD a_dwIndex, DWORD a_dwCount)
 *
 *	Return Value:
 *		None
-*		
+*
 *****************************************************************/
 void CData::SetString(const string &a_strData)
 {
@@ -534,7 +534,7 @@ void CData::SetString(const string &a_strData)
 *
 *	Return Value:
 *		The data buffer as a string
-*		
+*
 *****************************************************************/
 string& CData::GetString()
 {
@@ -554,23 +554,23 @@ string& CData::GetString()
 *
 *	Return Value:
 *		None
-*		
+*
 *****************************************************************/
 int CData::Find(DWORD a_dwStartIndex, byte a_byValue)
 {
-	int l_iIndex = a_dwStartIndex;
+	unsigned int l_iIndex = a_dwStartIndex;
 
 	if (a_dwStartIndex > GetSize() - 1)
 	{
 		dprintf(
-		"CData::Find: Start Index (%d) is greater than the data size (%d)\n", 
-		(int)a_dwStartIndex, 
+		"CData::Find: Start Index (%d) is greater than the data size (%d)\n",
+		(int)a_dwStartIndex,
 		(int)GetSize());
 
 		return -1;
 	}
 
-	
+
 	while (m_oData[l_iIndex] != a_byValue)
 	{
 		if (l_iIndex == GetSize() - 1)
@@ -594,7 +594,7 @@ int CData::Find(DWORD a_dwStartIndex, byte a_byValue)
 *
 *	Return Value:
 *		None
-*		
+*
 *****************************************************************/
 void CData::Print() const
 {
@@ -624,7 +624,7 @@ void CData::Print() const
 *
 *	Return Value:
 *		None
-*		
+*
 *****************************************************************/
 void CData::PrintHex() const
 {
@@ -641,7 +641,7 @@ void CData::Dump(std::string a_sFilename)
 {
 	FILE * l_pFile;
 	l_pFile = fopen(a_sFilename.c_str(), "wb");
-	
+
 	fwrite(&(m_oData)[0], 1, this->GetSize(), l_pFile);
 	fclose(l_pFile);
 }
