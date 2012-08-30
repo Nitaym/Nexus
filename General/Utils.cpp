@@ -53,7 +53,7 @@ HTHREAD NexusCreateThread(typeCallbackFunc a_pFunction, void *a_pParam)
 HTHREAD Nexus::NexusCreateThread(typeCallbackFunc a_pFunction, void *a_pParam)
 {
 	HTHREAD l_iThread = 0;
-	int l_iResult = pthread_create(&l_iThread, NULL, a_pFunction, NULL);
+	int l_iResult = pthread_create(&l_iThread, NULL, a_pFunction, a_pParam);
 
 	if (l_iResult == 0)
 		return l_iThread;

@@ -62,6 +62,7 @@ public:
 	void SetMetaDataObject (IN IMetaData *a_pMetaData);
 
 private:
+    void Initialize();
 	static void* ReceiveThread(void *a_pvParam);
 };
 

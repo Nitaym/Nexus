@@ -1,7 +1,7 @@
 /************************************************************************************
 * Comm/Protocols/CAsyncReceiver.cpp
 * Description:
-*	Incoming packet buffer - Manages an incoming packets queue, receives packet 
+*	Incoming packet buffer - Manages an incoming packets queue, receives packet
 *	automatically by its own thread
 *************************************************************************************/
 
@@ -23,14 +23,11 @@ using namespace Nexus;
 *
 *	Return Value:
 *		None
-*		
+*
 *****************************************************************/
 CAsyncReceiver::CAsyncReceiver()
 {
-	m_pUserCallback = NULL;
-	m_bOperatOnQueue = false;
-	m_bIsConnected = false;
-	m_iMaxPacketSize = 4096;
+    Initialize();
 }
 
 
@@ -45,14 +42,37 @@ CAsyncReceiver::CAsyncReceiver()
 *
 *	Return Value:
 *		None
-*		
+*
 *****************************************************************/
 CAsyncReceiver::CAsyncReceiver(typeAsyncReceiverCallback a_pUserCallbackFunc)
 {
+    Initialize();
 	m_pUserCallback = a_pUserCallbackFunc;
+}
+
+
+/*****************************************************************
+*	TCommErr CAsyncReceiver::Initialize()
+*
+*	Description:
+*		Initializes AsyncReceiver
+*
+*	Arguments:
+*		None
+*
+*	Return Value:
+*		None
+*
+*****************************************************************/
+void CAsyncReceiver::Initialize()
+{
+	m_pUserCallback = NULL;
 	m_bOperatOnQueue = false;
 	m_bIsConnected = false;
+	m_iMaxPacketSize = 4096;
+	m_pMetaDataType = NULL;
 }
+
 
 /*****************************************************************
 *	TCommErr CAsyncReceiver::Connect()
@@ -65,7 +85,7 @@ CAsyncReceiver::CAsyncReceiver(typeAsyncReceiverCallback a_pUserCallbackFunc)
 *
 *	Return Value:
 *		TCommErr
-*		
+*
 *****************************************************************/
 TCommErr CAsyncReceiver::Connect()
 {
@@ -92,7 +112,7 @@ TCommErr CAsyncReceiver::Connect()
 *
 *	Return Value:
 *		TCommErr
-*		
+*
 *****************************************************************/
 TCommErr CAsyncReceiver::Disconnect()
 {
@@ -117,7 +137,7 @@ TCommErr CAsyncReceiver::Disconnect()
 *
 *	Return Value:
 *		True is thread is running
-*		
+*
 *****************************************************************/
 bool CAsyncReceiver::IsConnected()
 {
@@ -140,7 +160,7 @@ bool CAsyncReceiver::IsConnected()
 *
 *	Return Value:
 *		TCommErr
-*		
+*
 *****************************************************************/
 TCommErr CAsyncReceiver::Receive(OUT CData *a_pData, OUT IMetaData *a_pMetaData /* = NULL */, IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
 {
@@ -186,7 +206,7 @@ TCommErr CAsyncReceiver::Receive(OUT CData *a_pData, OUT IMetaData *a_pMetaData 
 *
 *	Return Value:
 *		NULL
-*		
+*
 *****************************************************************/
 void* CAsyncReceiver::ReceiveThread(void *a_pvParam)
 {
@@ -280,7 +300,7 @@ void* CAsyncReceiver::ReceiveThread(void *a_pvParam)
 *
 *	Return Value:
 *		None
-*		
+*
 *****************************************************************/
 void CAsyncReceiver::SetMaxPacketSize(int a_iMaxPacketSize)
 {
@@ -299,7 +319,7 @@ void CAsyncReceiver::SetMaxPacketSize(int a_iMaxPacketSize)
 *
 *	Return Value:
 *		None
-*		
+*
 *****************************************************************/
 void CAsyncReceiver::SetMetaDataObject(IN IMetaData *a_pMetaData)
 {
