@@ -8,10 +8,10 @@
 #include "Comm/Base/IMetaData.h"
 
 // Physical
-#include "Comm/PhysicalCClientSocket.h"
-#include "Comm/PhysicalCLoggerComm.h"
-#include "Comm/PhysicalCLoopbackComm.h"
-#include "Comm/PhysicalCUart.h"
+#include "Comm/Physical/CClientSocket.h"
+#include "Comm/Physical/CLoggerComm.h"
+#include "Comm/Physical/CLoopbackComm.h"
+#include "Comm/Physical/CUart.h"
 
 // Protocols
 #include "Comm/Protocols/CallbackValues.h"
@@ -23,6 +23,6 @@
 // General
 #include "General/General.h"
 #include "General/Macros.h"
-#include "General/types.h"
+#include "General/Types.h"
 #include "General/Utils.h"
 
