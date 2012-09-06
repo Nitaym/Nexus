@@ -12,7 +12,7 @@ namespace Nexus
 class IMetaData
 {
 public:
-    virtual ~IMetaData();
+    virtual ~IMetaData() = default;
 
 	// Clone - Returned new allocated instance with the same values (Remember to free the cloned copy)
 	virtual IMetaData* Clone() = 0;
