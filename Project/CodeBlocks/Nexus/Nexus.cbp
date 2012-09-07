@@ -6,10 +6,10 @@
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
-			<Target title="Debug">
-				<Option output="../../../lib/libNexus-debian-i386_d" prefix_auto="1" extension_auto="1" />
+			<Target title="debug-i386">
+				<Option output="../../../lib/$(TARGET_NAME)/libNexus" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
-				<Option object_output="obj/Debug/" />
+				<Option object_output="obj/$(TARGET_NAME)/" />
 				<Option type="2" />
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
@@ -18,10 +18,10 @@
 					<Add option="-g" />
 				</Compiler>
 			</Target>
-			<Target title="Release">
-				<Option output="../../../lib/libNexus-debian-i386" prefix_auto="1" extension_auto="1" />
+			<Target title="release-i386">
+				<Option output="../../../lib/$(TARGET_NAME)/libNexus" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
-				<Option object_output="obj/Release/" />
+				<Option object_output="obj/$(TARGET_NAME)/" />
 				<Option type="2" />
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
@@ -33,8 +33,70 @@
 					<Add option="-s" />
 				</Linker>
 			</Target>
+			<Target title="debug-atom">
+				<Option output="../../../lib/$(TARGET_NAME)/libNexus" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/$(TARGET_NAME)/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="-march=atom" />
+				</Compiler>
+				<Linker>
+					<Add option="-march=atom" />
+				</Linker>
+			</Target>
+			<Target title="release-atom">
+				<Option output="../../../lib/$(TARGET_NAME)/libNexus" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/$(TARGET_NAME)/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-Wall" />
+					<Add option="-march=atom" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-march=atom" />
+				</Linker>
+			</Target>
+			<Target title="debug-armel">
+				<Option output="../../../lib/$(TARGET_NAME)/libNexus" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/$(TARGET_NAME)/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="release-armel">
+				<Option output="../../../lib/$(TARGET_NAME)/libNexus" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/$(TARGET_NAME)/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-Wall" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-std=c++11" />
 			<Add directory="../../../../Nexus" />
 		</Compiler>
 		<Unit filename="../../../Comm/Base/CData.cpp" />
