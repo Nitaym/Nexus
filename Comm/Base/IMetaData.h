@@ -12,7 +12,7 @@ namespace Nexus
 class IMetaData
 {
 public:
-    virtual ~IMetaData() = 0;
+    virtual ~IMetaData();
 
 	// Clone - Returned new allocated instance with the same values (Remember to free the cloned copy)
 	virtual IMetaData* Clone() = 0;
@@ -21,9 +21,8 @@ public:
 	virtual void CopyFrom(IMetaData *a_pSource) = 0;
 };
 
-
 // This eliminates some warnings
-IMetaData::~IMetaData()
+inline Nexus::IMetaData::~IMetaData()
 {
 
 }
