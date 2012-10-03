@@ -15,90 +15,90 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Comm\Base\CData.cpp">
+    <ClCompile Include="..\..\Comm\Base\CData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Comm\Base\CDebug.cpp">
+    <ClCompile Include="..\..\Comm\Base\CDebug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Comm\Physical\CClientSocket.cpp">
+    <ClCompile Include="..\..\Comm\Physical\CClientSocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Comm\Physical\CLoggerComm.cpp">
+    <ClCompile Include="..\..\Comm\Physical\CLoggerComm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Comm\Physical\CUart.cpp">
+    <ClCompile Include="..\..\Comm\Physical\CLoopbackComm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Comm\Protocols\CAsyncReceiver.cpp">
+    <ClCompile Include="..\..\Comm\Physical\CUart.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Comm\Protocols\ICommLayer.cpp">
+    <ClCompile Include="..\..\Comm\Protocols\CAsyncReceiver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Comm\Protocols\TComm.cpp">
+    <ClCompile Include="..\..\Comm\Protocols\ICommLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\General\Utils.cpp">
+    <ClCompile Include="..\..\Comm\Protocols\TComm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Comm\Physical\CLoopbackComm.cpp">
+    <ClCompile Include="..\..\General\Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Comm\Protocols\CallbackValues.h">
+    <ClInclude Include="..\..\Comm\Base\CData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\General\Utils.h">
+    <ClInclude Include="..\..\Comm\Base\CDebug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Comm\Protocols\CAsyncReceiver.h">
+    <ClInclude Include="..\..\Comm\Base\CommErrors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Comm\Protocols\CAsyncSender.h">
+    <ClInclude Include="..\..\Comm\Base\ICommBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Comm\Physical\CClientSocket.h">
+    <ClInclude Include="..\..\Comm\Base\IMetaData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Comm\Base\CData.h">
+    <ClInclude Include="..\..\Comm\Physical\CClientSocket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Comm\Base\CDebug.h">
+    <ClInclude Include="..\..\Comm\Physical\CLoggerComm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Comm\Physical\CLoggerComm.h">
+    <ClInclude Include="..\..\Comm\Physical\CLoopbackComm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Comm\Physical\CLoopbackComm.h">
+    <ClInclude Include="..\..\Comm\Physical\CUart.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Comm\Base\CommErrors.h">
+    <ClInclude Include="..\..\Comm\Protocols\CallbackValues.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Comm\Physical\CUart.h">
+    <ClInclude Include="..\..\Comm\Protocols\CAsyncReceiver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\General\General.h">
+    <ClInclude Include="..\..\Comm\Protocols\CAsyncSender.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Comm\Base\ICommBase.h">
+    <ClInclude Include="..\..\Comm\Protocols\ICommLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Comm\Protocols\ICommLayer.h">
+    <ClInclude Include="..\..\Comm\Protocols\TComm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Comm\Base\IMetaData.h">
+    <ClInclude Include="..\..\General\General.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\General\Macros.h">
+    <ClInclude Include="..\..\General\Macros.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Comm\Protocols\TComm.h">
+    <ClInclude Include="..\..\General\Types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\General\Types.h">
+    <ClInclude Include="..\..\General\Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

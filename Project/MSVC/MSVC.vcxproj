@@ -47,7 +47,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -73,36 +73,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Comm\Base\CData.cpp" />
-    <ClCompile Include="..\Comm\Base\CDebug.cpp" />
-    <ClCompile Include="..\Comm\Physical\CClientSocket.cpp" />
-    <ClCompile Include="..\Comm\Physical\CLoggerComm.cpp" />
-    <ClCompile Include="..\Comm\Physical\CLoopbackComm.cpp" />
-    <ClCompile Include="..\Comm\Physical\CUart.cpp" />
-    <ClCompile Include="..\Comm\Protocols\CAsyncReceiver.cpp" />
-    <ClCompile Include="..\Comm\Protocols\ICommLayer.cpp" />
-    <ClCompile Include="..\Comm\Protocols\TComm.cpp" />
-    <ClCompile Include="..\General\Utils.cpp" />
+    <ClCompile Include="..\..\Comm\Base\CData.cpp" />
+    <ClCompile Include="..\..\Comm\Base\CDebug.cpp" />
+    <ClCompile Include="..\..\Comm\Physical\CClientSocket.cpp" />
+    <ClCompile Include="..\..\Comm\Physical\CLoggerComm.cpp" />
+    <ClCompile Include="..\..\Comm\Physical\CLoopbackComm.cpp" />
+    <ClCompile Include="..\..\Comm\Physical\CUart.cpp" />
+    <ClCompile Include="..\..\Comm\Protocols\CAsyncReceiver.cpp" />
+    <ClCompile Include="..\..\Comm\Protocols\ICommLayer.cpp" />
+    <ClCompile Include="..\..\Comm\Protocols\TComm.cpp" />
+    <ClCompile Include="..\..\General\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Comm\Base\CData.h" />
-    <ClInclude Include="..\Comm\Base\CDebug.h" />
-    <ClInclude Include="..\Comm\Base\CommErrors.h" />
-    <ClInclude Include="..\Comm\Base\ICommBase.h" />
-    <ClInclude Include="..\Comm\Base\IMetaData.h" />
-    <ClInclude Include="..\Comm\Physical\CClientSocket.h" />
-    <ClInclude Include="..\Comm\Physical\CLoggerComm.h" />
-    <ClInclude Include="..\Comm\Physical\CLoopbackComm.h" />
-    <ClInclude Include="..\Comm\Physical\CUart.h" />
-    <ClInclude Include="..\Comm\Protocols\CallbackValues.h" />
-    <ClInclude Include="..\Comm\Protocols\CAsyncReceiver.h" />
-    <ClInclude Include="..\Comm\Protocols\CAsyncSender.h" />
-    <ClInclude Include="..\Comm\Protocols\ICommLayer.h" />
-    <ClInclude Include="..\Comm\Protocols\TComm.h" />
-    <ClInclude Include="..\General\General.h" />
-    <ClInclude Include="..\General\Macros.h" />
-    <ClInclude Include="..\General\Types.h" />
-    <ClInclude Include="..\General\Utils.h" />
+    <ClInclude Include="..\..\Comm\Base\CData.h" />
+    <ClInclude Include="..\..\Comm\Base\CDebug.h" />
+    <ClInclude Include="..\..\Comm\Base\CommErrors.h" />
+    <ClInclude Include="..\..\Comm\Base\ICommBase.h" />
+    <ClInclude Include="..\..\Comm\Base\IMetaData.h" />
+    <ClInclude Include="..\..\Comm\Physical\CClientSocket.h" />
+    <ClInclude Include="..\..\Comm\Physical\CLoggerComm.h" />
+    <ClInclude Include="..\..\Comm\Physical\CLoopbackComm.h" />
+    <ClInclude Include="..\..\Comm\Physical\CUart.h" />
+    <ClInclude Include="..\..\Comm\Protocols\CallbackValues.h" />
+    <ClInclude Include="..\..\Comm\Protocols\CAsyncReceiver.h" />
+    <ClInclude Include="..\..\Comm\Protocols\CAsyncSender.h" />
+    <ClInclude Include="..\..\Comm\Protocols\ICommLayer.h" />
+    <ClInclude Include="..\..\Comm\Protocols\TComm.h" />
+    <ClInclude Include="..\..\General\General.h" />
+    <ClInclude Include="..\..\General\Macros.h" />
+    <ClInclude Include="..\..\General\Types.h" />
+    <ClInclude Include="..\..\General\Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

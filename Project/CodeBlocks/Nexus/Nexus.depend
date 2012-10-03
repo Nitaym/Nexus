@@ -121,3 +121,125 @@
 	<signal.h>
 	"General/General.h"
 
+1346955079 source:/opt/fides/Nexus/Comm/Base/CData.cpp
+	<string.h>
+	<stdio.h>
+	<iostream>
+	<string>
+	"CData.h"
+	"CommErrors.h"
+
+1346955079 /opt/fides/Nexus/Comm/Base/CData.h
+	<string>
+	"General/General.h"
+	<vector>
+
+1346943017 /opt/fides/Nexus/General/General.h
+	"Types.h"
+	"Macros.h"
+
+1346943017 /opt/fides/Nexus/General/Types.h
+
+1346943017 /opt/fides/Nexus/General/Macros.h
+
+1346955079 /opt/fides/Nexus/Comm/Base/CommErrors.h
+
+1346955079 source:/opt/fides/Nexus/Comm/Base/CDebug.cpp
+	<stdarg.h>
+	<stdio.h>
+	<string.h>
+	"CDebug.h"
+
+1346955079 /opt/fides/Nexus/Comm/Base/CDebug.h
+	"Comm/Base/ICommBase.h"
+
+1346955079 /opt/fides/Nexus/Comm/Base/ICommBase.h
+	"General/General.h"
+	"CData.h"
+	"IMetaData.h"
+	"CommErrors.h"
+	"CDebug.h"
+
+1349191374 /opt/fides/Nexus/Comm/Base/IMetaData.h
+
+1349263351 source:/opt/fides/Nexus/Comm/Physical/CClientSocket.cpp
+	"CClientSocket.h"
+
+1346943017 /opt/fides/Nexus/Comm/Physical/CClientSocket.h
+	<winsock2.h>
+	"../../General/Utils.h"
+	"../../Comm/Base/ICommBase.h"
+	<Windows.h>
+	<WS2tcpip.h>
+	<stdlib.h>
+	<stdio.h>
+
+1346943017 /opt/fides/Nexus/General/Utils.h
+	<Windows.h>
+	<pthread.h>
+	"General/General.h"
+	<stdio.h>
+	<string>
+
+1346943017 source:/opt/fides/Nexus/Comm/Physical/CLoggerComm.cpp
+	"CLoggerComm.h"
+
+1346943017 /opt/fides/Nexus/Comm/Physical/CLoggerComm.h
+	"../../General/Utils.h"
+	"Comm/Base/ICommBase.h"
+	<fcntl.h>
+	<unistd.h>
+	<string.h>
+
+1346943017 source:/opt/fides/Nexus/Comm/Physical/CLoopbackComm.cpp
+	"Comm/Physical/CLoopbackComm.h"
+
+1346943017 /opt/fides/Nexus/Comm/Physical/CLoopbackComm.h
+	"Comm/Protocols/ICommLayer.h"
+
+1346943017 /opt/fides/Nexus/Comm/Protocols/ICommLayer.h
+	"Comm/Base/ICommBase.h"
+
+1346943017 source:/opt/fides/Nexus/Comm/Physical/CUart.cpp
+	<stdio.h>
+	<fcntl.h>
+	<string.h>
+	<errno.h>
+	"CUart.h"
+	<unistd.h>
+
+1346943017 /opt/fides/Nexus/Comm/Physical/CUart.h
+	<termios.h>
+	"General/Utils.h"
+	"Comm/Base/ICommBase.h"
+
+1346943017 source:/opt/fides/Nexus/Comm/Protocols/CAsyncReceiver.cpp
+	"CAsyncReceiver.h"
+
+1346943017 /opt/fides/Nexus/Comm/Protocols/CAsyncReceiver.h
+	<queue>
+	"General/Utils.h"
+	"General/General.h"
+	"Comm/Protocols/ICommLayer.h"
+	"Comm/Protocols/CallbackValues.h"
+
+1346943017 /opt/fides/Nexus/Comm/Protocols/CallbackValues.h
+
+1346943017 source:/opt/fides/Nexus/Comm/Protocols/ICommLayer.cpp
+	"ICommLayer.h"
+
+1346943017 source:/opt/fides/Nexus/Comm/Protocols/TComm.cpp
+	"TComm.h"
+
+1346943017 /opt/fides/Nexus/Comm/Protocols/TComm.h
+	"Comm/Protocols/ICommLayer.h"
+
+1346943017 source:/opt/fides/Nexus/General/Utils.cpp
+	"General/Utils.h"
+	<Windows.h>
+	<stdio.h>
+	<unistd.h>
+	<sys/time.h>
+	<signal.h>
+	"General/General.h"
+

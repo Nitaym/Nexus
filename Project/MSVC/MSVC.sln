@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MSVC", "MSVC.vcxproj", "{06CCCBAD-3C86-40E5-827A-68D6B2ABE6EA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LoggerTesting", "..\Testing\LoggerTesting\LoggerTesting.vcxproj", "{27D640CB-F937-4E43-A1C3-333D372C8D27}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
