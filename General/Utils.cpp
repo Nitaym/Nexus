@@ -11,7 +11,7 @@
 
 using namespace Nexus;
 
-HTHREAD NexusCreateThread(typeCallbackFunc a_pFunction, void *a_pParam)
+HTHREAD Nexus::NexusCreateThread(typeCallbackFunc a_pFunction, void *a_pParam)
 {
 	HTHREAD l_hThread = CreateThread(
 		NULL,
