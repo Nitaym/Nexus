@@ -29,7 +29,6 @@ using namespace std;
 #ifdef WIN32
 
 typedef HANDLE HTHREAD;
-typedef LPTHREAD_START_ROUTINE typeCallbackFunc;
 
 #else
 
@@ -37,13 +36,12 @@ typedef LPTHREAD_START_ROUTINE typeCallbackFunc;
 
 typedef pthread_t HTHREAD;
 
-typedef void* (*typeCallbackFunc)(void *a_pParam);
-
 void Sleep(DWORD dwMilliseconds);
 DWORD GetTickCount();
 
 #endif
 
+typedef void* (*typeCallbackFunc)(void *a_pParam);
 
 namespace Nexus
 {

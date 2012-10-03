@@ -16,7 +16,7 @@ HTHREAD NexusCreateThread(typeCallbackFunc a_pFunction, void *a_pParam)
 	HTHREAD l_hThread = CreateThread(
 		NULL,
 		0,
-		a_pFunction,
+		(LPTHREAD_START_ROUTINE)a_pFunction,
 		a_pParam,
 		0,				// Start running
 		NULL);
