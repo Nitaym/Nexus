@@ -145,6 +145,8 @@ TCommErr CClientSocket::Send(IN CData *a_pData, IN IMetaData *a_pMetaData /* = N
 TCommErr CClientSocket::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData /* = NULL */, IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
 {
 #ifdef WIN32
+    byte *l_pBuffer = new byte[m_iBufferSize];
+
 	int l_iResult = recv(m_hSocket, (char*)l_pBuffer, m_iBufferSize - 1, 0);
 	if (l_iResult > 0)
 	{
