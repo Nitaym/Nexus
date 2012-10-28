@@ -55,6 +55,7 @@ public:
 
 	// Stop the receiving thread
 	TCommErr Disconnect();
+    TCommErr WaitOnDisconnect(int a_iTimeout);
 
 	// Is the thread running = Is receiving
 	bool IsConnected();

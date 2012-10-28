@@ -7,6 +7,7 @@
 
 #include "CAsyncReceiver.h"
 
+
 //#define dprintf if (m_pDebug != NULL) m_pDebug -> Write
 #define dprintf printf
 
@@ -124,6 +125,55 @@ TCommErr CAsyncReceiver::Disconnect()
 	m_bIsConnected = false;
 
 	return E_NEXUS_OK;
+}
+
+/*****************************************************************
+*	bool CAsyncReceiver::WaitOnDisconnect()
+*
+*	Description:
+*		Waits until the receiving thread dies peacefully
+*
+*	Arguments:
+*		int a_iTimeout (in milliseconds)
+*
+*	Return Value:
+*
+*
+*****************************************************************/
+TCommErr CAsyncReceiver::WaitOnDisconnect(int a_iTimeout)
+{
+#ifdef WIN32
+    DWORD l_iResult = WaitForSingleObject(m_iReceiveThread, a_iTimeout);
+
+    switch (l_iResult)
+    {
+    case WAIT_OBJECT_0:
+        return E_NEXUS_OK;
+    case WAIT_TIMEOUT:
+        return E_NEXUS_TIMEOUT;
+    case WAIT_FAILED:
+    default:
+        return E_NEXUS_FAIL;
+    }
+#else
+    timespec l_stTime;
+    clock_gettime(CLOCK_REALTIME, &l_stTime);
+    l_stTime.tv_sec += a_iTimeout / 1000;
+    l_stTime.tv_nsec += (a_iTimeout % 1000) * 10^6;
+
+    int l_iResult = pthread_timedjoin_np(m_iReceiveThread, NULL, const_cast<const timespec*>(&l_stTime));
+    switch (l_iResult)
+    {
+    case 0:
+        return E_NEXUS_OK;
+    case EBUSY:
+        return E_NEXUS_BUSY;
+    case ETIMEDOUT:
+        return E_NEXUS_TIMEOUT;
+    default:
+        return E_NEXUS_FAIL;
+    }
+#endif
 }
 
 /*****************************************************************
