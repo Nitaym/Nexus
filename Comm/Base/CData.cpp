@@ -639,10 +639,15 @@ void CData::PrintHex() const
 
 void CData::Dump(std::string a_sFilename)
 {
-	FILE * l_pFile;
-	l_pFile = fopen(a_sFilename.c_str(), "wb");
+    Dump(a_sFilename, "wb");
+}
 
-	fwrite(&(m_oData)[0], 1, this->GetSize(), l_pFile);
-	fclose(l_pFile);
+void CData::Dump(std::string a_sFilename, std::string a_sOpenFlags)
+{
+    FILE * l_pFile;
+    l_pFile = fopen(a_sFilename.c_str(), a_sOpenFlags.c_str());
+
+    fwrite(&(m_oData)[0], 1, this->GetSize(), l_pFile);
+    fclose(l_pFile);
 }
 
