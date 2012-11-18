@@ -62,11 +62,8 @@
 #define TRUE	(!FALSE)
 #endif
 
-#define False	FALSE	
+#define False	FALSE
 #define True	TRUE
-
-#define false	FALSE
-#define true	TRUE
 
 typedef unsigned char	byte;
 typedef unsigned short	word;
