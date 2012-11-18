@@ -108,6 +108,8 @@
 		<Unit filename="../../../Comm/Base/IMetaData.h" />
 		<Unit filename="../../../Comm/Physical/CClientSocket.cpp" />
 		<Unit filename="../../../Comm/Physical/CClientSocket.h" />
+		<Unit filename="../../../Comm/Physical/CFileComm.cpp" />
+		<Unit filename="../../../Comm/Physical/CFileComm.h" />
 		<Unit filename="../../../Comm/Physical/CLoggerComm.cpp" />
 		<Unit filename="../../../Comm/Physical/CLoggerComm.h" />
 		<Unit filename="../../../Comm/Physical/CLoopbackComm.cpp" />
