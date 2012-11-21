@@ -8,8 +8,7 @@
 #include "CAsyncReceiver.h"
 
 
-//#define dprintf if (m_pDebug != NULL) m_pDebug -> Write
-#define dprintf printf
+#define dprintf_ar if (l_pThis->GetDebug() != NULL) l_pThis->GetDebug()->Write
 
 using namespace Nexus;
 
@@ -45,10 +44,19 @@ CAsyncReceiver::CAsyncReceiver()
 *		None
 *
 *****************************************************************/
-CAsyncReceiver::CAsyncReceiver(typeAsyncReceiverCallback a_pUserCallbackFunc)
+CAsyncReceiver::CAsyncReceiver(typeAsyncReceiverRecvCallback a_pUserCallbackFunc, typeAsyncReceiverFailCallback a_pUserCallbackFailFunc)
 {
     Initialize();
+
 	m_pUserCallback = a_pUserCallbackFunc;
+    m_pUserFailCallback = a_pUserCallbackFailFunc;
+}
+
+
+
+CAsyncReceiver::~CAsyncReceiver()
+{
+    Terminating = true;
 }
 
 
@@ -72,6 +80,8 @@ void CAsyncReceiver::Initialize()
 	m_bIsConnected = false;
 	m_iMaxPacketSize = 4096;
 	m_pMetaDataType = NULL;
+    Terminating = false;
+    m_iRecoveryTime = 200;
 }
 
 
@@ -245,6 +255,121 @@ TCommErr CAsyncReceiver::Receive(OUT CData *a_pData, OUT IMetaData *a_pMetaData 
 
 
 /*****************************************************************
+*	void CAsyncReceiver::ReadAndReport(void *m_pvParam)
+*
+*	Description:
+*		[Static] Reads in the read thread, then reports to the
+*       owning Comm
+*
+*	Arguments:
+*		void *a_pvParam
+*			This should be the address of the calling instance
+*
+*	Return Value:
+*		N/A
+*
+*****************************************************************/
+void CAsyncReceiver::ReadAndReport(void *a_pvParam)
+{
+    CAsyncReceiver *l_pThis = (CAsyncReceiver*)a_pvParam;
+    TReceivePacket l_stPacket;
+    int l_iRes = E_NEXUS_FAIL;
+    TReceiveCallback eCallbackRes;
+    bool l_bInError = false;
+
+    l_stPacket.a_pData = 0;
+    l_stPacket.a_pMetaData = 0;
+
+    while (l_pThis->m_bIsConnected)
+    {
+        if (l_pThis->UnderlyingComm() != NULL)
+        {
+            if (!l_pThis->UnderlyingComm()->IsConnected())
+            {
+                Sleep(300);
+                continue;
+            }
+        }
+
+        // Make packet
+        l_stPacket.a_pData = new CData();
+
+        (*l_stPacket.a_pData).SetMaxSize(l_pThis->m_iMaxPacketSize);
+        if (l_pThis->m_pMetaDataType != NULL)
+            l_stPacket.a_pMetaData = l_pThis->m_pMetaDataType->Clone();
+
+        if (l_pThis->m_pUnderlyingComm != NULL)
+            l_iRes = l_pThis->m_pUnderlyingComm->Receive(l_stPacket.a_pData, l_stPacket.a_pMetaData, DEFAULT_TIMEOUT);
+
+        if (l_iRes == E_NEXUS_TIMEOUT)
+        {
+            continue;
+        }
+
+        if (l_iRes == E_NEXUS_OK)
+        {
+            l_bInError = false;
+            if (l_pThis->m_pUserCallback != NULL)
+            {
+                // Initiate user callback
+                eCallbackRes = (*l_pThis->m_pUserCallback)(l_stPacket.a_pData, l_stPacket.a_pMetaData);
+                switch (eCallbackRes)
+                {
+                case TReceiveCallback_PacketPutInQueue:
+                    {
+                        // Wait for queue operations to end
+                        while (l_pThis->m_bOperatOnQueue);
+
+                        // add to incoming packets queue
+                        l_pThis->m_qIncomingPackets.push(l_stPacket);
+                        break;
+                    }
+
+                case TReceiveCallback_DoNothing:
+                    {
+                        SAFE_DELETE(l_stPacket.a_pData);
+                        SAFE_DELETE(l_stPacket.a_pMetaData);
+                        break;
+                    }
+
+                default:
+                    break;
+                    // Do nothing
+                }
+            }
+            else
+            {
+                // Wait for queue operations to end, for synchronizations
+                while (l_pThis->m_bOperatOnQueue);
+
+                // Add to incoming packet queue
+                l_pThis->m_qIncomingPackets.push(l_stPacket);
+            }
+        }
+        else
+        {
+            if (!l_bInError)
+            {
+                // Notify error (once per error)
+                if (l_pThis->m_pUserFailCallback != NULL)
+                {
+                    l_pThis->m_pUserFailCallback((TCommErr)l_iRes, l_stPacket.a_pMetaData);
+                }
+
+                dprintf_ar(" # CAsyncReceiver::ReceiveThread> Error in Receive (Code %d)\n", l_iRes);
+            }
+
+            l_bInError = true;
+            SAFE_DELETE(l_stPacket.a_pData);
+            SAFE_DELETE(l_stPacket.a_pMetaData);
+
+            // Wait a big before continuing
+            Sleep(l_pThis->ErrorRecoveryTime());
+        }
+    }
+}
+
+/*****************************************************************
 *	void* CAsyncReceiver::ReceiveThread(void *m_pvParam)
 *
 *	Description:
@@ -260,81 +385,18 @@ TCommErr CAsyncReceiver::Receive(OUT CData *a_pData, OUT IMetaData *a_pMetaData 
 *****************************************************************/
 void* CAsyncReceiver::ReceiveThread(void *a_pvParam)
 {
-	dprintf("CAsyncReceiver::ReceiveThread\n");
-
 	CAsyncReceiver *l_pThis = (CAsyncReceiver*)a_pvParam;
-	TReceivePacket l_stPacket;
-	int l_iRes = E_NEXUS_FAIL;
-	TReceiveCallback eCallbackRes;
+	dprintf_ar("CAsyncReceiver::ReceiveThread\n");
 
-	l_stPacket.a_pData = 0;
-	l_stPacket.a_pMetaData = 0;
+    while (!l_pThis->Terminating)
+    {
+        if (l_pThis->IsConnected())
+            l_pThis->ReadAndReport(a_pvParam);
+        else
+            Sleep(3000);
+    }
 
-	while (l_pThis->m_bIsConnected)
-	{
-		// Make packet
-		l_stPacket.a_pData = new CData();
-
-		(*l_stPacket.a_pData).SetMaxSize(l_pThis->m_iMaxPacketSize);
-		if (l_pThis->m_pMetaDataType != NULL)
-			l_stPacket.a_pMetaData = l_pThis->m_pMetaDataType->Clone();
-
-		if (l_pThis->m_pUnderlyingComm != NULL)
-			l_iRes = l_pThis->m_pUnderlyingComm->Receive(l_stPacket.a_pData, l_stPacket.a_pMetaData, DEFAULT_TIMEOUT);
-
-		if (l_iRes == E_NEXUS_TIMEOUT)
-		{
-			continue;
-		}
-
-		if (l_iRes == E_NEXUS_OK)
-		{
-			if (l_pThis->m_pUserCallback != NULL)
-			{
-				// Initiate user callback
-				eCallbackRes = (*l_pThis->m_pUserCallback)(l_stPacket.a_pData, l_stPacket.a_pMetaData);
-				switch (eCallbackRes)
-				{
-					case TReceiveCallback_PacketPutInQueue:
-					{
-						// Wait for queue operations to end
-						while (l_pThis->m_bOperatOnQueue);
-
-						// add to incoming packets queue
-						l_pThis->m_qIncomingPackets.push(l_stPacket);
-						break;
-					}
-
-					case TReceiveCallback_DoNothing:
-					{
-						SAFE_DELETE(l_stPacket.a_pData);
-						SAFE_DELETE(l_stPacket.a_pMetaData);
-						break;
-					}
-
-					default:
-						break;
-						// Do nothing
-				}
-			}
-			else
-			{
-				// Wait for queue operations to end, for synchronizations
-				while (l_pThis->m_bOperatOnQueue);
-
-				// Add to incoming packet queue
-				l_pThis->m_qIncomingPackets.push(l_stPacket);
-			}
-		}
-		else
-		{
-			SAFE_DELETE(l_stPacket.a_pData);
-			SAFE_DELETE(l_stPacket.a_pMetaData);
-			printf(" # CAsyncReceiver::ReceiveThread> Error in Receive %d\n", l_iRes);
-		}
-	}
-
-	return NULL;
+    return NULL;
 }
 
 
@@ -374,4 +436,24 @@ void CAsyncReceiver::SetMaxPacketSize(int a_iMaxPacketSize)
 void CAsyncReceiver::SetMetaDataObject(IN IMetaData *a_pMetaData)
 {
 	m_pMetaDataType = a_pMetaData;
+}
+
+/*****************************************************************
+*	void CAsyncReceiver::SetErrorRecoveryTime(int a_iTimeMs)
+*
+*	Description:
+*		Sets the time between AsyncReceiver checks if an error has been resolved.
+*       Basically this is the time the read thread waits after every error.
+*
+*	Arguments:
+*		int a_iTimeMs
+*			Recovery time in ms
+*
+*	Return Value:
+*		None
+*
+*****************************************************************/
+void CAsyncReceiver::SetErrorRecoveryTime(int a_iTimeMs)
+{
+    m_iRecoveryTime = a_iTimeMs;
 }

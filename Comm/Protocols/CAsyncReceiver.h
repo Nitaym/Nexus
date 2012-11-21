@@ -26,12 +26,14 @@ struct TReceivePacket
 	IMetaData *a_pMetaData;
 };
 
-typedef TReceiveCallback (*typeAsyncReceiverCallback)(CData *a_pData, IMetaData *a_pMetaData);
+typedef TReceiveCallback (*typeAsyncReceiverRecvCallback)(CData *a_pData, IMetaData *a_pMetaData);
+typedef void (*typeAsyncReceiverFailCallback)(TCommErr a_eError, IMetaData* a_pMetaData);
 
 class CAsyncReceiver : public ICommLayer
 {
 private:
-	typeAsyncReceiverCallback m_pUserCallback;
+	typeAsyncReceiverRecvCallback m_pUserCallback;
+    typeAsyncReceiverFailCallback m_pUserFailCallback;
 	void *m_pUserParam;
 
 	// Syncing variable (kinda mutex)
@@ -42,10 +44,15 @@ private:
 
 	HTHREAD m_iReceiveThread;
 
+    int m_iRecoveryTime;
+
 public:
+    bool Terminating;
+
 	// We have 2 constructors: one for implementation with a user callback and one without
 	CAsyncReceiver();
-	CAsyncReceiver(typeAsyncReceiverCallback pUserCallbackFunc);
+	CAsyncReceiver(typeAsyncReceiverRecvCallback pUserCallbackFunc, typeAsyncReceiverFailCallback a_pUserCallbackFailFunc);
+    ~CAsyncReceiver();
 
 	// Receive data packet from the received packets queue
 	TCommErr Receive(OUT CData *a_pData, OUT IMetaData *a_pMetaData = NULL, IN DWORD a_dwTimeoutMs = DEFAULT_TIMEOUT);
@@ -61,9 +68,14 @@ public:
 	bool IsConnected();
 	void SetMaxPacketSize (int a_iMaxPacketSize);
 	void SetMetaDataObject (IN IMetaData *a_pMetaData);
+    void SetErrorRecoveryTime(int a_iTimeMs);
+    int ErrorRecoveryTime() { return m_iRecoveryTime; }
 
+
+    static void ReadAndReport(void *a_pvParam);
 private:
     void Initialize();
+
 	static void* ReceiveThread(void *a_pvParam);
 };
 
