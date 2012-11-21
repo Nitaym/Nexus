@@ -1,0 +1,109 @@
+# depslib dependency file v1.0
+1353508669 source:/opt/fides/Nexus/unit-testers/auto-reader/auto-reader.cpp
+	<unistd.h>
+	"Comm/Protocols/CAsyncReceiver.h"
+	"Comm/Protocols/CAutoConnect.h"
+	"Comm/Physical/CUart.h"
+	"Comm/Physical/CConsoleComm.h"
+
+1349190871 /opt/fides/Nexus//Nexus.h
+	"Comm/Base/CData.h"
+	"Comm/Base/CDebug.h"
+	"Comm/Base/CommErrors.h"
+	"Comm/Base/ICommBase.h"
+	"Comm/Base/IMetaData.h"
+	"Comm/Physical/CLoggerComm.h"
+	"Comm/Physical/CLoopbackComm.h"
+	"Comm/Protocols/CallbackValues.h"
+	"Comm/Protocols/CAsyncReceiver.h"
+	"Comm/Protocols/CAsyncSender.h"
+	"Comm/Protocols/ICommLayer.h"
+	"Comm/Protocols/TComm.h"
+	"General/General.h"
+	"General/Macros.h"
+	"General/Types.h"
+	"General/Utils.h"
+
+1352071694 /opt/fides/Nexus//Comm/Base/CData.h
+	<string>
+	"General/General.h"
+	<vector>
+
+1346943017 /opt/fides/Nexus//General/General.h
+	"Types.h"
+	"Macros.h"
+
+1352660078 /opt/fides/Nexus//General/Types.h
+
+1346943017 /opt/fides/Nexus//General/Macros.h
+
+1346955079 /opt/fides/Nexus//Comm/Base/CDebug.h
+	"Comm/Base/ICommBase.h"
+
+1353509018 /opt/fides/Nexus//Comm/Base/ICommBase.h
+	"General/General.h"
+	"CData.h"
+	"IMetaData.h"
+	"CommErrors.h"
+	"CDebug.h"
+
+1349276207 /opt/fides/Nexus//Comm/Base/IMetaData.h
+
+1346955079 /opt/fides/Nexus//Comm/Base/CommErrors.h
+
+1346943017 /opt/fides/Nexus//Comm/Physical/CLoggerComm.h
+	"../../General/Utils.h"
+	"Comm/Base/ICommBase.h"
+	<fcntl.h>
+	<unistd.h>
+	<string.h>
+
+1349274171 /opt/fides/Nexus//General/Utils.h
+	<Windows.h>
+	<pthread.h>
+	"General/General.h"
+	<stdio.h>
+	<string>
+
+1346943017 /opt/fides/Nexus//Comm/Physical/CLoopbackComm.h
+	"Comm/Protocols/ICommLayer.h"
+
+1353266670 /opt/fides/Nexus//Comm/Protocols/ICommLayer.h
+	"Comm/Base/ICommBase.h"
+
+1353254976 /opt/fides/Nexus//Comm/Protocols/CallbackValues.h
+
+1353340713 /opt/fides/Nexus//Comm/Protocols/CAsyncReceiver.h
+	<queue>
+	"General/Utils.h"
+	"General/General.h"
+	"Comm/Protocols/ICommLayer.h"
+	"Comm/Protocols/CallbackValues.h"
+
+1346943017 /opt/fides/Nexus//Comm/Protocols/CAsyncSender.h
+	<queue>
+	"Comm/Protocols/ICommLayer.h"
+	"General/Utils.h"
+	"General/General.h"
+	"CallbackValues.h"
+
+1346943017 /opt/fides/Nexus//Comm/Protocols/TComm.h
+	"Comm/Protocols/ICommLayer.h"
+
+1346943017 /opt/fides/Nexus//Comm/Physical/CUart.h
+	<termios.h>
+	"General/Utils.h"
+	"Comm/Base/ICommBase.h"
+
+1353266691 /opt/fides/Nexus//Comm/Protocols/CAutoConnect.h
+	<queue>
+	"General/Utils.h"
+	"General/General.h"
+	"Comm/Protocols/ICommLayer.h"
+	"Comm/Protocols/CallbackValues.h"
+
+1353341637 /opt/fides/Nexus//Comm/Physical/CConsoleComm.h
+	"../../General/Utils.h"
+	"Comm/Base/ICommBase.h"
+	<iostream>
+
