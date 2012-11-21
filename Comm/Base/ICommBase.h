@@ -15,6 +15,8 @@
 #define INFINITE_TIMEOUT 100
 #define DEFAULT_TIMEOUT 40
 
+#define dprintf if (m_pDebug != NULL) m_pDebug->Write
+
 namespace Nexus
 {
 
@@ -41,5 +43,6 @@ public:
 	// Built in methods
 	ICommBase()						{ m_pDebug = NULL; }
 	void SetDebug(CDebug *a_pDebug)	{ m_pDebug = a_pDebug; }
+    CDebug* GetDebug() { return m_pDebug; }
 };
 }
