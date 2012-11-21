@@ -97,7 +97,10 @@ void CDebug::Write(const char *format, ...)
 		return;
 	}
 
-	// Send buffer by underlying comm
-	CData l_oData(l_strStr);
-	m_pComm->Send(&l_oData, NULL, WRITE_TIMEOUT_MS);
+    if (m_pComm != NULL)
+    {
+	    // Send buffer by underlying comm
+	    CData l_oData(l_strStr);
+	    m_pComm->Send(&l_oData, NULL, WRITE_TIMEOUT_MS);
+    }
 }
