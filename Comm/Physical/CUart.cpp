@@ -20,7 +20,6 @@
 #define DEFAULT_RATE ubrBaud38400
 
 // Defines
-#define dprintf if (m_pDebug != NULL) m_pDebug->Write
 #define MAX_READ_BUFFER_SIZE 256 // It is only for spare. Normally only a few bytes will return
 
 using namespace Nexus;
@@ -48,6 +47,8 @@ CUart::CUart()
 #endif
     m_bIsConnected = false;
     m_eBaudRate = DEFAULT_RATE;
+    m_eStopBits = esbOne;
+    m_eParity = eupNoParity;
     strcpy(m_strPortName, DEFAULT_PORT);
 }
 
@@ -304,25 +305,16 @@ TCommErr CUart::Connect()
 TCommErr CUart::Disconnect()
 {
     // Check if we are connected
-    if (m_bIsConnected)
-    {
 #ifdef WIN32
-        CloseHandle(m_fd);
-        m_fd = INVALID_HANDLE_VALUE;
+    CloseHandle(m_fd);
+    m_fd = INVALID_HANDLE_VALUE;
 #else
-        close(m_fd);
-        m_fd = -1;
+    close(m_fd);
+    m_fd = -1;
 #endif
-        m_bIsConnected = false;
-        dprintf("Uart::Disconnect> Disconnected\n");
-        return E_NEXUS_OK;
-    }
-    else
-    {
-        // Not connected
-        dprintf("Uart::Disconnect> Not connected\n");
-        return E_NEXUS_NOT_CONNECTED;
-    }
+    m_bIsConnected = false;
+    dprintf("Uart::Disconnect> Disconnected\n");
+    return E_NEXUS_OK;
 }
 
 /************************************************************
@@ -453,10 +445,31 @@ TCommErr CUart::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData /* = NU
     {
         // Assuming read for uart is non blocking
 #ifdef WIN32
+        int l_iRes = ReadFile(m_fd, pBuffer, dwMaxSize, (LPDWORD)&iBytesRead, NULL);
 
-        if (ReadFile(m_fd, pBuffer, dwMaxSize, (LPDWORD)&iBytesRead, NULL) == 0)
+        // This is the disconnect signal
+        if ((l_iRes == 0) && (GetLastError() == ERROR_BAD_COMMAND))
+        {
+            m_bIsConnected = false;
+            return E_NEXUS_NOT_CONNECTED;
+        }
+
+        if (l_iRes == 0)
 #else
         iBytesRead = read(m_fd, pBuffer, dwMaxSize);
+
+        // 0 means EOF - Port disconnected
+        if (iBytesRead == 0)
+        {
+            dprintf("Uart::Receive> Port disconnected (errno %d: %s)\n", errno, strerror(errno));
+            delete[] pBuffer;
+
+            // Flag disconnected! The rest is up to the user
+            m_bIsConnected = false;
+
+            return E_NEXUS_NOT_CONNECTED;
+        }
+
         // Error
         if (iBytesRead < 0 && errno != EAGAIN)
 #endif
