@@ -23,6 +23,7 @@ protected:
 
 public:
 	void SetUnderlyingComm(ICommBase *a_pNewUnderlyingComm);
+    ICommBase* UnderlyingComm() { return m_pUnderlyingComm; }
 
 	virtual TCommErr Connect();
 	virtual TCommErr Disconnect();
