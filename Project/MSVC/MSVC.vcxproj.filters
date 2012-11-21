@@ -45,6 +45,9 @@
     <ClCompile Include="..\..\General\Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Comm\Physical\CFileComm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Comm\Base\CData.h">
@@ -99,6 +102,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\General\Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Comm\Physical\CFileComm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
