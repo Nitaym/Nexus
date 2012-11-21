@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1346341802 source:/home/tala/dev/Nexus/Comm/Base/CData.cpp
+1352071725 source:/opt/fides/Nexus/Comm/Base/CData.cpp
 	<string.h>
 	<stdio.h>
 	<iostream>
@@ -7,129 +7,7 @@
 	"CData.h"
 	"CommErrors.h"
 
-1346341802 /home/tala/dev/Nexus/Comm/Base/CData.h
-	<string>
-	"General/General.h"
-	<vector>
-
-1346341802 /home/tala/dev/Nexus/General/General.h
-	"Types.h"
-	"Macros.h"
-
-1346341802 /home/tala/dev/Nexus/General/Types.h
-
-1346341802 /home/tala/dev/Nexus/General/Macros.h
-
-1346341802 /home/tala/dev/Nexus/Comm/Base/CommErrors.h
-
-1346341802 source:/home/tala/dev/Nexus/Comm/Base/CDebug.cpp
-	<stdarg.h>
-	<stdio.h>
-	<string.h>
-	"CDebug.h"
-
-1346341802 /home/tala/dev/Nexus/Comm/Base/CDebug.h
-	"Comm/Base/ICommBase.h"
-
-1346341802 /home/tala/dev/Nexus/Comm/Base/ICommBase.h
-	"General/General.h"
-	"CData.h"
-	"IMetaData.h"
-	"CommErrors.h"
-	"CDebug.h"
-
-1347009606 /home/tala/dev/Nexus/Comm/Base/IMetaData.h
-
-1346341802 source:/home/tala/dev/Nexus/Comm/Physical/CClientSocket.cpp
-	"CClientSocket.h"
-
-1346341802 /home/tala/dev/Nexus/Comm/Physical/CClientSocket.h
-	<winsock2.h>
-	"../../General/Utils.h"
-	"../../Comm/Base/ICommBase.h"
-	<Windows.h>
-	<WS2tcpip.h>
-	<stdlib.h>
-	<stdio.h>
-
-1346341802 /home/tala/dev/Nexus/General/Utils.h
-	<Windows.h>
-	<pthread.h>
-	"General/General.h"
-	<stdio.h>
-	<string>
-
-1346341802 source:/home/tala/dev/Nexus/Comm/Physical/CLoggerComm.cpp
-	"CLoggerComm.h"
-
-1346341802 /home/tala/dev/Nexus/Comm/Physical/CLoggerComm.h
-	"../../General/Utils.h"
-	"Comm/Base/ICommBase.h"
-	<fcntl.h>
-	<unistd.h>
-	<string.h>
-
-1346341802 source:/home/tala/dev/Nexus/Comm/Physical/CLoopbackComm.cpp
-	"Comm/Physical/CLoopbackComm.h"
-
-1346341802 /home/tala/dev/Nexus/Comm/Physical/CLoopbackComm.h
-	"Comm/Protocols/ICommLayer.h"
-
-1346341802 /home/tala/dev/Nexus/Comm/Protocols/ICommLayer.h
-	"Comm/Base/ICommBase.h"
-
-1346341802 source:/home/tala/dev/Nexus/Comm/Physical/CUart.cpp
-	<stdio.h>
-	<fcntl.h>
-	<string.h>
-	<errno.h>
-	"CUart.h"
-	<unistd.h>
-
-1346341802 /home/tala/dev/Nexus/Comm/Physical/CUart.h
-	<termios.h>
-	"General/Utils.h"
-	"Comm/Base/ICommBase.h"
-
-1346341802 source:/home/tala/dev/Nexus/Comm/Protocols/CAsyncReceiver.cpp
-	"CAsyncReceiver.h"
-
-1346341802 /home/tala/dev/Nexus/Comm/Protocols/CAsyncReceiver.h
-	<queue>
-	"General/Utils.h"
-	"General/General.h"
-	"Comm/Protocols/ICommLayer.h"
-	"Comm/Protocols/CallbackValues.h"
-
-1346341802 /home/tala/dev/Nexus/Comm/Protocols/CallbackValues.h
-
-1346341802 source:/home/tala/dev/Nexus/Comm/Protocols/ICommLayer.cpp
-	"ICommLayer.h"
-
-1346341802 source:/home/tala/dev/Nexus/Comm/Protocols/TComm.cpp
-	"TComm.h"
-
-1346341802 /home/tala/dev/Nexus/Comm/Protocols/TComm.h
-	"Comm/Protocols/ICommLayer.h"
-
-1346341802 source:/home/tala/dev/Nexus/General/Utils.cpp
-	"General/Utils.h"
-	<Windows.h>
-	<stdio.h>
-	<unistd.h>
-	<sys/time.h>
-	<signal.h>
-	"General/General.h"
-
-1346955079 source:/opt/fides/Nexus/Comm/Base/CData.cpp
-	<string.h>
-	<stdio.h>
-	<iostream>
-	<string>
-	"CData.h"
-	"CommErrors.h"
-
-1346955079 /opt/fides/Nexus/Comm/Base/CData.h
+1352071694 /opt/fides/Nexus/Comm/Base/CData.h
 	<string>
 	"General/General.h"
 	<vector>
@@ -138,13 +16,13 @@
 	"Types.h"
 	"Macros.h"
 
-1346943017 /opt/fides/Nexus/General/Types.h
+1352660078 /opt/fides/Nexus/General/Types.h
 
 1346943017 /opt/fides/Nexus/General/Macros.h
 
 1346955079 /opt/fides/Nexus/Comm/Base/CommErrors.h
 
-1346955079 source:/opt/fides/Nexus/Comm/Base/CDebug.cpp
+1353342317 source:/opt/fides/Nexus/Comm/Base/CDebug.cpp
 	<stdarg.h>
 	<stdio.h>
 	<string.h>
@@ -153,7 +31,7 @@
 1346955079 /opt/fides/Nexus/Comm/Base/CDebug.h
 	"Comm/Base/ICommBase.h"
 
-1346955079 /opt/fides/Nexus/Comm/Base/ICommBase.h
+1353509018 /opt/fides/Nexus/Comm/Base/ICommBase.h
 	"General/General.h"
 	"CData.h"
 	"IMetaData.h"
@@ -181,7 +59,16 @@
 	<stdio.h>
 	<string>
 
-1346943017 source:/opt/fides/Nexus/Comm/Physical/CLoggerComm.cpp
+1352153489 source:/opt/fides/Nexus/Comm/Physical/CFileComm.cpp
+	"CFileComm.h"
+
+1352136915 /opt/fides/Nexus/Comm/Physical/CFileComm.h
+	"../../General/Utils.h"
+	"Comm/Base/ICommBase.h"
+	<fstream>
+	<iostream>
+
+1353252612 source:/opt/fides/Nexus/Comm/Physical/CLoggerComm.cpp
 	"CLoggerComm.h"
 
 1346943017 /opt/fides/Nexus/Comm/Physical/CLoggerComm.h
@@ -197,10 +84,10 @@
 1346943017 /opt/fides/Nexus/Comm/Physical/CLoopbackComm.h
 	"Comm/Protocols/ICommLayer.h"
 
-1346943017 /opt/fides/Nexus/Comm/Protocols/ICommLayer.h
+1353266670 /opt/fides/Nexus/Comm/Protocols/ICommLayer.h
 	"Comm/Base/ICommBase.h"
 
-1346943017 source:/opt/fides/Nexus/Comm/Physical/CUart.cpp
+1353509797 source:/opt/fides/Nexus/Comm/Physical/CUart.cpp
 	<stdio.h>
 	<fcntl.h>
 	<string.h>
@@ -213,17 +100,17 @@
 	"General/Utils.h"
 	"Comm/Base/ICommBase.h"
 
-1346943017 source:/opt/fides/Nexus/Comm/Protocols/CAsyncReceiver.cpp
+1353509124 source:/opt/fides/Nexus/Comm/Protocols/CAsyncReceiver.cpp
 	"CAsyncReceiver.h"
 
-1346943017 /opt/fides/Nexus/Comm/Protocols/CAsyncReceiver.h
+1353340713 /opt/fides/Nexus/Comm/Protocols/CAsyncReceiver.h
 	<queue>
 	"General/Utils.h"
 	"General/General.h"
 	"Comm/Protocols/ICommLayer.h"
 	"Comm/Protocols/CallbackValues.h"
 
-1346943017 /opt/fides/Nexus/Comm/Protocols/CallbackValues.h
+1353254976 /opt/fides/Nexus/Comm/Protocols/CallbackValues.h
 
 1346943017 source:/opt/fides/Nexus/Comm/Protocols/ICommLayer.cpp
 	"ICommLayer.h"
@@ -242,4 +129,22 @@
 	<sys/time.h>
 	<signal.h>
 	"General/General.h"
+
+1353508741 source:/opt/fides/Nexus/Comm/Protocols/CAutoConnect.cpp
+	"CAutoConnect.h"
+
+1353266691 /opt/fides/Nexus/Comm/Protocols/CAutoConnect.h
+	<queue>
+	"General/Utils.h"
+	"General/General.h"
+	"Comm/Protocols/ICommLayer.h"
+	"Comm/Protocols/CallbackValues.h"
+
+1353342366 source:/opt/fides/Nexus/Comm/Physical/CConsoleComm.cpp
+	"CConsoleComm.h"
+
+1353341637 /opt/fides/Nexus/Comm/Physical/CConsoleComm.h
+	"../../General/Utils.h"
+	"Comm/Base/ICommBase.h"
+	<iostream>
 

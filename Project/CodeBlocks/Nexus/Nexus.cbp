@@ -108,6 +108,8 @@
 		<Unit filename="../../../Comm/Base/IMetaData.h" />
 		<Unit filename="../../../Comm/Physical/CClientSocket.cpp" />
 		<Unit filename="../../../Comm/Physical/CClientSocket.h" />
+		<Unit filename="../../../Comm/Physical/CConsoleComm.cpp" />
+		<Unit filename="../../../Comm/Physical/CConsoleComm.h" />
 		<Unit filename="../../../Comm/Physical/CFileComm.cpp" />
 		<Unit filename="../../../Comm/Physical/CFileComm.h" />
 		<Unit filename="../../../Comm/Physical/CLoggerComm.cpp" />
@@ -119,6 +121,8 @@
 		<Unit filename="../../../Comm/Protocols/CAsyncReceiver.cpp" />
 		<Unit filename="../../../Comm/Protocols/CAsyncReceiver.h" />
 		<Unit filename="../../../Comm/Protocols/CAsyncSender.h" />
+		<Unit filename="../../../Comm/Protocols/CAutoConnect.cpp" />
+		<Unit filename="../../../Comm/Protocols/CAutoConnect.h" />
 		<Unit filename="../../../Comm/Protocols/CallbackValues.h" />
 		<Unit filename="../../../Comm/Protocols/ICommLayer.cpp" />
 		<Unit filename="../../../Comm/Protocols/ICommLayer.h" />
