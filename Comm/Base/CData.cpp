@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 /*********************************************************************
 * Comm/Base/CData.cpp
 * Description:
@@ -131,6 +133,35 @@ CData* CData::Clone() const
 
 	retData->SetData((byte*)&(m_oData[0]), m_oData.size());
 	return retData;
+}
+
+
+/*****************************************************************
+*	CData* CData::Compare(CData* comparedData) const
+*
+*	Description:
+*		Compares this CData with comparedData
+*
+*	Arguments:
+*		None
+*
+*	Return Value:
+*		true if the data is the same in comparedData and this 
+*       CData, false if not
+*
+*****************************************************************/
+bool Nexus::CData::Compare(CData* comparedData)
+{
+    if (this->GetSize() != comparedData->GetSize())
+        return false;
+
+    for (int i = 0; i < this->GetSize(); i++)
+    {
+        if (m_oData[i] != (*comparedData)[i])
+            return false;
+    }
+
+    return true;
 }
 
 
@@ -519,7 +550,8 @@ bool CData::Remove(DWORD a_dwIndex, DWORD a_dwCount)
 *****************************************************************/
 void CData::SetString(const string &a_strData)
 {
-	SetData((byte*)(a_strData.c_str()), a_strData.length());
+    // Set the string into the data                          (and add null termination)
+	SetData((byte*)(a_strData.c_str()), a_strData.length() + 1);
 }
 
 

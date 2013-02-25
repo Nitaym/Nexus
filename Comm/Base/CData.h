@@ -63,6 +63,9 @@ public:
 	// when not needed anymore!
 	CData* Clone() const;
 
+    // Compare - Compare this CData to comparedData
+    bool Compare(CData* comparedData);
+
 	// CopyFrom - Copies the data from another CData to this one
 	void CopyFrom(CData* a_oData);
 
