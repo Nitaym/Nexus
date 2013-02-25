@@ -102,26 +102,28 @@ TCommErr CClientSocket::Connect()
 TCommErr CClientSocket::Disconnect()
 {
 #ifdef WIN32
-	// shutdown the send half of the connection since no more data will be sent
-	int l_iResult = shutdown(m_hSocket, SD_SEND);
-	if (l_iResult == SOCKET_ERROR) {
-		dprintf("CClientSocket::Disconnect> shutdown failed: %d\n", WSAGetLastError());
-		closesocket(m_hSocket);
-		WSACleanup();
-		return E_NEXUS_FAIL;
-	}
+    if (IsConnected())
+    {
+        // shutdown the send half of the connection since no more data will be sent
+        int l_iResult = shutdown(m_hSocket, SD_SEND);
+        if (l_iResult == SOCKET_ERROR) {
+            dprintf("CClientSocket::Disconnect> shutdown failed: %d\n", WSAGetLastError());
+            closesocket(m_hSocket);
+            WSACleanup();
+            return E_NEXUS_FAIL;
+        }
 
-	// cleanup
-	closesocket(m_hSocket);
-	WSACleanup();
+        // cleanup
+        closesocket(m_hSocket);
+        WSACleanup();
+    }
+
 #endif
 	return E_NEXUS_OK;
 }
 
 TCommErr CClientSocket::Send(IN CData *a_pData, IN IMetaData *a_pMetaData /* = NULL */, IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
 {
-	// Send an initial buffer
-
 	int l_iBufferLength = a_pData->GetSize();
 	byte *l_pBuffer = new byte[l_iBufferLength];
 	a_pData->GetData(l_pBuffer, 0, l_iBufferLength);
@@ -130,7 +132,7 @@ TCommErr CClientSocket::Send(IN CData *a_pData, IN IMetaData *a_pMetaData /* = N
 	int l_iResult = send(m_hSocket, (char*)l_pBuffer, l_iBufferLength, 0);
 	if (l_iResult == SOCKET_ERROR)
 	{
-		printf("CClientSocket::Send> Send failed: %d\n", WSAGetLastError());
+		dprintf("CClientSocket::Send> Send failed: %d\n", WSAGetLastError());
 		closesocket(m_hSocket);
 		WSACleanup();
 		SAFE_DELETE_ARRAY(l_pBuffer);
@@ -147,23 +149,25 @@ TCommErr CClientSocket::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData
 #ifdef WIN32
     byte *l_pBuffer = new byte[m_iBufferSize];
 
-	int l_iResult = recv(m_hSocket, (char*)l_pBuffer, m_iBufferSize - 1, 0);
-	if (l_iResult > 0)
-	{
-		a_pData->SetData(l_pBuffer, l_iResult);
-		SAFE_DELETE_ARRAY(l_pBuffer);
-	}
-	else
-	{
-		SAFE_DELETE_ARRAY(l_pBuffer);
+    // Read
+    int l_iResult = recv(m_hSocket, (char*)l_pBuffer, m_iBufferSize, 0);
+    if (l_iResult > 0)
+    {
+        a_pData->SetData(l_pBuffer, l_iResult);
+        SAFE_DELETE_ARRAY(l_pBuffer);
+    }
+    else
+    {
+        SAFE_DELETE_ARRAY(l_pBuffer);
 
-		if (l_iResult == 0)
-			dprintf("CClientSocket::Receive> Connection closed\n");
-		else
-			dprintf("CClientSocket::Receive> recv failed: %d\n", WSAGetLastError());
+        if (l_iResult == 0)
+            dprintf("CClientSocket::Receive> Connection closed\n");
+        else
+            dprintf("CClientSocket::Receive> recv failed: %d\n", WSAGetLastError());
 
-		return E_NEXUS_FAIL;
-	}
+        return E_NEXUS_FAIL;
+    }
+
 #endif
 	return E_NEXUS_OK;
 }
