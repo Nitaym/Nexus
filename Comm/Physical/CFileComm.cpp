@@ -24,7 +24,7 @@ TCommErr CFileComm::Connect()
         m_bIsConnected = m_oInputFile.is_open();
         m_oInputFile.seekg(0, ios::beg);
     }
-    if (m_sInputFilename != "")
+    if (m_sOutputFilename != "")
     {
         m_oOutputFile.open(m_sOutputFilename);
         m_bIsConnected = m_oOutputFile.is_open();
