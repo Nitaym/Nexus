@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "CLoggerComm.h"
 
 using namespace Nexus;
@@ -88,7 +89,7 @@ bool CLoggerComm::WriteMessage(char* a_sMessage)
 
 bool CLoggerComm::WriteMessage(std::string a_sMessage)
 {
-	return WriteMessage(a_sMessage.c_str());
+	return WriteMessage((char*)a_sMessage.c_str());
 }
 
 bool CLoggerComm::WriteMessage(IN CData *a_pData, std::string a_sPrefix)
