@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="80">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="Comm" displayName="Comm" projectFiles="true">
+      <logicalFolder name="Base" displayName="Base" projectFiles="true">
+        <itemPath>../../../Comm/Base/CData.cpp</itemPath>
+        <itemPath>../../../Comm/Base/CData.h</itemPath>
+        <itemPath>../../../Comm/Base/CDebug.cpp</itemPath>
+        <itemPath>../../../Comm/Base/CDebug.h</itemPath>
+        <itemPath>../../../Comm/Base/CommErrors.h</itemPath>
+        <itemPath>../../../Comm/Base/ICommBase.h</itemPath>
+        <itemPath>../../../Comm/Base/IMetaData.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="Physical" displayName="Physical" projectFiles="true">
+        <itemPath>../../../Comm/Physical/CClientSocket.cpp</itemPath>
+        <itemPath>../../../Comm/Physical/CClientSocket.h</itemPath>
+        <itemPath>../../../Comm/Physical/CConsoleComm.cpp</itemPath>
+        <itemPath>../../../Comm/Physical/CConsoleComm.h</itemPath>
+        <itemPath>../../../Comm/Physical/CFileComm.cpp</itemPath>
+        <itemPath>../../../Comm/Physical/CFileComm.h</itemPath>
+        <itemPath>../../../Comm/Physical/CLoggerComm.cpp</itemPath>
+        <itemPath>../../../Comm/Physical/CLoggerComm.h</itemPath>
+        <itemPath>../../../Comm/Physical/CLoopbackComm.cpp</itemPath>
+        <itemPath>../../../Comm/Physical/CLoopbackComm.h</itemPath>
+        <itemPath>../../../Comm/Physical/CUart.cpp</itemPath>
+        <itemPath>../../../Comm/Physical/CUart.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="Protocols" displayName="Protocols" projectFiles="true">
+        <itemPath>../../../Comm/Protocols/CAsyncReceiver.cpp</itemPath>
+        <itemPath>../../../Comm/Protocols/CAsyncReceiver.h</itemPath>
+        <itemPath>../../../Comm/Protocols/CAsyncSender.h</itemPath>
+        <itemPath>../../../Comm/Protocols/CAutoConnect.cpp</itemPath>
+        <itemPath>../../../Comm/Protocols/CAutoConnect.h</itemPath>
+        <itemPath>../../../Comm/Protocols/CallbackValues.h</itemPath>
+        <itemPath>../../../Comm/Protocols/ICommLayer.cpp</itemPath>
+        <itemPath>../../../Comm/Protocols/ICommLayer.h</itemPath>
+        <itemPath>../../../Comm/Protocols/TComm.cpp</itemPath>
+        <itemPath>../../../Comm/Protocols/TComm.h</itemPath>
+      </logicalFolder>
+    </logicalFolder>
+    <logicalFolder name="General" displayName="General" projectFiles="true">
+      <itemPath>../../../General/General.h</itemPath>
+      <itemPath>../../../General/Macros.h</itemPath>
+      <itemPath>../../../General/Types.h</itemPath>
+      <itemPath>../../../General/Utils.cpp</itemPath>
+      <itemPath>../../../General/Utils.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceRootList>
+    <Elem>../../../Comm</Elem>
+    <Elem>../../../General</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="3">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+      </toolsSet>
+      <compileType>
+        <ccTool>
+          <incDir>
+            <pElem>../../../</pElem>
+          </incDir>
+        </ccTool>
+        <archiverTool>
+        </archiverTool>
+      </compileType>
+    </conf>
+    <conf name="Release" type="3">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+          <incDir>
+            <pElem>../../../</pElem>
+          </incDir>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+        <archiverTool>
+        </archiverTool>
+      </compileType>
+    </conf>
+  </confs>
+</configurationDescriptor>

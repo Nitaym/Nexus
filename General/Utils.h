@@ -14,6 +14,7 @@
 #else
 // Linux
 #include <pthread.h>
+#include <errno.h>
 #endif
 
 
