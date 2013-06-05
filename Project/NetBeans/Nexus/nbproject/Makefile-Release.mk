@@ -67,13 +67,13 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libnexus.a
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ../../../lib/libnexus.a
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libnexus.a: ${OBJECTFILES}
-	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libnexus.a
-	${AR} -rv ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libnexus.a ${OBJECTFILES} 
-	$(RANLIB) ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libnexus.a
+../../../lib/libnexus.a: ${OBJECTFILES}
+	${MKDIR} -p ../../../lib
+	${RM} ../../../lib/libnexus.a
+	${AR} -rv ../../../lib/libnexus.a ${OBJECTFILES} 
+	$(RANLIB) ../../../lib/libnexus.a
 
 ${OBJECTDIR}/_ext/1577468939/CFileComm.o: ../../../Comm/Physical/CFileComm.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1577468939
@@ -146,7 +146,7 @@ ${OBJECTDIR}/_ext/1577468939/CLoggerComm.o: ../../../Comm/Physical/CLoggerComm.c
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libnexus.a
+	${RM} ../../../lib/libnexus.a
 
 # Subprojects
 .clean-subprojects:

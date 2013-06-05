@@ -87,6 +87,7 @@
           </incDir>
         </ccTool>
         <archiverTool>
+          <output>../../../lib/libnexus.a</output>
         </archiverTool>
       </compileType>
     </conf>
@@ -112,6 +113,7 @@
           <developmentMode>5</developmentMode>
         </asmTool>
         <archiverTool>
+          <output>../../../lib/libnexus.a</output>
         </archiverTool>
       </compileType>
     </conf>

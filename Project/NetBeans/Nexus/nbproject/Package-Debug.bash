@@ -12,7 +12,7 @@ CND_DISTDIR=dist
 CND_BUILDDIR=build
 NBTMPDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tmp-packaging
 TMPDIRNAME=tmp-packaging
-OUTPUT_PATH=${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libnexus.a
+OUTPUT_PATH=../../../lib/libnexus.a
 OUTPUT_BASENAME=libnexus.a
 PACKAGE_TOP_DIR=Nexus/
 
