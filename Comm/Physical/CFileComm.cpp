@@ -20,13 +20,15 @@ TCommErr CFileComm::Connect()
 
     if (m_sInputFilename != "")
     {
-        m_oInputFile.open(m_sInputFilename);
+        // I use c_str() here because (I'm not sure why) gcc reported an error
+        // here when I used std::string
+        m_oInputFile.open(m_sInputFilename.c_str());
         m_bIsConnected = m_oInputFile.is_open();
         m_oInputFile.seekg(0, ios::beg);
     }
     if (m_sOutputFilename != "")
     {
-        m_oOutputFile.open(m_sOutputFilename);
+        m_oOutputFile.open(m_sOutputFilename.c_str());
         m_bIsConnected = m_oOutputFile.is_open();
     }
 
