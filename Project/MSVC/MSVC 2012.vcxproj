@@ -88,6 +88,7 @@
     <ClCompile Include="..\..\Comm\Physical\CFileComm.cpp" />
     <ClCompile Include="..\..\Comm\Physical\CLoggerComm.cpp" />
     <ClCompile Include="..\..\Comm\Physical\CLoopbackComm.cpp" />
+    <ClCompile Include="..\..\Comm\Physical\CServerSocket.cpp" />
     <ClCompile Include="..\..\Comm\Physical\CUart.cpp" />
     <ClCompile Include="..\..\Comm\Protocols\CAsyncReceiver.cpp" />
     <ClCompile Include="..\..\Comm\Protocols\CAutoConnect.cpp" />
@@ -106,6 +107,7 @@
     <ClInclude Include="..\..\Comm\Physical\CFileComm.h" />
     <ClInclude Include="..\..\Comm\Physical\CLoggerComm.h" />
     <ClInclude Include="..\..\Comm\Physical\CLoopbackComm.h" />
+    <ClInclude Include="..\..\Comm\Physical\CServerSocket.h" />
     <ClInclude Include="..\..\Comm\Physical\CUart.h" />
     <ClInclude Include="..\..\Comm\Protocols\CallbackValues.h" />
     <ClInclude Include="..\..\Comm\Protocols\CAsyncReceiver.h" />
