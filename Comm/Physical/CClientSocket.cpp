@@ -12,6 +12,11 @@ CClientSocket::CClientSocket()
 #endif
 }
 
+CClientSocket::~CClientSocket()
+{
+    Disconnect();
+}
+
 bool CClientSocket::SetConnectionParameters(std::string a_sIP, WORD a_wPort)
 {
 	m_sIP = a_sIP;
@@ -104,6 +109,8 @@ TCommErr CClientSocket::Disconnect()
 #ifdef WIN32
     if (IsConnected())
     {
+        m_bIsConnected = false;
+
         // shutdown the send half of the connection since no more data will be sent
         int l_iResult = shutdown(m_hSocket, SD_SEND);
         if (l_iResult == SOCKET_ERROR) {

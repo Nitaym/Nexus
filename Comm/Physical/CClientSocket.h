@@ -46,6 +46,7 @@ private:
 
 public:
 	CClientSocket();
+    ~CClientSocket();
 
 	bool SetConnectionParameters(std::string a_sIP, WORD a_wPort);
 	bool SetReceiveBufferSize(DWORD a_iSize);
