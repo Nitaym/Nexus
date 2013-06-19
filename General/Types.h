@@ -66,7 +66,7 @@
 #define True	TRUE
 
 typedef unsigned char	byte;
-typedef unsigned short	word;
+// typedef unsigned short	word;
 typedef unsigned long	dword;
 
 #ifndef __cplusplus
@@ -161,7 +161,7 @@ typedef struct {
 } TWordBytes;
 
 typedef union {
-	word wValue;
+	unsigned short wValue;
 	TWordBytes stBytes;
 } UWord;
 
