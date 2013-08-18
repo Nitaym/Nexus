@@ -88,9 +88,9 @@ public:
 	void FreeData();
 
 	// GetByte - returns one byte of the requested index
-	int GetByte(DWORD a_dwIndex, OUT BYTE* a_pbyByte);
-	int GetWord(DWORD a_dwIndex, OUT unsigned short *a_pwWord);
-	int GetDword(DWORD a_dwIndex, OUT DWORD* a_pdwDWord);
+	int GetByte(DWORD a_dwIndex, NX_OUT BYTE* a_pbyByte);
+	int GetWord(DWORD a_dwIndex, NX_OUT unsigned short *a_pwWord);
+	int GetDword(DWORD a_dwIndex, NX_OUT DWORD* a_pdwDWord);
 	
 	// GetSize - returns the size of the buffer, 0 if not allocated or empty
 	DWORD GetSize() const;
@@ -102,10 +102,12 @@ public:
 	void SetMaxSize(DWORD a_dwMaxDataSize) {m_dwMaxDataSize = a_dwMaxDataSize;}
 
 	// GetData - copy data to a user supplied buffer
-	int GetData(OUT BYTE *a_pUserBuffer, DWORD a_dwOffset, DWORD a_dwLength) const;
+	int GetData(NX_OUT BYTE *a_pUserBuffer, DWORD a_dwOffset, DWORD a_dwLength) const;
 
 	// ForceEndianity - Set the endianity of the CData object no matter of the architecture
 	void ForceEndianity(EEndianity a_eEndianity);
+    // GetEndianity - Returns the endianity of the CData object
+    EEndianity GetEndianity();
 
 	// Remove - Removes a range of bytes from the data
 	bool Remove(DWORD a_dwIndex, DWORD a_dwCount);

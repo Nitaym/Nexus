@@ -32,9 +32,9 @@ public:
 	virtual TCommErr Connect() = 0;
 	virtual TCommErr Disconnect() = 0;
 	virtual bool IsConnected() = 0;
-	virtual TCommErr Send (IN CData *a_pData, IN IMetaData *a_pMetatData = NULL, IN DWORD a_dwTimeoutMs = INFINITE_TIMEOUT) = 0;
-	virtual TCommErr Receive(OUT CData *a_pData, OUT IMetaData *a_pMetaData = NULL, IN DWORD a_dwTimeoutMs = INFINITE_TIMEOUT) = 0;
-	virtual TCommErr SendReceive(IN CData *a_pDataIn, OUT CData *a_pDataOut, IN IMetaData *a_pMetaDataIn = NULL, OUT IMetaData *a_pMetaDataOut = NULL, IN DWORD a_dwTimeoutMs = INFINITE_TIMEOUT)
+	virtual TCommErr Send (NX_IN CData *a_pData, NX_IN IMetaData *a_pMetatData = NULL, NX_IN DWORD a_dwTimeoutMs = INFINITE_TIMEOUT) = 0;
+	virtual TCommErr Receive(NX_OUT CData *a_pData, NX_OUT IMetaData *a_pMetaData = NULL, NX_IN DWORD a_dwTimeoutMs = INFINITE_TIMEOUT) = 0;
+	virtual TCommErr SendReceive(NX_IN CData *a_pDataIn, NX_OUT CData *a_pDataOut, NX_IN IMetaData *a_pMetaDataIn = NULL, NX_OUT IMetaData *a_pMetaDataOut = NULL, NX_IN DWORD a_dwTimeoutMs = INFINITE_TIMEOUT)
 	{
 		// Default implementation of this virtual function
 		return E_NEXUS_NOT_SUPPORTED;

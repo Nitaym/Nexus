@@ -43,7 +43,7 @@ TCommErr CFileComm::Disconnect()
     return E_NEXUS_OK;
 }
 
-TCommErr CFileComm::Send(IN CData *a_pData, IN IMetaData *a_pMetaData, IN DWORD a_dwTimeoutMs)
+TCommErr CFileComm::Send(NX_IN CData *a_pData, NX_IN IMetaData *a_pMetaData, NX_IN DWORD a_dwTimeoutMs)
 {
     if (m_oOutputFile.is_open())
     {
@@ -57,7 +57,7 @@ TCommErr CFileComm::Send(IN CData *a_pData, IN IMetaData *a_pMetaData, IN DWORD 
 }
 
 
-TCommErr CFileComm::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData, IN DWORD a_dwTimeoutMs)
+TCommErr CFileComm::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMetaData, NX_IN DWORD a_dwTimeoutMs)
 {
     if (m_oInputFile.is_open())
     {
@@ -75,7 +75,7 @@ TCommErr CFileComm::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData, IN
     return E_NEXUS_OK;
 }
 
-TCommErr CFileComm::SendReceive(IN CData *a_pDataIn, OUT CData *a_pDataOut, IN IMetaData *a_pMetaDataIn /*= NULL*/, OUT IMetaData *a_pMetaDataOut /*= NULL*/, IN DWORD a_dwTimeoutMs)
+TCommErr CFileComm::SendReceive(NX_IN CData *a_pDataIn, NX_OUT CData *a_pDataOut, NX_IN IMetaData *a_pMetaDataIn /*= NULL*/, NX_OUT IMetaData *a_pMetaDataOut /*= NULL*/, NX_IN DWORD a_dwTimeoutMs)
 {
 	return Send(a_pDataIn, a_pMetaDataIn, a_dwTimeoutMs);
 }

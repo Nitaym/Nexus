@@ -89,7 +89,7 @@ bool CAutoConnect::IsConnected()
 	return m_bIsConnected;
 }
 
-TCommErr CAutoConnect::Receive(OUT CData *a_pData, OUT IMetaData *a_pMetaData /* = NULL */, IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
+TCommErr CAutoConnect::Receive(NX_OUT CData *a_pData, NX_OUT IMetaData *a_pMetaData /* = NULL */, NX_IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
 {
     if (m_pUnderlyingComm != NULL)
         return m_pUnderlyingComm->Receive(a_pData, a_pMetaData, a_dwTimeoutMs);

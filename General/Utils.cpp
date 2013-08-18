@@ -109,11 +109,9 @@ DWORD GetTickCount()
 
 void Nexus::BinToHexString(byte* a_bBuffer, char* a_sString, int a_iLength)
 {
+    for (int i = 0; i < a_iLength; i++)
     {
-        for (int i = 0; i < a_iLength; i++)
-        {
-            sprintf(a_sString + i*3, "%02x ", a_bBuffer[i]);
-        }
+        sprintf(a_sString + i*3, "%02x ", a_bBuffer[i]);
     }
 }
 

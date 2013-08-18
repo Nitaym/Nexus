@@ -24,7 +24,7 @@ TCommErr CConsoleComm::Disconnect()
     return E_NEXUS_OK;
 }
 
-TCommErr CConsoleComm::Send(IN CData *a_pData, IN IMetaData *a_pMetaData, IN DWORD a_dwTimeoutMs)
+TCommErr CConsoleComm::Send(NX_IN CData *a_pData, NX_IN IMetaData *a_pMetaData, NX_IN DWORD a_dwTimeoutMs)
 {
     char* l_sBuffer = new char[a_pData->GetSize()];
     cout << a_pData->GetString();
@@ -34,12 +34,12 @@ TCommErr CConsoleComm::Send(IN CData *a_pData, IN IMetaData *a_pMetaData, IN DWO
 }
 
 
-TCommErr CConsoleComm::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData, IN DWORD a_dwTimeoutMs)
+TCommErr CConsoleComm::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMetaData, NX_IN DWORD a_dwTimeoutMs)
 {
     return E_NEXUS_OK;
 }
 
-TCommErr CConsoleComm::SendReceive(IN CData *a_pDataIn, OUT CData *a_pDataOut, IN IMetaData *a_pMetaDataIn /*= NULL*/, OUT IMetaData *a_pMetaDataOut /*= NULL*/, IN DWORD a_dwTimeoutMs)
+TCommErr CConsoleComm::SendReceive(NX_IN CData *a_pDataIn, NX_OUT CData *a_pDataOut, NX_IN IMetaData *a_pMetaDataIn /*= NULL*/, NX_OUT IMetaData *a_pMetaDataOut /*= NULL*/, NX_IN DWORD a_dwTimeoutMs)
 {
 	return Send(a_pDataIn, a_pMetaDataIn, a_dwTimeoutMs);
 }

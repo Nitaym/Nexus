@@ -114,7 +114,7 @@ TCommErr CServerSocket::Disconnect()
     return E_NEXUS_NOT_SUPPORTED;
 }
 
-TCommErr CServerSocket::Send(IN CData *a_pData, IN IMetaData *a_pMetaData /* = NULL */, IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
+TCommErr CServerSocket::Send(NX_IN CData *a_pData, NX_IN IMetaData *a_pMetaData /* = NULL */, NX_IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
 {
     TServerSocketClient* l_pSelectedClient = ((CServerSocketMetaData*)a_pMetaData)->SelectedClient;
     
@@ -138,7 +138,7 @@ TCommErr CServerSocket::Send(IN CData *a_pData, IN IMetaData *a_pMetaData /* = N
 	return E_NEXUS_OK;
 }
 
-TCommErr CServerSocket::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData /* = NULL */, IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
+TCommErr CServerSocket::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMetaData /* = NULL */, NX_IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
 {
 #ifdef WIN32
     CServerSocketMetaData* l_pMetadata = (CServerSocketMetaData*)a_pMetaData;

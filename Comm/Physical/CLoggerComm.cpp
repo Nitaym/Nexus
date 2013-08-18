@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include "CLoggerComm.h"
 
 using namespace Nexus;
@@ -32,7 +31,7 @@ TCommErr CLoggerComm::Connect()
 	return E_NEXUS_OK;
 }
 
-TCommErr CLoggerComm::Send(IN CData *a_pData, IN IMetaData *a_pMetaData, IN DWORD a_dwTimeoutMs)
+TCommErr CLoggerComm::Send(NX_IN CData *a_pData, NX_IN IMetaData *a_pMetaData, NX_IN DWORD a_dwTimeoutMs)
 {
 	if (!WriteMessage(a_pData, "SEND: "))
 		return E_NEXUS_FAIL;
@@ -52,7 +51,7 @@ TCommErr CLoggerComm::Disconnect()
 	return E_NEXUS_OK;
 }
 
-TCommErr CLoggerComm::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData, IN DWORD a_dwTimeoutMs)
+TCommErr CLoggerComm::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMetaData, NX_IN DWORD a_dwTimeoutMs)
 {
 	if (!WriteMessage(a_pData, "RECEIVE: "))
 		return E_NEXUS_FAIL;
@@ -60,7 +59,7 @@ TCommErr CLoggerComm::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData, 
 	return E_NEXUS_OK;
 }
 
-TCommErr CLoggerComm::SendReceive(IN CData *a_pDataIn, OUT CData *a_pDataOut, IN IMetaData *a_pMetaDataIn /*= NULL*/, OUT IMetaData *a_pMetaDataOut /*= NULL*/, IN DWORD a_dwTimeoutMs)
+TCommErr CLoggerComm::SendReceive(NX_IN CData *a_pDataIn, NX_OUT CData *a_pDataOut, NX_IN IMetaData *a_pMetaDataIn /*= NULL*/, NX_OUT IMetaData *a_pMetaDataOut /*= NULL*/, NX_IN DWORD a_dwTimeoutMs)
 {
 	return Send(a_pDataIn, a_pMetaDataIn, a_dwTimeoutMs);
 }
@@ -92,7 +91,7 @@ bool CLoggerComm::WriteMessage(std::string a_sMessage)
 	return WriteMessage((char*)a_sMessage.c_str());
 }
 
-bool CLoggerComm::WriteMessage(IN CData *a_pData, std::string a_sPrefix)
+bool CLoggerComm::WriteMessage(NX_IN CData *a_pData, std::string a_sPrefix)
 {
 	if (!a_pData)
 		return false;

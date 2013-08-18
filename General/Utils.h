@@ -49,7 +49,7 @@ namespace Nexus
 
 HTHREAD NexusCreateThread(typeCallbackFunc a_pFunction, void *a_pParam);
 
-inline void BinToHexString(byte* a_bBuffer, char* a_sString, int a_iLength);
+void BinToHexString(byte* a_bBuffer, char* a_sString, int a_iLength);
 
 inline void PrintStringAsHex(string strData);
 

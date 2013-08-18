@@ -55,7 +55,7 @@ public:
     ~CAsyncReceiver();
 
 	// Receive data packet from the received packets queue
-	TCommErr Receive(OUT CData *a_pData, OUT IMetaData *a_pMetaData = NULL, IN DWORD a_dwTimeoutMs = DEFAULT_TIMEOUT);
+	TCommErr Receive(NX_OUT CData *a_pData, NX_OUT IMetaData *a_pMetaData = NULL, NX_IN DWORD a_dwTimeoutMs = DEFAULT_TIMEOUT);
 
 	// Start the receiving thread
 	TCommErr Connect();
@@ -67,7 +67,7 @@ public:
 	// Is the thread running = Is receiving
 	bool IsConnected();
 	void SetMaxPacketSize (int a_iMaxPacketSize);
-	void SetMetaDataObject (IN IMetaData *a_pMetaData);
+	void SetMetaDataObject (NX_IN IMetaData *a_pMetaData);
     void SetErrorRecoveryTime(int a_iTimeMs);
     int ErrorRecoveryTime() { return m_iRecoveryTime; }
 

@@ -1,5 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
-
 /*********************************************************************
 * Comm/Base/CData.cpp
 * Description:
@@ -155,7 +153,7 @@ bool Nexus::CData::Compare(CData* comparedData)
     if (this->GetSize() != comparedData->GetSize())
         return false;
 
-    for (int i = 0; i < this->GetSize(); i++)
+    for (unsigned int i = 0; i < this->GetSize(); i++)
     {
         if (m_oData[i] != (*comparedData)[i])
             return false;
@@ -388,7 +386,7 @@ void CData::FreeData()
 *		TCommErr that states the error value
 *
 *****************************************************************/
-int CData::GetByte(DWORD a_dwIndex, OUT BYTE* a_pbyByte)
+int CData::GetByte(DWORD a_dwIndex, NX_OUT BYTE* a_pbyByte)
 {
 	if (a_dwIndex < m_oData.size())
 	{
@@ -400,7 +398,7 @@ int CData::GetByte(DWORD a_dwIndex, OUT BYTE* a_pbyByte)
 	return E_NEXUS_INDEX_OUT_OF_RANGE;
 }
 
-int CData::GetWord(DWORD a_dwIndex, OUT unsigned short *a_pwWord)
+int CData::GetWord(DWORD a_dwIndex, NX_OUT unsigned short *a_pwWord)
 {
 	if (m_bSwitchEndianity)
 	{
@@ -414,7 +412,7 @@ int CData::GetWord(DWORD a_dwIndex, OUT unsigned short *a_pwWord)
 	return GetData((byte*)a_pwWord, a_dwIndex, 2);
 }
 
-int CData::GetDword(DWORD a_dwIndex, OUT DWORD* a_pdwDWord)
+int CData::GetDword(DWORD a_dwIndex, NX_OUT DWORD* a_pdwDWord)
 {
 	if (m_bSwitchEndianity)
 	{
@@ -466,7 +464,7 @@ DWORD CData::GetSize() const
 *		TCommErr that states the error value
 *
 *****************************************************************/
-int CData::GetData(OUT BYTE *a_pUserBuffer, DWORD a_dwOffset, DWORD a_dwLength) const
+int CData::GetData(NX_OUT BYTE *a_pUserBuffer, DWORD a_dwOffset, DWORD a_dwLength) const
 {
 	if ((a_dwOffset + a_dwLength > m_oData.size()) || a_dwLength == 0)
 	{
@@ -494,6 +492,28 @@ void CData::ForceEndianity(EEndianity a_eEndianity)
 {
 	m_bSwitchEndianity = (a_eEndianity == ENDIANITY_SWITCH);
 }
+
+
+/*****************************************************************
+*	void CData::GetEndianity()
+*
+*	Description:
+*       GetEndianity - Returns the endianity of the CData object
+*
+*	Arguments:
+*
+*	Return Value:
+*       The Endianity
+*
+*****************************************************************/
+EEndianity CData::GetEndianity()
+{
+    if (m_bSwitchEndianity)
+        return ENDIANITY_SWITCH;
+
+    return ENDIANITY_NORMAL;
+}
+
 
 /*****************************************************************
 *	bool CData::Remove(DWORD a_dwIndex, DWORD a_dwCount)
@@ -676,6 +696,7 @@ void CData::Dump(std::string a_sFilename)
 
 void CData::Dump(std::string a_sFilename, std::string a_sOpenFlags)
 {
+    // TODO: Check the result of fopen!! And why don't we use C++ here???
     FILE * l_pFile;
     l_pFile = fopen(a_sFilename.c_str(), a_sOpenFlags.c_str());
 

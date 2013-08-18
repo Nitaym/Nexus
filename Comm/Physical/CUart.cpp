@@ -359,7 +359,7 @@ bool CUart::IsConnected()
 *			E_WRITE_ERROR
 *
 *************************************************************/
-TCommErr CUart::Send(IN CData *a_pData, IN IMetaData *a_pMetaData /* = NULL */, IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
+TCommErr CUart::Send(NX_IN CData *a_pData, NX_IN IMetaData *a_pMetaData /* = NULL */, NX_IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
 {
     // UNREFENCED_PARAMETER(a_pMetaData);
     // UNREFENCED_PARAMETER(a_dwTimeoutMs);
@@ -417,7 +417,7 @@ TCommErr CUart::Send(IN CData *a_pData, IN IMetaData *a_pMetaData /* = NULL */, 
 *			E_ALLOCATION_ERROR - Memory allocation failed
 *
 *************************************************************/
-TCommErr CUart::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData /* = NULL */, IN DWORD a_dwTimeoutMs /*= DEFAULT_TIMEOUT */)
+TCommErr CUart::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMetaData /* = NULL */, NX_IN DWORD a_dwTimeoutMs /*= DEFAULT_TIMEOUT */)
 {
     if (!m_bIsConnected)
     {
