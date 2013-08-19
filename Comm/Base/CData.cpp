@@ -16,6 +16,12 @@ using namespace Nexus;
 
 #define dprintf printf // prints directly to stdout, has no logger.
 
+static const std::string base64_chars = 
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    "abcdefghijklmnopqrstuvwxyz"
+    "0123456789+/";
+
+
 /*************************************************************
 *	CData()
 *
@@ -161,7 +167,6 @@ bool Nexus::CData::Compare(CData* comparedData)
 
     return true;
 }
-
 
 /*****************************************************************
 *	void CData::CopyFrom(CData* a_oData)
@@ -704,3 +709,46 @@ void CData::Dump(std::string a_sFilename, std::string a_sOpenFlags)
     fclose(l_pFile);
 }
 
+std::string Nexus::CData::DumpBase64()
+{
+    std::string ret;
+    int i = 0;
+    int j = 0;
+    unsigned char char_array_3[3];
+    unsigned char char_array_4[4];
+    int bytesRemaining = this->GetSize();
+    int currentByte = 0;
+
+    while (bytesRemaining--) {
+        char_array_3[i++] = this->m_oData[currentByte++];
+        if (i == 3) {
+            char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
+            char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
+            char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
+            char_array_4[3] = char_array_3[2] & 0x3f;
+
+            for(i = 0; (i <4) ; i++)
+                ret += base64_chars[char_array_4[i]];
+            i = 0;
+        }
+    }
+
+    if (i)
+    {
+        for(j = i; j < 3; j++)
+            char_array_3[j] = '\0';
+
+        char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
+        char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
+        char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
+        char_array_4[3] = char_array_3[2] & 0x3f;
+
+        for (j = 0; (j < i + 1); j++)
+            ret += base64_chars[char_array_4[j]];
+
+        while((i++ < 3))
+            ret += '=';
+    }
+
+    return ret;
+}
