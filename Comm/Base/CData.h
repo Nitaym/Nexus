@@ -117,6 +117,7 @@ public:
 
 	// GetString - returns a copy of the internal string
 	string& GetString();
+    string& GetString(int a_iStartIndex, int a_iCount);
 
 	// Find - Returns the index of a byte in the data
 	int Find(DWORD a_dwStartIndex, byte a_byValue);

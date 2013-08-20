@@ -595,8 +595,27 @@ void CData::SetString(const string &a_strData)
 *****************************************************************/
 string& CData::GetString()
 {
-	m_sStringData.assign((char*)&(m_oData[0]), m_oData.size());
-	return (m_sStringData);
+    return GetString(0, GetSize());
+}
+
+/*****************************************************************
+*	string& CData::GetString(int a_iStartIndex, int a_iCount)
+*
+*	Description:
+*		Returns a copy of the internal buffer as string
+*
+*	Arguments:
+*       a_iStartIndex - Where to start copying the string from
+*		a_iCount - How many characaters to copy
+*
+*	Return Value:
+*		The data buffer as a string
+*
+*****************************************************************/
+string& CData::GetString(int a_iStartIndex, int a_iCount)
+{
+    m_sStringData.assign((char*)&(m_oData[a_iStartIndex]), a_iCount);
+    return (m_sStringData);
 }
 
 
