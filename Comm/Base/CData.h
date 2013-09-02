@@ -30,23 +30,35 @@ private:
 	string m_sStringData;	// This string is for the GetString function. It is not really needed.
 							// But we like to be able to do GetString() without worrying about 
 							// freeing the string afterwards
-
-	void SwapEndianity(unsigned short *a_shNumber)
-	{
-		*a_shNumber = 
-			(*a_shNumber>>8) | 
-			(*a_shNumber<<8);
-	}
-	void SwapEndianity(unsigned int *a_iNumber)
-	{
-		*a_iNumber = 
-			(*a_iNumber >> 24) | 
-			((*a_iNumber << 8) & 0x00FF0000) |
-			((*a_iNumber >> 8) & 0x0000FF00) |
-			(*a_iNumber << 24);
-	}
-
 public:
+    static void SwapEndianity(unsigned short *a_shNumber)
+    {
+        *a_shNumber = 
+            (*a_shNumber>>8) | 
+            (*a_shNumber<<8);
+    }
+    static void SwapEndianity(unsigned int *a_iNumber)
+    {
+        *a_iNumber = 
+            (*a_iNumber >> 24) | 
+            ((*a_iNumber >> 8) & 0x0000FF00) |
+            ((*a_iNumber << 8) & 0x00FF0000) |
+            (*a_iNumber << 24);
+    }
+    static void SwapEndianity(unsigned long long *a_iNumber)
+    {
+        *a_iNumber = 
+            (*a_iNumber >> 56) | 
+            ((*a_iNumber >> 40) & 0x000000000000FF00) |
+            ((*a_iNumber >> 24) & 0x0000000000FF0000) |
+            ((*a_iNumber >> 8)  & 0x00000000FF000000) |
+            ((*a_iNumber << 8)  & 0x000000FF00000000) |
+            ((*a_iNumber << 24) & 0x0000FF0000000000) |
+            ((*a_iNumber >> 48) & 0x00FF000000000000) |
+            (*a_iNumber << 56);
+    }
+
+
 	// Constructor of an empty packet
 	CData();
 

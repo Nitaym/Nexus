@@ -268,7 +268,7 @@ bool CData::Append(unsigned short a_wShort)
 {
 	if (m_bSwitchEndianity)
 	{
-		SwapEndianity(&a_wShort);
+		CData::SwapEndianity(&a_wShort);
 	}
 	return Append((byte*)&a_wShort, 2);
 }
@@ -277,7 +277,7 @@ bool CData::Append(int a_iInt)
 {
 	if (m_bSwitchEndianity)
 	{
-		SwapEndianity((unsigned int*)&a_iInt);
+		CData::SwapEndianity((unsigned int*)&a_iInt);
 	}
 	return Append((byte*)&a_iInt, 4);
 }
@@ -409,7 +409,7 @@ int CData::GetWord(DWORD a_dwIndex, NX_OUT unsigned short *a_pwWord)
 	{
 		if (GetData((byte*)a_pwWord, a_dwIndex, 2) == E_NEXUS_OK)
 		{
-			SwapEndianity(a_pwWord);
+			CData::SwapEndianity(a_pwWord);
 			return E_NEXUS_OK;
 		}
 	}
@@ -423,7 +423,7 @@ int CData::GetDword(DWORD a_dwIndex, NX_OUT DWORD* a_pdwDWord)
 	{
 		if (GetData((byte*)a_pdwDWord, a_dwIndex, 4) == E_NEXUS_OK)
 		{
-			SwapEndianity((unsigned int*)a_pdwDWord);
+			CData::SwapEndianity((unsigned int*)a_pdwDWord);
 			return E_NEXUS_OK;
 		}
 	}
