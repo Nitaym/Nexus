@@ -106,3 +106,29 @@ DWORD GetTickCount()
 }
 
 #endif
+
+void Nexus::BinToHexString(byte* a_bBuffer, char* a_sString, int a_iLength)
+{
+    for (int i = 0; i < a_iLength; i++)
+    {
+        sprintf(a_sString + i*3, "%02x ", a_bBuffer[i]);
+    }
+}
+
+void Nexus::PrintStringAsHex(string strData)
+{
+    printf("[%d]", strData.size());
+    int dwSize = strData.size();
+    for (int i = 0; i < dwSize; i++)
+        printf(" %02X", (BYTE)strData[i]);
+    printf("\n");
+}
+
+
+void Nexus::PrintArrayAsHex(BYTE *pArray, DWORD dwSize)
+{
+    printf("[%d]", (int)dwSize);
+    for (int i = 0; i < (int)dwSize; i++)
+        printf(" %02X", pArray[i]);
+    printf("\n");
+}

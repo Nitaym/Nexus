@@ -138,7 +138,7 @@ bool ICommLayer::IsConnected()
 *			Other error from the underlying layer
 *		
 *****************************************************************/
-TCommErr ICommLayer::Send(IN CData *a_pData, IN IMetaData *a_pMetaData /* = NULL */, IN DWORD a_dwTimeoutMS /* = DEFAULT_TIMEOUT */)
+TCommErr ICommLayer::Send(NX_IN CData *a_pData, NX_IN IMetaData *a_pMetaData /* = NULL */, NX_IN DWORD a_dwTimeoutMS /* = DEFAULT_TIMEOUT */)
 {
 	if (!m_bIsConnected)
 	{
@@ -170,7 +170,7 @@ TCommErr ICommLayer::Send(IN CData *a_pData, IN IMetaData *a_pMetaData /* = NULL
 *			Other error from the underlying layer
 *		
 *******************************************************************************************************/
-TCommErr ICommLayer::Receive(OUT CData *a_pData, OUT IMetaData *a_pMetaData /* = NULL */, IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
+TCommErr ICommLayer::Receive(NX_OUT CData *a_pData, NX_OUT IMetaData *a_pMetaData /* = NULL */, NX_IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
 {
 	if (!m_bIsConnected)
 	{

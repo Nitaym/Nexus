@@ -1,5 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
-
 /*********************************************************************
 * Comm/Base/CData.cpp
 * Description:
@@ -17,6 +15,12 @@ using namespace std;
 using namespace Nexus;
 
 #define dprintf printf // prints directly to stdout, has no logger.
+
+static const std::string base64_chars = 
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    "abcdefghijklmnopqrstuvwxyz"
+    "0123456789+/";
+
 
 /*************************************************************
 *	CData()
@@ -155,7 +159,7 @@ bool Nexus::CData::Compare(CData* comparedData)
     if (this->GetSize() != comparedData->GetSize())
         return false;
 
-    for (int i = 0; i < this->GetSize(); i++)
+    for (unsigned int i = 0; i < this->GetSize(); i++)
     {
         if (m_oData[i] != (*comparedData)[i])
             return false;
@@ -163,7 +167,6 @@ bool Nexus::CData::Compare(CData* comparedData)
 
     return true;
 }
-
 
 /*****************************************************************
 *	void CData::CopyFrom(CData* a_oData)
@@ -265,7 +268,7 @@ bool CData::Append(unsigned short a_wShort)
 {
 	if (m_bSwitchEndianity)
 	{
-		SwapEndianity(&a_wShort);
+		CData::SwapEndianity(&a_wShort);
 	}
 	return Append((byte*)&a_wShort, 2);
 }
@@ -274,7 +277,7 @@ bool CData::Append(int a_iInt)
 {
 	if (m_bSwitchEndianity)
 	{
-		SwapEndianity((unsigned int*)&a_iInt);
+		CData::SwapEndianity((unsigned int*)&a_iInt);
 	}
 	return Append((byte*)&a_iInt, 4);
 }
@@ -388,7 +391,7 @@ void CData::FreeData()
 *		TCommErr that states the error value
 *
 *****************************************************************/
-int CData::GetByte(DWORD a_dwIndex, OUT BYTE* a_pbyByte)
+int CData::GetByte(DWORD a_dwIndex, NX_OUT BYTE* a_pbyByte)
 {
 	if (a_dwIndex < m_oData.size())
 	{
@@ -400,13 +403,13 @@ int CData::GetByte(DWORD a_dwIndex, OUT BYTE* a_pbyByte)
 	return E_NEXUS_INDEX_OUT_OF_RANGE;
 }
 
-int CData::GetWord(DWORD a_dwIndex, OUT unsigned short *a_pwWord)
+int CData::GetWord(DWORD a_dwIndex, NX_OUT unsigned short *a_pwWord)
 {
 	if (m_bSwitchEndianity)
 	{
 		if (GetData((byte*)a_pwWord, a_dwIndex, 2) == E_NEXUS_OK)
 		{
-			SwapEndianity(a_pwWord);
+			CData::SwapEndianity(a_pwWord);
 			return E_NEXUS_OK;
 		}
 	}
@@ -414,13 +417,13 @@ int CData::GetWord(DWORD a_dwIndex, OUT unsigned short *a_pwWord)
 	return GetData((byte*)a_pwWord, a_dwIndex, 2);
 }
 
-int CData::GetDword(DWORD a_dwIndex, OUT DWORD* a_pdwDWord)
+int CData::GetDword(DWORD a_dwIndex, NX_OUT DWORD* a_pdwDWord)
 {
 	if (m_bSwitchEndianity)
 	{
 		if (GetData((byte*)a_pdwDWord, a_dwIndex, 4) == E_NEXUS_OK)
 		{
-			SwapEndianity((unsigned int*)a_pdwDWord);
+			CData::SwapEndianity((unsigned int*)a_pdwDWord);
 			return E_NEXUS_OK;
 		}
 	}
@@ -466,7 +469,7 @@ DWORD CData::GetSize() const
 *		TCommErr that states the error value
 *
 *****************************************************************/
-int CData::GetData(OUT BYTE *a_pUserBuffer, DWORD a_dwOffset, DWORD a_dwLength) const
+int CData::GetData(NX_OUT BYTE *a_pUserBuffer, DWORD a_dwOffset, DWORD a_dwLength) const
 {
 	if ((a_dwOffset + a_dwLength > m_oData.size()) || a_dwLength == 0)
 	{
@@ -494,6 +497,28 @@ void CData::ForceEndianity(EEndianity a_eEndianity)
 {
 	m_bSwitchEndianity = (a_eEndianity == ENDIANITY_SWITCH);
 }
+
+
+/*****************************************************************
+*	void CData::GetEndianity()
+*
+*	Description:
+*       GetEndianity - Returns the endianity of the CData object
+*
+*	Arguments:
+*
+*	Return Value:
+*       The Endianity
+*
+*****************************************************************/
+EEndianity CData::GetEndianity()
+{
+    if (m_bSwitchEndianity)
+        return ENDIANITY_SWITCH;
+
+    return ENDIANITY_NORMAL;
+}
+
 
 /*****************************************************************
 *	bool CData::Remove(DWORD a_dwIndex, DWORD a_dwCount)
@@ -570,8 +595,27 @@ void CData::SetString(const string &a_strData)
 *****************************************************************/
 string& CData::GetString()
 {
-	m_sStringData.assign((char*)&(m_oData[0]), m_oData.size());
-	return (m_sStringData);
+    return GetString(0, GetSize());
+}
+
+/*****************************************************************
+*	string& CData::GetString(int a_iStartIndex, int a_iCount)
+*
+*	Description:
+*		Returns a copy of the internal buffer as string
+*
+*	Arguments:
+*       a_iStartIndex - Where to start copying the string from
+*		a_iCount - How many characaters to copy
+*
+*	Return Value:
+*		The data buffer as a string
+*
+*****************************************************************/
+string& CData::GetString(int a_iStartIndex, int a_iCount)
+{
+    m_sStringData.assign((char*)&(m_oData[a_iStartIndex]), a_iCount);
+    return (m_sStringData);
 }
 
 
@@ -676,6 +720,7 @@ void CData::Dump(std::string a_sFilename)
 
 void CData::Dump(std::string a_sFilename, std::string a_sOpenFlags)
 {
+    // TODO: Check the result of fopen!! And why don't we use C++ here???
     FILE * l_pFile;
     l_pFile = fopen(a_sFilename.c_str(), a_sOpenFlags.c_str());
 
@@ -683,3 +728,46 @@ void CData::Dump(std::string a_sFilename, std::string a_sOpenFlags)
     fclose(l_pFile);
 }
 
+std::string Nexus::CData::DumpBase64()
+{
+    std::string ret;
+    int i = 0;
+    int j = 0;
+    unsigned char char_array_3[3];
+    unsigned char char_array_4[4];
+    int bytesRemaining = this->GetSize();
+    int currentByte = 0;
+
+    while (bytesRemaining--) {
+        char_array_3[i++] = this->m_oData[currentByte++];
+        if (i == 3) {
+            char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
+            char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
+            char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
+            char_array_4[3] = char_array_3[2] & 0x3f;
+
+            for(i = 0; (i <4) ; i++)
+                ret += base64_chars[char_array_4[i]];
+            i = 0;
+        }
+    }
+
+    if (i)
+    {
+        for(j = i; j < 3; j++)
+            char_array_3[j] = '\0';
+
+        char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
+        char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
+        char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
+        char_array_4[3] = char_array_3[2] & 0x3f;
+
+        for (j = 0; (j < i + 1); j++)
+            ret += base64_chars[char_array_4[j]];
+
+        while((i++ < 3))
+            ret += '=';
+    }
+
+    return ret;
+}

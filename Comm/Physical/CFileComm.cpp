@@ -20,13 +20,15 @@ TCommErr CFileComm::Connect()
 
     if (m_sInputFilename != "")
     {
-        m_oInputFile.open(m_sInputFilename);
+        // I use c_str() here because (I'm not sure why) gcc reported an error
+        // here when I used std::string
+        m_oInputFile.open(m_sInputFilename.c_str());
         m_bIsConnected = m_oInputFile.is_open();
         m_oInputFile.seekg(0, ios::beg);
     }
-    if (m_sInputFilename != "")
+    if (m_sOutputFilename != "")
     {
-        m_oOutputFile.open(m_sOutputFilename);
+        m_oOutputFile.open(m_sOutputFilename.c_str());
         m_bIsConnected = m_oOutputFile.is_open();
     }
 
@@ -41,7 +43,7 @@ TCommErr CFileComm::Disconnect()
     return E_NEXUS_OK;
 }
 
-TCommErr CFileComm::Send(IN CData *a_pData, IN IMetaData *a_pMetaData, IN DWORD a_dwTimeoutMs)
+TCommErr CFileComm::Send(NX_IN CData *a_pData, NX_IN IMetaData *a_pMetaData, NX_IN DWORD a_dwTimeoutMs)
 {
     if (m_oOutputFile.is_open())
     {
@@ -55,7 +57,7 @@ TCommErr CFileComm::Send(IN CData *a_pData, IN IMetaData *a_pMetaData, IN DWORD 
 }
 
 
-TCommErr CFileComm::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData, IN DWORD a_dwTimeoutMs)
+TCommErr CFileComm::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMetaData, NX_IN DWORD a_dwTimeoutMs)
 {
     if (m_oInputFile.is_open())
     {
@@ -73,7 +75,7 @@ TCommErr CFileComm::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData, IN
     return E_NEXUS_OK;
 }
 
-TCommErr CFileComm::SendReceive(IN CData *a_pDataIn, OUT CData *a_pDataOut, IN IMetaData *a_pMetaDataIn /*= NULL*/, OUT IMetaData *a_pMetaDataOut /*= NULL*/, IN DWORD a_dwTimeoutMs)
+TCommErr CFileComm::SendReceive(NX_IN CData *a_pDataIn, NX_OUT CData *a_pDataOut, NX_IN IMetaData *a_pMetaDataIn /*= NULL*/, NX_OUT IMetaData *a_pMetaDataOut /*= NULL*/, NX_IN DWORD a_dwTimeoutMs)
 {
 	return Send(a_pDataIn, a_pMetaDataIn, a_dwTimeoutMs);
 }

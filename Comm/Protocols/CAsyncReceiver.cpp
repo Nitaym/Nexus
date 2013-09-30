@@ -222,7 +222,7 @@ bool CAsyncReceiver::IsConnected()
 *		TCommErr
 *
 *****************************************************************/
-TCommErr CAsyncReceiver::Receive(OUT CData *a_pData, OUT IMetaData *a_pMetaData /* = NULL */, IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
+TCommErr CAsyncReceiver::Receive(NX_OUT CData *a_pData, NX_OUT IMetaData *a_pMetaData /* = NULL */, NX_IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
 {
 	if (!m_qIncomingPackets.empty())
 	{
@@ -433,7 +433,7 @@ void CAsyncReceiver::SetMaxPacketSize(int a_iMaxPacketSize)
 *		None
 *
 *****************************************************************/
-void CAsyncReceiver::SetMetaDataObject(IN IMetaData *a_pMetaData)
+void CAsyncReceiver::SetMetaDataObject(NX_IN IMetaData *a_pMetaData)
 {
 	m_pMetaDataType = a_pMetaData;
 }

@@ -12,6 +12,11 @@ CClientSocket::CClientSocket()
 #endif
 }
 
+CClientSocket::~CClientSocket()
+{
+    Disconnect();
+}
+
 bool CClientSocket::SetConnectionParameters(std::string a_sIP, WORD a_wPort)
 {
 	m_sIP = a_sIP;
@@ -104,6 +109,8 @@ TCommErr CClientSocket::Disconnect()
 #ifdef WIN32
     if (IsConnected())
     {
+        m_bIsConnected = false;
+
         // shutdown the send half of the connection since no more data will be sent
         int l_iResult = shutdown(m_hSocket, SD_SEND);
         if (l_iResult == SOCKET_ERROR) {
@@ -122,7 +129,7 @@ TCommErr CClientSocket::Disconnect()
 	return E_NEXUS_OK;
 }
 
-TCommErr CClientSocket::Send(IN CData *a_pData, IN IMetaData *a_pMetaData /* = NULL */, IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
+TCommErr CClientSocket::Send(NX_IN CData *a_pData, NX_IN IMetaData *a_pMetaData /* = NULL */, NX_IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
 {
 	int l_iBufferLength = a_pData->GetSize();
 	byte *l_pBuffer = new byte[l_iBufferLength];
@@ -144,7 +151,7 @@ TCommErr CClientSocket::Send(IN CData *a_pData, IN IMetaData *a_pMetaData /* = N
 	return E_NEXUS_OK;
 }
 
-TCommErr CClientSocket::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData /* = NULL */, IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
+TCommErr CClientSocket::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMetaData /* = NULL */, NX_IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
 {
 #ifdef WIN32
     byte *l_pBuffer = new byte[m_iBufferSize];
@@ -170,4 +177,17 @@ TCommErr CClientSocket::Receive(INOUT CData *a_pData, OUT IMetaData *a_pMetaData
 
 #endif
 	return E_NEXUS_OK;
+}
+
+TCommErr CClientSocket::SendReceive(NX_IN Nexus::CData *a_pDataIn, NX_OUT Nexus::CData *a_pDataOut, NX_IN Nexus::IMetaData *a_pMetaDataIn /*= NULL*/, NX_OUT Nexus::IMetaData *a_pMetaDataOut /*= NULL*/, NX_IN DWORD a_dwTimeoutMs /*= INFINITE_TIMEOUT*/)
+{
+    if (Send(a_pDataIn, a_pMetaDataIn, a_dwTimeoutMs) == E_NEXUS_OK)
+    {
+        if (Receive(a_pDataOut, a_pMetaDataOut) == E_NEXUS_OK)
+        {
+            return E_NEXUS_OK;
+        }
+    }
+
+    return E_NEXUS_FAIL;
 }

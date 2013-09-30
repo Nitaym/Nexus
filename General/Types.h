@@ -5,40 +5,32 @@
 
 #pragma once
 
-#ifndef LOCAL
-#define LOCAL
+#ifndef NX_IN
+#define NX_IN
 #endif
 
-#ifndef IN
-#define IN
+#ifndef NX_OUT
+#define NX_OUT
 #endif
 
-#ifndef OUT
-#define OUT
+#ifndef NX_OPTIONAL
+#define NX_OPTIONAL
 #endif
 
-#ifndef OPTIONAL
-#define OPTIONAL
+#ifndef NX_INOUT
+#define NX_INOUT
 #endif
 
-#ifndef INOUT
-#define INOUT
+#ifndef NX_CONST 
+#define NX_CONST const
 #endif
 
-#ifndef CONST
-#define CONST const
+#ifndef NX_INTERRUPT
+#define NX_INTERRUPT
 #endif
 
-#ifndef INTERRUPT
-#define INTERRUPT
-#endif
-
-#ifndef EXTERN
-#define EXTERN extern "C"
-#endif
-
-#ifndef CALLBACK
-#define CALLBACK
+#ifndef NX_CALLBACK
+#define NX_CALLBACK
 #endif
 
 #ifndef NULL
@@ -66,7 +58,7 @@
 #define True	TRUE
 
 typedef unsigned char	byte;
-typedef unsigned short	word;
+// typedef unsigned short	word;
 typedef unsigned long	dword;
 
 #ifndef __cplusplus
@@ -131,7 +123,7 @@ typedef WORD			*LPWORD;
 typedef long			*LPLONG;
 typedef DWORD			*LPDWORD;
 typedef void			*LPVOID;
-typedef CONST void		*LPCVOID;
+typedef NX_CONST void		*LPCVOID;
 typedef unsigned int	*PUINT;
 typedef CHAR *			LPSTR;
 typedef const CHAR *	LPCSTR;
@@ -161,7 +153,7 @@ typedef struct {
 } TWordBytes;
 
 typedef union {
-	word wValue;
+	unsigned short wValue;
 	TWordBytes stBytes;
 } UWord;
 

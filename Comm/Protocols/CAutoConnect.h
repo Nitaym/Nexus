@@ -37,7 +37,7 @@ public:
     ~CAutoConnect();
 
 	// Receive data packet from the received packets queue
-	TCommErr Receive(OUT CData *a_pData, OUT IMetaData *a_pMetaData = NULL, IN DWORD a_dwTimeoutMs = DEFAULT_TIMEOUT);
+	TCommErr Receive(NX_OUT CData *a_pData, NX_OUT IMetaData *a_pMetaData = NULL, NX_IN DWORD a_dwTimeoutMs = DEFAULT_TIMEOUT);
 
 	// Start the autoconnect thread
 	TCommErr Connect();
