@@ -282,27 +282,32 @@ bool CData::Append(int a_iInt)
 	return Append((byte*)&a_iInt, 4);
 }
 
-bool CData::Append(CData *a_pData)
+bool CData::Append(CData *a_pData, int a_iCount)
 {
-	if (a_pData->GetSize() + GetSize() > GetMaxSize())
+	if (a_pData->GetSize() + a_iCount > GetMaxSize())
 	{
 		dprintf(
 			"CData::Append: New data size (%d) is greater than the max size (%d)\n",
-			(int)(a_pData->GetSize() + GetSize()),
+			(int)(GetSize() + a_iCount),
 			(int)GetMaxSize());
 
 		return false;
 	}
 
 	// An empty CData is valid
-	if (a_pData->GetSize() == 0)
+	if (a_iCount == 0)
 		return true;
 
-	byte* l_abyBuffer = new byte[a_pData->GetSize()];
-	a_pData->GetData(l_abyBuffer, 0, a_pData->GetSize());
+	byte* l_abyBuffer = new byte[a_iCount];
+	a_pData->GetData(l_abyBuffer, 0, a_iCount);
 
 	// Insert the buffer the vector way
-	return Append(l_abyBuffer, a_pData->GetSize());
+	return Append(l_abyBuffer, a_iCount);
+}
+
+bool CData::Append(CData *a_pData)
+{
+	return Append(a_pData, a_pData->GetSize());
 }
 
 
@@ -335,16 +340,21 @@ bool CData::Insert(BYTE* a_iBuffer, int a_iIndex, int a_iCount)
 	return true;
 }
 
-bool CData::Insert(CData *a_pData, int a_iIndex)
+bool CData::Insert(CData *a_pData, int a_iIndex, int a_iCount)
 {
-	byte *buffer = new byte[a_pData->GetSize()];
+	byte *buffer = new byte[a_iCount];
 
-	a_pData->GetData(buffer, 0, a_pData->GetSize());
+	a_pData->GetData(buffer, 0, a_iCount);
 
-	bool l_bResult = Insert(buffer, a_iIndex, a_pData->GetSize());
+	bool l_bResult = Insert(buffer, a_iIndex, a_iCount);
 
 	SAFE_DELETE_ARRAY(buffer);
 	return l_bResult;
+}
+
+bool CData::Insert(CData *a_pData, int a_iIndex)
+{
+	return Insert(a_pData, a_iIndex, a_pData->GetSize());
 }
 
 bool CData::Insert(byte a_iByte, int a_iIndex)
