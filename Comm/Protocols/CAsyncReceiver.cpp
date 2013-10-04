@@ -44,12 +44,13 @@ CAsyncReceiver::CAsyncReceiver()
 *		None
 *
 *****************************************************************/
-CAsyncReceiver::CAsyncReceiver(typeAsyncReceiverRecvCallback a_pUserCallbackFunc, typeAsyncReceiverFailCallback a_pUserCallbackFailFunc)
+CAsyncReceiver::CAsyncReceiver(typeAsyncReceiverRecvCallback a_pUserCallbackFunc, typeAsyncReceiverFailCallback a_pUserCallbackFailFunc, void* a_pUserParam)
 {
     Initialize();
 
 	m_pUserCallback = a_pUserCallbackFunc;
     m_pUserFailCallback = a_pUserCallbackFailFunc;
+	m_pUserParam = a_pUserParam;
 }
 
 
@@ -312,7 +313,7 @@ void CAsyncReceiver::ReadAndReport(void *a_pvParam)
             if (l_pThis->m_pUserCallback != NULL)
             {
                 // Initiate user callback
-                eCallbackRes = (*l_pThis->m_pUserCallback)(l_stPacket.a_pData, l_stPacket.a_pMetaData);
+                eCallbackRes = (*l_pThis->m_pUserCallback)(l_pThis->UserParam(), l_stPacket.a_pData, l_stPacket.a_pMetaData);
                 switch (eCallbackRes)
                 {
                 case TReceiveCallback_PacketPutInQueue:
@@ -353,7 +354,7 @@ void CAsyncReceiver::ReadAndReport(void *a_pvParam)
                 // Notify error (once per error)
                 if (l_pThis->m_pUserFailCallback != NULL)
                 {
-                    l_pThis->m_pUserFailCallback((TCommErr)l_iRes, l_stPacket.a_pMetaData);
+                    l_pThis->m_pUserFailCallback(l_pThis->UserParam(), (TCommErr)l_iRes, l_stPacket.a_pMetaData);
                 }
 
                 dprintf_ar(" # CAsyncReceiver::ReceiveThread> Error in Receive (Code %d)\n", l_iRes);
@@ -387,8 +388,8 @@ void* CAsyncReceiver::ReceiveThread(void *a_pvParam)
 {
 	CAsyncReceiver *l_pThis = (CAsyncReceiver*)a_pvParam;
 	dprintf_ar("CAsyncReceiver::ReceiveThread\n");
-
-    while (!l_pThis->Terminating)
+									
+    while (!l_pThis->Terminating || !l_pThis->IsConnected())
     {
         if (l_pThis->IsConnected())
             l_pThis->ReadAndReport(a_pvParam);
