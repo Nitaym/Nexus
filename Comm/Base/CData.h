@@ -90,10 +90,12 @@ public:
 	bool Append(unsigned short a_wShort);
 	bool Append(int a_iInt);
 	bool Append(CData *a_pData);
+	bool Append(CData *a_pData, int a_iCount);
 
 	// Insert - Inserts bytes in the middle of the CData
 	bool Insert(BYTE *a_iBuffer, int a_iIndex, int a_iCount);
 	bool Insert(CData *a_pData, int a_iIndex);
+	bool Insert(CData *a_pData, int a_iIndex, int a_iCount);
 	bool Insert(byte a_iByte, int a_iIndex);
 
 	// FreeData - free the allocated memory for data

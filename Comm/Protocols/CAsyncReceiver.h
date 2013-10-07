@@ -26,8 +26,8 @@ struct TReceivePacket
 	IMetaData *a_pMetaData;
 };
 
-typedef TReceiveCallback (*typeAsyncReceiverRecvCallback)(CData *a_pData, IMetaData *a_pMetaData);
-typedef void (*typeAsyncReceiverFailCallback)(TCommErr a_eError, IMetaData* a_pMetaData);
+typedef TReceiveCallback (*typeAsyncReceiverRecvCallback)(void* a_pUserParam, CData *a_pData, IMetaData *a_pMetaData);
+typedef void (*typeAsyncReceiverFailCallback)(void* a_pUserParam, TCommErr a_eError, IMetaData* a_pMetaData);
 
 class CAsyncReceiver : public ICommLayer
 {
@@ -51,7 +51,7 @@ public:
 
 	// We have 2 constructors: one for implementation with a user callback and one without
 	CAsyncReceiver();
-	CAsyncReceiver(typeAsyncReceiverRecvCallback pUserCallbackFunc, typeAsyncReceiverFailCallback a_pUserCallbackFailFunc);
+	CAsyncReceiver(typeAsyncReceiverRecvCallback pUserCallbackFunc, typeAsyncReceiverFailCallback a_pUserCallbackFailFunc, void* a_pUserParam);
     ~CAsyncReceiver();
 
 	// Receive data packet from the received packets queue
@@ -71,6 +71,7 @@ public:
     void SetErrorRecoveryTime(int a_iTimeMs);
     int ErrorRecoveryTime() { return m_iRecoveryTime; }
 
+	void* UserParam() { return m_pUserParam; }
 
     static void ReadAndReport(void *a_pvParam);
 private:
