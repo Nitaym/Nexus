@@ -141,8 +141,8 @@ public:
 	void PrintHex() const;
 
 	// Dump - Dumps the data to a file
-	void Dump(std::string a_sFilename);
-    void Dump(std::string a_sFilename, std::string a_sOpenFlags);
+	bool Dump(std::string a_sFilename);
+    bool Dump(std::string a_sFilename, std::string a_sOpenFlags);
 
     // DumpBase64 - Returns a base64 representation of the buffer
     std::string DumpBase64();

@@ -713,19 +713,25 @@ void CData::PrintHex() const
 	dprintf("\n");
 }
 
-void CData::Dump(std::string a_sFilename)
+bool CData::Dump(std::string a_sFilename)
 {
-    Dump(a_sFilename, "wb");
+    return Dump(a_sFilename, "wb");
 }
 
-void CData::Dump(std::string a_sFilename, std::string a_sOpenFlags)
+bool CData::Dump(std::string a_sFilename, std::string a_sOpenFlags)
 {
     // TODO: Check the result of fopen!! And why don't we use C++ here???
     FILE * l_pFile;
     l_pFile = fopen(a_sFilename.c_str(), a_sOpenFlags.c_str());
+    if (l_pFile != NULL)
+    {
+        fwrite(&(m_oData)[0], 1, this->GetSize(), l_pFile);
+        fclose(l_pFile);
 
-    fwrite(&(m_oData)[0], 1, this->GetSize(), l_pFile);
-    fclose(l_pFile);
+        return true;
+    }
+
+    return false;
 }
 
 std::string Nexus::CData::DumpBase64()
