@@ -90,7 +90,8 @@ public:
 	bool Append(unsigned short a_wShort);
 	bool Append(int a_iInt);
 	bool Append(CData *a_pData);
-	bool Append(CData *a_pData, int a_iCount);
+    bool Append(CData *a_pData, int a_iCount);
+    bool Append(CData *a_pData, int a_iIndex, int a_iCount);
 
 	// Insert - Inserts bytes in the middle of the CData
 	bool Insert(BYTE *a_iBuffer, int a_iIndex, int a_iCount);
@@ -145,6 +146,9 @@ public:
 	// Dump - Dumps the data to a file
 	bool Dump(std::string a_sFilename);
     bool Dump(std::string a_sFilename, std::string a_sOpenFlags);
+
+    // FromFile - Reads the CData from a file
+    bool FromFile(std::string a_sFilename);
 
     // DumpBase64 - Returns a base64 representation of the buffer
     std::string DumpBase64();

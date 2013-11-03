@@ -10,6 +10,8 @@
 #include <string>
 #include "CData.h"
 #include "CommErrors.h"
+#include <iostream>
+#include <fstream>
 
 using namespace std;
 using namespace Nexus;
@@ -282,27 +284,33 @@ bool CData::Append(int a_iInt)
 	return Append((byte*)&a_iInt, 4);
 }
 
+bool CData::Append(CData *a_pData, int a_iIndex, int a_iCount)
+{
+    // The (int) is here to solve a warning
+    if (a_iCount > (int)GetMaxSize())
+    {
+        dprintf(
+            "CData::Append: New data size (%d) is greater than the max size (%d)\n",
+            (int)(GetSize() + a_iCount),
+            (int)GetMaxSize());
+
+        return false;
+    }
+
+    // An empty CData is valid
+    if (a_iCount == 0)
+        return true;
+
+    byte* l_abyBuffer = new byte[a_iCount];
+    a_pData->GetData(l_abyBuffer, a_iIndex, a_iCount);
+
+    // Insert the buffer the vector way
+    return Append(l_abyBuffer, a_iCount);
+}
+
 bool CData::Append(CData *a_pData, int a_iCount)
 {
-	if (a_pData->GetSize() + a_iCount > GetMaxSize())
-	{
-		dprintf(
-			"CData::Append: New data size (%d) is greater than the max size (%d)\n",
-			(int)(GetSize() + a_iCount),
-			(int)GetMaxSize());
-
-		return false;
-	}
-
-	// An empty CData is valid
-	if (a_iCount == 0)
-		return true;
-
-	byte* l_abyBuffer = new byte[a_iCount];
-	a_pData->GetData(l_abyBuffer, 0, a_iCount);
-
-	// Insert the buffer the vector way
-	return Append(l_abyBuffer, a_iCount);
+    return Append(a_pData, 0, a_iCount);
 }
 
 bool CData::Append(CData *a_pData)
@@ -743,6 +751,33 @@ bool CData::Dump(std::string a_sFilename, std::string a_sOpenFlags)
 
     return false;
 }
+
+bool CData::FromFile(std::string a_sFilename)
+{
+    std::ifstream::pos_type l_iSize;
+    char* l_pMemblock;
+    bool result;
+
+    ifstream l_oFile (a_sFilename, ios::in|ios::binary|ios::ate);
+
+    if (l_oFile.is_open())
+    {
+        l_iSize = l_oFile.tellg();
+        l_pMemblock = new char [(unsigned int)l_iSize];
+        l_oFile.seekg (0, ios::beg);
+        l_oFile.read (l_pMemblock, l_iSize);
+        l_oFile.close();
+
+        result = SetData((BYTE*)l_pMemblock, (unsigned int)l_iSize);
+
+        delete[] l_pMemblock;
+
+        return result;
+    }
+
+    return false;
+}
+
 
 std::string Nexus::CData::DumpBase64()
 {
