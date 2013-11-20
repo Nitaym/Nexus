@@ -696,7 +696,7 @@ int CData::Find(DWORD a_dwStartIndex, byte* a_byValue, int a_iLength)
 
     std::size_t l_iPosition = l_sStringData.find(l_sWhatToFind);
 
-    if (l_iPosition == std::string::npos)
+    if (l_iPosition < std::string::npos)
         return l_iPosition;
     else
         return -1;
