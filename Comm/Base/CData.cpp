@@ -647,7 +647,7 @@ string& CData::GetString(int a_iStartIndex, int a_iCount)
 *		None
 *
 *	Return Value:
-*		None
+*		The index of the byte stream
 *
 *****************************************************************/
 int CData::Find(DWORD a_dwStartIndex, byte a_byValue)
@@ -674,6 +674,32 @@ int CData::Find(DWORD a_dwStartIndex, byte a_byValue)
 	}
 
 	return l_iIndex;
+}
+
+/*****************************************************************
+*	int CData::Find(DWORD a_dwStartIndex, byte* a_byValue)
+*
+*	Description:
+*		Returns the index of a byte stream in the data
+*
+*	Arguments:
+*		None
+*
+*	Return Value:
+*		The index of the byte stream
+*
+*****************************************************************/
+int CData::Find(DWORD a_dwStartIndex, byte* a_byValue, int a_iLength)
+{
+    std::string l_sStringData(m_oData.begin(), m_oData.end());
+    std::string l_sWhatToFind(a_byValue, a_byValue + a_iLength);
+
+    std::size_t l_iPosition = l_sStringData.find(l_sWhatToFind);
+
+    if (l_iPosition == std::string::npos)
+        return l_iPosition;
+    else
+        return -1;
 }
 
 

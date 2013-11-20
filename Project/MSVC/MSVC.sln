@@ -2,6 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "auto-reader", "..\..\unit-testers\auto-reader\MSVC\auto-reader.vcxproj", "{1B036375-7757-43C3-B380-BDF660F610C1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{06CCCBAD-3C86-40E5-827A-68D6B2ABE6EA} = {06CCCBAD-3C86-40E5-827A-68D6B2ABE6EA}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MSVC 2012", "MSVC 2012.vcxproj", "{06CCCBAD-3C86-40E5-827A-68D6B2ABE6EA}"
 EndProject

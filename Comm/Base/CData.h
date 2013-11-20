@@ -134,8 +134,10 @@ public:
 	string& GetString();
     string& GetString(int a_iStartIndex, int a_iCount);
 
-	// Find - Returns the index of a byte in the data
-	int Find(DWORD a_dwStartIndex, byte a_byValue);
+    // Find - Returns the index of a byte in the data
+    int Find(DWORD a_dwStartIndex, byte a_byValue);
+    // Find - Returns the index of bytes in the data
+    int Find(DWORD a_dwStartIndex, byte* a_byValue, int a_iLength);
 
 	// Print - prints data content
 	void Print() const;
