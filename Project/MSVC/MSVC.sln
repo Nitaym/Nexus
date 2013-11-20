@@ -9,6 +9,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MSVC 2012", "MSVC 2012.vcxproj", "{06CCCBAD-3C86-40E5-827A-68D6B2ABE6EA}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "send-receive", "..\..\unit-testers\send-receive\MSVC\send-receive.vcxproj", "{F0131E3C-077C-4EC4-BEAF-C0F4679FEA5C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{06CCCBAD-3C86-40E5-827A-68D6B2ABE6EA} = {06CCCBAD-3C86-40E5-827A-68D6B2ABE6EA}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
