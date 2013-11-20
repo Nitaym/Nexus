@@ -32,12 +32,17 @@ CServerSocket::CServerSocket()
 
     this->m_hIsListeningEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
     this->m_hIsTerminatedEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+	this->m_hClientConnected = CreateEvent(NULL, TRUE, FALSE, NULL);
 #endif
 }
 
 CServerSocket::~CServerSocket()
 {
     Disconnect();
+
+	CloseHandle(m_hClientConnected);
+	CloseHandle(m_hIsListeningEvent);
+	CloseHandle(m_hIsTerminatedEvent);
 }
 
 bool Nexus::CServerSocket::Initialize(WORD a_wPort)
@@ -94,6 +99,8 @@ TCommErr CServerSocket::Connect()
     // That's it. The server is now in listening mode
     SetEvent(this->m_hIsListeningEvent);
 
+	m_bIsConnected = true;
+
     return E_NEXUS_OK;
 
 #endif
@@ -142,14 +149,27 @@ TCommErr CServerSocket::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMe
 {
 #ifdef WIN32
     CServerSocketMetaData* l_pMetadata = (CServerSocketMetaData*)a_pMetaData;
-    TServerSocketClient* l_pSelectedClient = l_pMetadata->SelectedClient;
-    int l_iBufferSize = m_iBufferSize;
+    TServerSocketClient* l_pSelectedClient = NULL;
 
-    // Allow custom buffers
-    if (l_pMetadata->ReadSize != -1)
-        l_iBufferSize = l_pMetadata->ReadSize;
+	int l_iBufferSize = m_iBufferSize;
 
-    byte *l_pBuffer = new byte[l_iBufferSize];
+	if (!WaitClientConnected())
+		return E_NEXUS_FAIL;
+
+	if (a_pMetaData != NULL)
+	{
+		l_pSelectedClient = l_pMetadata->SelectedClient;
+
+		// Allow custom buffers
+		if (l_pMetadata->ReadSize != -1)
+			l_iBufferSize = l_pMetadata->ReadSize;
+	}
+
+	// If no client is selected, read from the first one
+	if (l_pSelectedClient == NULL)
+		l_pSelectedClient = GetClient(0);
+
+	byte *l_pBuffer = new byte[l_iBufferSize];
 
     // Read
     int l_iResult = recv(l_pSelectedClient->ClientSocket, (char*)l_pBuffer, l_iBufferSize, 0);
@@ -200,6 +220,10 @@ bool Nexus::CServerSocket::IsTerminated()
     return (WaitForSingleObject(this->m_hIsTerminatedEvent, 0) == WAIT_OBJECT_0);
 }
 
+bool Nexus::CServerSocket::WaitClientConnected()
+{
+	return (WaitForSingleObject(this->m_hClientConnected, INFINITE) == WAIT_OBJECT_0);
+}
 
 bool Nexus::CServerSocket::AcceptClient()
 {
@@ -215,6 +239,8 @@ bool Nexus::CServerSocket::AcceptClient()
     if (l_pClientStruct->ClientSocket != SOCKET_ERROR)
     {
         this->clients.push_back(l_pClientStruct);
+
+		SetEvent(this->m_hClientConnected);
 
         return true;
     }

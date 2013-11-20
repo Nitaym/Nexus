@@ -2,6 +2,9 @@
 * Comm/Protocols/CSocket.h
 * Description:
 * TCP/IP Socket Communication Module
+*
+* TODO:
+* - Add handling of client disconnections
 ******************************************/
 
 #pragma once
@@ -84,6 +87,7 @@ private:
 
     HANDLE m_hIsListeningEvent;
     HANDLE m_hIsTerminatedEvent;
+	HANDLE m_hClientConnected;
 
     std::vector<PServerSocketClient> clients;
 
@@ -114,9 +118,14 @@ public:
 
 
     // Some status functions
+	// Returns true is server is currently in listening mode
     bool IsListening();
+	// Waits until the server is in listening mode
     bool WaitIsListening();
+	// Returns true if server is terminating
     bool IsTerminated();
+	// Wait until at least one client is connected
+	bool WaitClientConnected();
 
     bool AcceptClient();
 };
