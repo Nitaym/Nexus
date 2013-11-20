@@ -9,7 +9,7 @@
 
 using namespace Nexus;
 
-Nexus::TReceiveCallback AsyncReceiverReceived(Nexus::CData *a_pData, Nexus::IMetaData *a_pMetaData)
+Nexus::TReceiveCallback AsyncReceiverReceived(void* a_pParam, Nexus::CData *a_pData, Nexus::IMetaData *a_pMetaData)
 {
     a_pData->PrintHex();
 
@@ -27,7 +27,7 @@ void UartConnectionStateChanged(bool a_bConnectionState)
 int main(int argc, char* argv[])
 {
     CUart l_oUart;
-    CAsyncReceiver l_oAsyncRec(AsyncReceiverReceived, NULL);
+    CAsyncReceiver l_oAsyncRec(AsyncReceiverReceived, NULL, NULL);
     CAutoConnect l_oAutoConnect(UartConnectionStateChanged);
     CConsoleComm l_oConsole;
     CDebug l_oDebug(&l_oConsole);
