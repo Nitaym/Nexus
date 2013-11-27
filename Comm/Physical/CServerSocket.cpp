@@ -3,7 +3,7 @@
 #define dprintf if (m_pDebug != NULL) m_pDebug->Write
 
 using namespace Nexus;
-
+using namespace std;
 
 DWORD WINAPI AcceptThreadFunc(LPVOID lpThreadParameter)
 {
@@ -123,8 +123,16 @@ TCommErr CServerSocket::Disconnect()
 
 TCommErr CServerSocket::Send(NX_IN CData *a_pData, NX_IN IMetaData *a_pMetaData /* = NULL */, NX_IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
 {
-    TServerSocketClient* l_pSelectedClient = ((CServerSocketMetaData*)a_pMetaData)->SelectedClient;
+    PServerSocketClient l_pSelectedClient = NULL;
     
+    if (a_pMetaData != NULL)
+        l_pSelectedClient = ((CServerSocketMetaData*)a_pMetaData)->SelectedClient;
+
+    // If no client is selected, read from the first one
+    if (l_pSelectedClient == NULL)
+        l_pSelectedClient = GetClient(0);
+
+
     int l_iBufferLength = a_pData->GetSize();
 	byte *l_pBuffer = new byte[l_iBufferLength];
 	a_pData->GetData(l_pBuffer, 0, l_iBufferLength);
@@ -149,7 +157,7 @@ TCommErr CServerSocket::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMe
 {
 #ifdef WIN32
     CServerSocketMetaData* l_pMetadata = (CServerSocketMetaData*)a_pMetaData;
-    TServerSocketClient* l_pSelectedClient = NULL;
+    shared_ptr<TServerSocketClient> l_pSelectedClient;
 
 	int l_iBufferSize = m_iBufferSize;
 
@@ -182,10 +190,25 @@ TCommErr CServerSocket::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMe
     {
         SAFE_DELETE_ARRAY(l_pBuffer);
 
-        if (l_iResult == 0)
-            dprintf("CServerSocket::Receive> Connection closed\n");
-        else
-            dprintf("CServerSocket::Receive> recv failed: %d\n", WSAGetLastError());
+        // Do what needs to be done
+        switch (WSAGetLastError())
+        {
+        // Client should be removed
+        case WSAECONNRESET:
+            RemoveClient(l_pSelectedClient->ClientSocket);
+            break;
+        default:
+            if (l_iResult == 0)
+            {
+                dprintf("CServerSocket::Receive> Connection closed\n");
+            }
+            else
+            {
+                dprintf("CServerSocket::Receive> recv failed: %d\n", WSAGetLastError());
+            }
+            break;
+        }
+
 
         return E_NEXUS_FAIL;
     }
@@ -200,9 +223,9 @@ int Nexus::CServerSocket::GetClientCount()
     return this->clients.size();
 }
 
-Nexus::PServerSocketClient Nexus::CServerSocket::GetClient(int a_iIndex)
+PServerSocketClient CServerSocket::GetClient(int a_iIndex)
 {
-    return this->clients[a_iIndex];
+    return std::make_shared<TServerSocketClient>(*this->clients[a_iIndex]);
 }
 
 bool Nexus::CServerSocket::IsListening()
@@ -230,7 +253,7 @@ bool Nexus::CServerSocket::AcceptClient()
     PServerSocketClient l_pClientStruct;
     int l_iSizeOfInfo = 0;
 
-    l_pClientStruct = new TServerSocketClient();
+    l_pClientStruct = make_shared<TServerSocketClient>();
     l_iSizeOfInfo = sizeof(l_pClientStruct->Info);
 
     // Wait for the next client
@@ -246,4 +269,27 @@ bool Nexus::CServerSocket::AcceptClient()
     }
 
     return false;
+}
+
+void Nexus::CServerSocket::RemoveClient(SOCKET a_pSocket)
+{
+    unsigned int l_iClient = 0;
+    for (l_iClient = 0; l_iClient < clients.size(); l_iClient++)
+    {
+        if (clients[l_iClient]->ClientSocket == a_pSocket)
+        {
+            break;
+        }
+    }
+
+    if (l_iClient < clients.size())
+        RemoveClient(l_iClient);
+}
+
+void Nexus::CServerSocket::RemoveClient(int a_iClientNumber)
+{
+    this->clients.erase(clients.begin() + a_iClientNumber);
+        
+    if (clients.size() == 0)
+        ResetEvent(this->m_hClientConnected);
 }

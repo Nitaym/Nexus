@@ -12,6 +12,8 @@ namespace Nexus
 {
 
 
+typedef void (*typeDebugWriteCallback)(char* a_sStr);
+
 class ICommBase;
 
 class CDebug
@@ -20,11 +22,13 @@ private:
 	ICommBase *m_pComm;
 	bool m_bIsEnabled;
 
+    typeDebugWriteCallback m_pWriteCallback;
+
 public:
 	//Receives an ICommBase to pass all debug writings to it
-	CDebug(ICommBase *a_pComm);
+	CDebug(ICommBase *a_pComm, typeDebugWriteCallback a_pDebugWriteCallback);
 
-	// Enable/Disable the debug writing
+	// Enable/Disable the debug writings
 	void Enable();
 	void Disable();
 

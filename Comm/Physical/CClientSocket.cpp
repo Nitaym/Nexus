@@ -101,6 +101,7 @@ TCommErr CClientSocket::Connect()
 		return E_NEXUS_FAIL;
 	}
 #endif
+    m_bIsConnected = true;
 	return E_NEXUS_OK;
 }
 

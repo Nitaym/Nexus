@@ -32,9 +32,10 @@ using namespace Nexus;
 *		None
 *		
 *****************************************************************/
-CDebug::CDebug(ICommBase *a_pComm)
+CDebug::CDebug(ICommBase *a_pComm, typeDebugWriteCallback a_pDebugWriteCallback)
 {
 	m_pComm = a_pComm;
+    m_pWriteCallback = a_pDebugWriteCallback;
 	Enable();
 }
 
@@ -96,6 +97,10 @@ void CDebug::Write(const char *format, ...)
 		printf(" # CDebug:Write - Buffer Overflow");
 		return;
 	}
+
+
+    if (m_pWriteCallback != NULL)
+        m_pWriteCallback(l_strStr);
 
     if (m_pComm != NULL)
     {

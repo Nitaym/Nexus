@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include <memory>
 #include <vector>
 
 #pragma comment (lib, "Ws2_32.lib")
@@ -37,13 +38,13 @@ typedef struct
     sockaddr Info;
     SOCKET ClientSocket;
 } TServerSocketClient;
-typedef TServerSocketClient* PServerSocketClient;
+typedef shared_ptr<TServerSocketClient> PServerSocketClient;
 
 
 class CServerSocketMetaData : public IMetaData
 {
 public:
-    PServerSocketClient SelectedClient;
+    shared_ptr<TServerSocketClient> SelectedClient;
     // How many bytes should we read?
     int ReadSize;
 
@@ -90,6 +91,9 @@ private:
 	HANDLE m_hClientConnected;
 
     std::vector<PServerSocketClient> clients;
+
+    void RemoveClient(int a_iClientNumber);
+    void RemoveClient(SOCKET a_pSocket);
 
 public:
 	CServerSocket();
