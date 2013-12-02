@@ -196,6 +196,9 @@ TCommErr CServerSocket::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMe
         // Client should be removed
         case WSAECONNRESET:
             RemoveClient(l_pSelectedClient->ClientSocket);
+
+            return E_NEXUS_PEER_DISCONNECTED;
+
             break;
         default:
             if (l_iResult == 0)
@@ -206,11 +209,9 @@ TCommErr CServerSocket::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMe
             {
                 dprintf("CServerSocket::Receive> recv failed: %d\n", WSAGetLastError());
             }
-            break;
+
+            return E_NEXUS_FAIL;
         }
-
-
-        return E_NEXUS_FAIL;
     }
 
 #endif
@@ -283,7 +284,7 @@ void Nexus::CServerSocket::RemoveClient(SOCKET a_pSocket)
     }
 
     if (l_iClient < clients.size())
-        RemoveClient(l_iClient);
+        RemoveClient((int)l_iClient);
 }
 
 void Nexus::CServerSocket::RemoveClient(int a_iClientNumber)
