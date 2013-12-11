@@ -75,7 +75,7 @@ int main(int argc, char* argv[])
     CAsyncReceiver l_oAsyncRec(AsyncReceiverReceived, NULL, NULL);
     CAutoConnect l_oAutoConnect(CommStateChanged);
     CConsoleComm l_oConsole;
-    CDebug l_oDebug(&l_oConsole);
+    CDebug l_oDebug(&l_oConsole, NULL);
 
 
 	// Ask the user what to do

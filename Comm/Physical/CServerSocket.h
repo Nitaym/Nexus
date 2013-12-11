@@ -44,7 +44,7 @@ typedef shared_ptr<TServerSocketClient> PServerSocketClient;
 class CServerSocketMetaData : public IMetaData
 {
 public:
-    shared_ptr<TServerSocketClient> SelectedClient;
+    PServerSocketClient SelectedClient;
     // How many bytes should we read?
     int ReadSize;
 
@@ -80,6 +80,7 @@ private:
 
 	// True if the module is connected
 	bool m_bIsConnected;
+    int m_iLastClientRead;
 
 	std::string m_sIP;
 	WORD m_wPort;

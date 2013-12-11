@@ -113,7 +113,7 @@ int main(int argc, char* argv[])
     switch (leftComtype)
     {
     case COMTYPE_COMPORT:
-        l_oLeftUart.SetBaudRate(Nexus::ubrBaud19200);
+        l_oLeftUart.SetBaudRate(Nexus::ubrBaud9600);
 #ifdef WIN32
         l_oLeftUart.SetPortName("\\\\.\\COM1");
 #else

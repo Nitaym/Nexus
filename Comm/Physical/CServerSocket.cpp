@@ -27,6 +27,7 @@ DWORD WINAPI AcceptThreadFunc(LPVOID lpThreadParameter)
 CServerSocket::CServerSocket()
 {
 #ifdef WIN32
+    m_iLastClientRead = 0;
     m_hListenSocket = INVALID_SOCKET;
     m_iBufferSize = 4096;
 
@@ -124,14 +125,29 @@ TCommErr CServerSocket::Disconnect()
 TCommErr CServerSocket::Send(NX_IN CData *a_pData, NX_IN IMetaData *a_pMetaData /* = NULL */, NX_IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
 {
     PServerSocketClient l_pSelectedClient = NULL;
+    CServerSocketMetaData l_pMetaData;
+    TCommErr result;
+    int l_iLastError;
     
     if (a_pMetaData != NULL)
         l_pSelectedClient = ((CServerSocketMetaData*)a_pMetaData)->SelectedClient;
 
-    // If no client is selected, read from the first one
+    // If no client is selected, send to everyone! (recursive)
     if (l_pSelectedClient == NULL)
-        l_pSelectedClient = GetClient(0);
+    {
+        for (unsigned int i = 0; i < this->clients.size(); i++)
+        {
+            l_pMetaData.SelectedClient = GetClient(i);
+            result = Send(a_pData, &l_pMetaData,a_dwTimeoutMs);
 
+            if (result != E_NEXUS_OK)
+                return result;
+        }
+    }
+
+
+    if (l_pSelectedClient == NULL)
+        return E_NEXUS_INVALID;
 
     int l_iBufferLength = a_pData->GetSize();
 	byte *l_pBuffer = new byte[l_iBufferLength];
@@ -141,7 +157,18 @@ TCommErr CServerSocket::Send(NX_IN CData *a_pData, NX_IN IMetaData *a_pMetaData 
 	int l_iResult = send(l_pSelectedClient->ClientSocket, (char*)l_pBuffer, l_iBufferLength, 0);
 	if (l_iResult == SOCKET_ERROR)
 	{
-		dprintf("CServerSocket::Send> Send failed: %d\n", WSAGetLastError());
+        l_iLastError = WSAGetLastError();
+        switch (l_iLastError)
+        {
+        case WSAECONNRESET:
+            RemoveClient(l_pSelectedClient->ClientSocket);
+            break;
+        case WSANOTINITIALISED:
+            RemoveClient(l_pSelectedClient->ClientSocket);
+            break;
+        }
+
+		dprintf("CServerSocket::Send> Send failed: %d\n", l_iLastError);
 		closesocket(m_hListenSocket);
 		WSACleanup();
 		SAFE_DELETE_ARRAY(l_pBuffer);
@@ -158,6 +185,7 @@ TCommErr CServerSocket::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMe
 #ifdef WIN32
     CServerSocketMetaData* l_pMetadata = (CServerSocketMetaData*)a_pMetaData;
     shared_ptr<TServerSocketClient> l_pSelectedClient;
+    int l_iLastError;
 
 	int l_iBufferSize = m_iBufferSize;
 
@@ -175,7 +203,17 @@ TCommErr CServerSocket::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMe
 
 	// If no client is selected, read from the first one
 	if (l_pSelectedClient == NULL)
-		l_pSelectedClient = GetClient(0);
+    {
+        // This could be a round robin, but it's not very fair
+        // since reads could take a while
+//         if (m_iLastClientRead >= GetClientCount())
+//             m_iLastClientRead = 0;
+// 
+//         l_pSelectedClient = GetClient(m_iLastClientRead);
+//         m_iLastClientRead++;
+
+        l_pSelectedClient = GetClient(0);
+    }
 
 	byte *l_pBuffer = new byte[l_iBufferSize];
 
@@ -191,20 +229,26 @@ TCommErr CServerSocket::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMe
         SAFE_DELETE_ARRAY(l_pBuffer);
 
         // Do what needs to be done
-        switch (WSAGetLastError())
+        l_iLastError = WSAGetLastError();
+        switch (l_iLastError)
         {
         // Client should be removed
         case WSAECONNRESET:
+            RemoveClient(l_pSelectedClient->ClientSocket);
+            break;
+        // For some weird reason, this also happens
+        case WSANOTINITIALISED:
             RemoveClient(l_pSelectedClient->ClientSocket);
             break;
         default:
             if (l_iResult == 0)
             {
                 dprintf("CServerSocket::Receive> Connection closed\n");
+                RemoveClient(l_pSelectedClient->ClientSocket);
             }
             else
             {
-                dprintf("CServerSocket::Receive> recv failed: %d\n", WSAGetLastError());
+                dprintf("CServerSocket::Receive> recv failed: %d\n", l_iLastError);
             }
             break;
         }
@@ -224,8 +268,9 @@ int Nexus::CServerSocket::GetClientCount()
 }
 
 PServerSocketClient CServerSocket::GetClient(int a_iIndex)
-{
-    return std::make_shared<TServerSocketClient>(*this->clients[a_iIndex]);
+{  
+    //return std::make_shared<TServerSocketClient>(*this->clients[a_iIndex]);
+    return this->clients[a_iIndex];
 }
 
 bool Nexus::CServerSocket::IsListening()
@@ -250,22 +295,34 @@ bool Nexus::CServerSocket::WaitClientConnected()
 
 bool Nexus::CServerSocket::AcceptClient()
 {
-    PServerSocketClient l_pClientStruct;
+    PServerSocketClient l_pClientStruct(new TServerSocketClient());
     int l_iSizeOfInfo = 0;
+    int l_iLastError = 0;
 
-    l_pClientStruct = make_shared<TServerSocketClient>();
     l_iSizeOfInfo = sizeof(l_pClientStruct->Info);
 
     // Wait for the next client
-    l_pClientStruct->ClientSocket = accept(this->m_hListenSocket, &l_pClientStruct->Info, &l_iSizeOfInfo);
+    l_pClientStruct->ClientSocket = accept(this->m_hListenSocket, &(l_pClientStruct->Info), &l_iSizeOfInfo);
 
     if (l_pClientStruct->ClientSocket != SOCKET_ERROR)
     {
+        dprintf("CServerSocket::AcceptClient> Client connected\n");
+
         this->clients.push_back(l_pClientStruct);
 
 		SetEvent(this->m_hClientConnected);
 
         return true;
+    }
+    else
+    {
+        l_iLastError = WSAGetLastError();
+        switch (l_iLastError)
+        {
+        default:
+            dprintf("CServerSocket::AcceptClient> Error accepting: %d\n", l_iLastError);
+            break;
+        }
     }
 
     return false;
@@ -283,7 +340,7 @@ void Nexus::CServerSocket::RemoveClient(SOCKET a_pSocket)
     }
 
     if (l_iClient < clients.size())
-        RemoveClient(l_iClient);
+        RemoveClient((int)l_iClient);
 }
 
 void Nexus::CServerSocket::RemoveClient(int a_iClientNumber)

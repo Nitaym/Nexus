@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
     CAsyncReceiver l_oAsyncRec(AsyncReceiverReceived, NULL, NULL);
     CAutoConnect l_oAutoConnect(UartConnectionStateChanged);
     CConsoleComm l_oConsole;
-    CDebug l_oDebug(&l_oConsole);
+    CDebug l_oDebug(&l_oConsole, NULL);
 
     l_oAutoConnect.SetUnderlyingComm(&l_oUart);
     l_oAsyncRec.SetUnderlyingComm(&l_oUart);

@@ -632,6 +632,7 @@ string& CData::GetString()
 *****************************************************************/
 string& CData::GetString(int a_iStartIndex, int a_iCount)
 {
+    m_sStringData = "";
     m_sStringData.assign((char*)&(m_oData[a_iStartIndex]), a_iCount);
     return (m_sStringData);
 }
