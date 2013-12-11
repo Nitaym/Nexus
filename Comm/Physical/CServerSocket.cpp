@@ -235,6 +235,9 @@ TCommErr CServerSocket::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMe
         // Client should be removed
         case WSAECONNRESET:
             RemoveClient(l_pSelectedClient->ClientSocket);
+
+            return E_NEXUS_PEER_DISCONNECTED;
+
             break;
         // For some weird reason, this also happens
         case WSANOTINITIALISED:
@@ -250,11 +253,9 @@ TCommErr CServerSocket::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMe
             {
                 dprintf("CServerSocket::Receive> recv failed: %d\n", l_iLastError);
             }
-            break;
+
+            return E_NEXUS_FAIL;
         }
-
-
-        return E_NEXUS_FAIL;
     }
 
 #endif
