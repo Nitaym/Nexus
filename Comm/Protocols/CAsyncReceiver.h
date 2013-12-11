@@ -71,6 +71,7 @@ public:
     void SetErrorRecoveryTime(int a_iTimeMs);
     int ErrorRecoveryTime() { return m_iRecoveryTime; }
 
+    void SetUserParam(void* a_pUserParam);
 	void* UserParam() { return m_pUserParam; }
 
     static void ReadAndReport(void *a_pvParam);

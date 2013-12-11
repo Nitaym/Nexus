@@ -255,6 +255,12 @@ TCommErr CAsyncReceiver::Receive(NX_OUT CData *a_pData, NX_OUT IMetaData *a_pMet
 }
 
 
+void Nexus::CAsyncReceiver::SetUserParam(void* a_pUserParam)
+{
+    this->m_pUserParam = a_pUserParam;
+}
+
+
 /*****************************************************************
 *	void CAsyncReceiver::ReadAndReport(void *m_pvParam)
 *
