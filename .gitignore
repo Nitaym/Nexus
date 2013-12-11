@@ -63,3 +63,5 @@ Thumbs.db
 *.swo
 *.swp
 *.*~
+*.lib
+*.ilk
