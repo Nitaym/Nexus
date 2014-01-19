@@ -483,7 +483,7 @@ TCommErr CUart::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMetaData /
         if (iBytesRead > 0)
         {
             dprintf("Uart::Receive> Received %d bytes\n", iBytesRead);
-            a_pData->SetData(pBuffer, iBytesRead);
+            a_pData->Append(pBuffer, iBytesRead);
             delete[] pBuffer;
             return E_NEXUS_OK;
         }
