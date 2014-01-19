@@ -318,12 +318,12 @@ bool Nexus::CServerSocket::AcceptClient()
     else
     {
         l_iLastError = WSAGetLastError();
-        switch (l_iLastError)
-        {
-        default:
+//         switch (l_iLastError)
+//         {
+//         default:
             dprintf("CServerSocket::AcceptClient> Error accepting: %d\n", l_iLastError);
-            break;
-        }
+//             break;
+//         }
     }
 
     return false;
