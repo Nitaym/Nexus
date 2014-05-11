@@ -108,5 +108,6 @@ bool CLoggerComm::WriteMessage(NX_IN CData *a_pData, std::string a_sPrefix)
 	// Null Terminate
 	StringBuffer[l_iStringBufferLen] = 0;
 
+    SAFE_DELETE(Buffer);
 	return WriteMessage(StringBuffer);
 }

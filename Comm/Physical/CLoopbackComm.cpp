@@ -5,7 +5,8 @@ using namespace Nexus;
 
 CLoopbackComm::CLoopbackComm(void)
 {
-
+    m_pLastData = NULL;
+    m_pLastMetadata = NULL;
 }
 
 CLoopbackComm::~CLoopbackComm(void)
@@ -29,9 +30,12 @@ bool CLoopbackComm::IsConnected()
 
 TCommErr CLoopbackComm::Send(NX_IN CData *a_pData, NX_IN IMetaData *a_pMetaData /*= NULL*/, NX_IN DWORD a_dwTimeoutMS /*= DEFAULT_TIMEOUT*/)
 {
-	if (a_pData && m_pLastData)
+    SAFE_DELETE(m_pLastData);
+    SAFE_DELETE(m_pLastMetadata);
+
+	if (a_pData)
 		m_pLastData = a_pData->Clone();
-	if (a_pMetaData && m_pLastMetadata)
+	if (a_pMetaData)
 		m_pLastMetadata = a_pMetaData->Clone();
 
 	return E_NEXUS_OK;
@@ -39,9 +43,9 @@ TCommErr CLoopbackComm::Send(NX_IN CData *a_pData, NX_IN IMetaData *a_pMetaData 
 
 TCommErr CLoopbackComm::Receive(NX_OUT CData *a_pData, NX_OUT IMetaData *a_pMetaData /*= NULL*/, NX_IN DWORD a_dwTimeoutMs /*= DEFAULT_TIMEOUT*/)
 {
-	if (a_pData)
+	if (a_pData && m_pLastData)
 		a_pData->CopyFrom(m_pLastData);
-	if (a_pMetaData)
+    if (a_pMetaData && m_pLastMetadata)
 		a_pMetaData->CopyFrom(m_pLastMetadata);
 
 	return E_NEXUS_OK;
