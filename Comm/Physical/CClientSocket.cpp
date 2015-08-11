@@ -172,6 +172,8 @@ TCommErr CClientSocket::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMe
             dprintf("CClientSocket::Receive> Connection closed\n");
         else
             dprintf("CClientSocket::Receive> recv failed: %d\n", WSAGetLastError());
+		
+		Disconnect();
 
         return E_NEXUS_FAIL;
     }
