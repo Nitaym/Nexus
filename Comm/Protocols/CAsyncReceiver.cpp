@@ -27,6 +27,7 @@ using namespace Nexus;
 *****************************************************************/
 CAsyncReceiver::CAsyncReceiver()
 {
+	m_iRecoveryTime = 3000;
     Initialize();
 }
 
