@@ -153,7 +153,8 @@ public:
     bool FromFile(std::string a_sFilename);
 
     // DumpBase64 - Returns a base64 representation of the buffer
-    std::string DumpBase64();
+	std::string GetBase64();
+	std::string GetStringHex();
 
 	byte& operator[](int i) { return m_oData[i]; }
 };

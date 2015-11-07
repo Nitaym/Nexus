@@ -13,6 +13,10 @@
 #include <iostream>
 #include <fstream>
 
+#include <sstream>
+#include <iomanip>
+
+
 using namespace std;
 using namespace Nexus;
 
@@ -806,7 +810,7 @@ bool CData::FromFile(std::string a_sFilename)
 }
 
 
-std::string Nexus::CData::DumpBase64()
+std::string Nexus::CData::GetBase64()
 {
     std::string ret;
     int i = 0;
@@ -848,4 +852,16 @@ std::string Nexus::CData::DumpBase64()
     }
 
     return ret;
+}
+
+std::string CData::GetStringHex()
+{
+	std::stringstream ss;
+	ss << std::hex << std::setfill('0');
+	for (unsigned int i = 0; i < this->GetSize(); ++i)
+	{
+		ss << std::setw(2) << static_cast<unsigned>(m_oData[i]);
+	}
+
+	return ss.str();
 }
