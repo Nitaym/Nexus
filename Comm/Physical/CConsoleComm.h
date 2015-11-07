@@ -12,7 +12,8 @@ namespace Nexus
 class CConsoleComm: public ICommBase
 {
 private:
-
+	bool writeHex;
+	bool addNewline;
 public:
 	CConsoleComm();
 
@@ -20,6 +21,7 @@ public:
 	TCommErr Connect();
 	bool IsConnected();
 
+	void WriteType(bool hex, bool newline);
 
 	// Disconnect - Disconnects if not already disconnected
 	TCommErr Disconnect();
