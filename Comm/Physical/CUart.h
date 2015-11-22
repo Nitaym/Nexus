@@ -27,6 +27,9 @@ enum EUartBaudRate
 	ubrBaud9600 = 9600,
 	ubrBaud19200 = 19200,
 	ubrBaud38400 = 38400,
+	ubrBaud57600 = 57600,
+	ubrBaud115200 = 115200,
+	ubrBaud256000 = 256000,
 #else
 	ubrBaud1200 = B1200,
 	ubrBaud2400 = B2400,
