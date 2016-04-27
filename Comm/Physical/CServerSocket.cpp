@@ -1,5 +1,8 @@
 #include "CServerSocket.h"
 
+
+#ifdef WIN32
+
 #define dprintf if (m_pDebug != NULL) m_pDebug->Write
 
 using namespace Nexus;
@@ -351,3 +354,6 @@ void Nexus::CServerSocket::RemoveClient(int a_iClientNumber)
     if (clients.size() == 0)
         ResetEvent(this->m_hClientConnected);
 }
+
+
+#endif

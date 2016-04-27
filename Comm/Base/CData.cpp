@@ -789,7 +789,8 @@ bool CData::FromFile(std::string a_sFilename)
     char* l_pMemblock;
     bool result;
 
-    ifstream l_oFile (a_sFilename, ios::in|ios::binary|ios::ate);
+    std::ifstream l_oFile;
+    l_oFile.open(a_sFilename.c_str(), ios::in|ios::binary|ios::ate);
 
     if (l_oFile.is_open())
     {

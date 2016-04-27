@@ -8,6 +8,7 @@
 #include <string.h>
 #include <errno.h>
 #include "CUart.h"
+#include "General/Utils.h"
 
 // Linux Only //
 #ifndef WIN32

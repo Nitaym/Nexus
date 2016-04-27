@@ -10,6 +10,8 @@
 #pragma once
 
 #ifdef WIN32
+
+#ifdef WIN32
 #include <winsock2.h>
 #endif
 
@@ -137,3 +139,5 @@ public:
 
 
 }
+
+#endif
