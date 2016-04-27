@@ -5,7 +5,7 @@
 # using program.NAME, program.C_SRCS, etc. There are no structs in Make, so we use this convention
 # to keep track of attributes that all belong to the same target or program.  
 #
-program_NAME := nexus
+program_NAME := nexus.so
 
 
 # This is a list of all files in the current directory ending in ".c". The $(wildcard) is a globbing expression. This similar to how the shell expands *.c
@@ -35,7 +35,7 @@ program_LIBRARIES :=
 
 # This adds -I$(includedir) for every include directory given in $(program_INCLUDE_DIRS)... so if you used ./include, it would expand to -I./include
 # Remember that CPPFLAGS is the C preprocessor flags, so anything that compiles a C or C++ source file into an object file will use this flag.
-CPPFLAGS += -I. -pthread $(foreach includedir,$(program_INCLUDE_DIRS),-I$(includedir))
+CPPFLAGS += -fPIC -I. -pthread $(foreach includedir,$(program_INCLUDE_DIRS),-I$(includedir))
 
 # This adds -L$(librarydir) for every library directory given in $(program_LIBRARY_DIRS)... so if you used ./lib, it would expand to -L./lib
 # Since the LDFLAGS are used when linking, this will cause the appropriate flags to be passed to the linker.
@@ -43,6 +43,7 @@ LDFLAGS += $(foreach librarydir,$(program_LIBRARY_DIRS),-L$(librarydir))
 
 # This adds -l$(library) for every library given in $(program_LIBRARIES), so if you used boost_signals, it would expand to -lboost_signals
 LDFLAGS += $(foreach library,$(program_LIBRARIES),-l$(library))
+LDFLAGS += -shared
 
 # This indicates that "all", "clean", and "distclean" are "phony targets". Therefore, "make all", "make clean", and "make distclean"
 # should execute the content of their build rules, even if a newer file named "all", "clean", or "distclean" exists.
@@ -60,10 +61,10 @@ all: $(program_NAME)
 #
 $(program_NAME): $(program_OBJS)
 	$(LINK.cc) $(program_OBJS) -o $(program_NAME)
+	ar  rcs libNexus.a $(program_OBJS)
+
 
 # Note that the line that starts with $(LINK.cc) is indented with a single tab. This is very important! Otherwise, it will not work.
-
-
 
 #
 # This target removes the built program and the generated object files. The @ symbol indicates that the line should be run silently, and the -
