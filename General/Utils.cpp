@@ -117,7 +117,7 @@ void Nexus::BinToHexString(byte* a_bBuffer, char* a_sString, int a_iLength)
 
 void Nexus::PrintStringAsHex(string strData)
 {
-    printf("[%d]", strData.size());
+    printf("[%d]", (int)strData.size());
     int dwSize = strData.size();
     for (int i = 0; i < dwSize; i++)
         printf(" %02X", (BYTE)strData[i]);

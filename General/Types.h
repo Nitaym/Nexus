@@ -58,7 +58,7 @@
 #define True	TRUE
 
 typedef unsigned char	byte;
-// typedef unsigned short	word;
+typedef unsigned short	word;
 typedef unsigned long	dword;
 
 #ifndef __cplusplus
