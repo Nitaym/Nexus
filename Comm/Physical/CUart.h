@@ -37,6 +37,10 @@ enum EUartBaudRate
 	ubrBaud9600 = B9600,
 	ubrBaud19200 = B19200,
 	ubrBaud38400 = B38400,
+	ubrBaud57600 = B57600,
+	ubrBaud115200 = B115200,
+	ubrBaud230400 = B230400,
+	ubrBaud460800 = B460800,
 #endif
 };
 
