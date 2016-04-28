@@ -15,4 +15,6 @@ If you're using the Socket module you need to link your project with the Ws2_32.
 
 1.2 LINUX
 ---------
-To be continued...
+Simply call make
+
+If you want to compile for different architectures (for example, arm), use 'make CXX=arm-linux-gnueabi-g++'

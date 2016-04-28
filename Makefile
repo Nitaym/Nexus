@@ -5,7 +5,7 @@
 # using program.NAME, program.C_SRCS, etc. There are no structs in Make, so we use this convention
 # to keep track of attributes that all belong to the same target or program.  
 #
-program_NAME := nexus.so
+program_NAME := libNexus
 
 
 # This is a list of all files in the current directory ending in ".c". The $(wildcard) is a globbing expression. This similar to how the shell expands *.c
@@ -60,8 +60,8 @@ all: $(program_NAME)
 # so if CXXFLAGS, CPPFLAGS, LDFLAGS, and TARGET_ARCH are undefined, but CXX is g++, then it will expand to g++ $(program_OBJS) -o $(program_NAME).
 #
 $(program_NAME): $(program_OBJS)
-	$(LINK.cc) $(program_OBJS) -o $(program_NAME)
-	ar  rcs libNexus.a $(program_OBJS)
+	$(LINK.cc) $(program_OBJS) -o $(program_NAME).so
+	ar  rcs $(program_NAME).a $(program_OBJS)
 
 
 # Note that the line that starts with $(LINK.cc) is indented with a single tab. This is very important! Otherwise, it will not work.
