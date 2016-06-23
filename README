@@ -1,6 +1,9 @@
 Nexus Communication Infrastructure
 ==================================
 
+Nexus infrastructure tries to ease communication stack development in cross platform embedded projects.
+The design is simple completely OO, giving a great baseline for the comm infrastructure to build on.
+
 1. Getting Started
 1.1 Windows
 1.2 Linux
