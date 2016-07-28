@@ -76,7 +76,7 @@ private:
 	// Uart port name 
 	char m_strPortName[MAX_PORT_NAME_LEN];
 	// Baud rate
-	EUartBaudRate m_eBaudRate; 
+	unsigned int m_iBaudRate; 
 
 	// Parity & Stop bits
 	EUartParity m_eParity;
@@ -87,7 +87,8 @@ public:
 
 	// Connect - Connecting if not already connected
 	TCommErr Connect();
-	void SetBaudRate(EUartBaudRate a_eBaudRate);
+// 	void SetBaudRate(EUartBaudRate a_eBaudRate);
+	void SetBaudRate(unsigned int a_eBaudRate);
 	void SetPortName(const char* a_strPortName);
 	void SetStopBits(EUartStopBits a_eStopBits);
 	void SetParity(EUartParity a_eParity);
