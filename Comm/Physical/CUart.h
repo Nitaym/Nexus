@@ -21,12 +21,6 @@ namespace Nexus
 enum EUartBaudRate
 {
 #ifdef WIN32
-	ubrBaud1200 = 1200,
-	ubrBaud2400 = 2400,
-	ubrBaud4800 = 4800,
-	ubrBaud9600 = 9600,
-	ubrBaud19200 = 19200,
-	ubrBaud38400 = 38400,
 #else
 	ubrBaud1200 = B1200,
 	ubrBaud2400 = B2400,
@@ -69,7 +63,7 @@ private:
 	// Uart port name 
 	char m_strPortName[MAX_PORT_NAME_LEN];
 	// Baud rate
-	EUartBaudRate m_eBaudRate; 
+	unsigned int m_iBaudRate; 
 
 	// Parity & Stop bits
 	EUartParity m_eParity;
@@ -80,7 +74,8 @@ public:
 
 	// Connect - Connecting if not already connected
 	TCommErr Connect();
-	void SetBaudRate(EUartBaudRate a_eBaudRate);
+// 	void SetBaudRate(EUartBaudRate a_eBaudRate);
+	void SetBaudRate(unsigned int a_eBaudRate);
 	void SetPortName(const char* a_strPortName);
 	void SetStopBits(EUartStopBits a_eStopBits);
 	void SetParity(EUartParity a_eParity);
