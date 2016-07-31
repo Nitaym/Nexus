@@ -5,7 +5,7 @@
 **********************************************************************/
 
 #include <string> // strlen
-#include <cstring> // strlen
+#include <cstring>
 #include <stdio.h> // printf
 #include <iostream> // cout
 #include <string>

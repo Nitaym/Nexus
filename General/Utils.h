@@ -47,12 +47,16 @@ typedef void* (*typeCallbackFunc)(void *a_pParam);
 namespace Nexus
 {
 
-HTHREAD NexusCreateThread(typeCallbackFunc a_pFunction, void *a_pParam);
+	HTHREAD NexusCreateThread(typeCallbackFunc a_pFunction, void *a_pParam);
 
-void BinToHexString(byte* a_bBuffer, char* a_sString, int a_iLength);
+	void BinToHexString(byte* a_bBuffer, char* a_sString, int a_iLength);
 
-inline void PrintStringAsHex(string strData);
+	inline void PrintStringAsHex(string strData);
 
-inline void PrintArrayAsHex(BYTE *pArray, DWORD dwSize);
+	inline void PrintArrayAsHex(BYTE *pArray, DWORD dwSize);
+
+#ifndef WIN32
+	int GetUnixBaudRate(unsigned int a_eBaudRate);
+#endif
 
 }

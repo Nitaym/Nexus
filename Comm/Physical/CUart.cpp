@@ -18,7 +18,7 @@
 #define DEFAULT_PORT "\\\\.\\COM1"
 #endif
 
-#define DEFAULT_RATE ubrBaud38400
+#define DEFAULT_RATE 19200
 
 // Defines
 #define MAX_READ_BUFFER_SIZE 256 // It is only for spare. Normally only a few bytes will return
@@ -47,7 +47,7 @@ CUart::CUart()
     m_fd = -1;
 #endif
     m_bIsConnected = false;
-    m_iBaudRate = 19200;
+    m_iBaudRate = DEFAULT_RATE;
     m_eStopBits = esbOne;
     m_eParity = eupNoParity;
     strcpy(m_strPortName, DEFAULT_PORT);
@@ -70,41 +70,6 @@ void CUart::SetBaudRate(unsigned int a_eBaudRate)
 {
     m_iBaudRate = a_eBaudRate;
 }
-// void Nexus::CUart::SetBaudRate(unsigned int a_eBaudRate )
-// {
-// 	EUartBaudRate rate = ubrBaud19200;
-// 
-// 	switch (a_eBaudRate)
-// 	{
-// 	case 1200:
-// 		rate = ubrBaud1200;
-// 		break;
-// 	case 2400:
-// 		rate = ubrBaud2400;
-// 		break;
-// 	case 4800:
-// 		rate = ubrBaud4800;
-// 		break;
-// 	case 9600:
-// 		rate = ubrBaud9600;
-// 		break;
-// 	case 19200:
-// 		rate = ubrBaud19200;
-// 		break;
-// 	case 38400:
-// 		rate = ubrBaud38400;
-// 		break;
-// 	case 57600:
-// 		rate = ubrBaud57600;
-// 		break;
-// 	case 115200:
-// 		rate = ubrBaud115200;
-// 		break;
-// 	}
-// 
-// 	SetBaudRate(rate);
-// }
-
 
 /************************************************************
 *	void CUart::SetPortName(const char *a_strPortName)
@@ -295,14 +260,14 @@ TCommErr CUart::Connect()
             l_tAttribs.c_cc[VTIME] = 0;
 
             // Update out-speed in the info struct
-            if (cfsetospeed(&l_tAttribs, m_iBaudRate) < 0)
+            if (cfsetospeed(&l_tAttribs, GetUnixBaudRate(m_iBaudRate)) < 0)
             {
                 dprintf("Uart::Connect> cfsetospeed failed (error %d: %s)\n", errno, strerror(errno));
                 return E_NEXUS_OPEN_FAIL;
             }
 
             // Update in-speed in the info struct
-            if (cfsetispeed(&l_tAttribs, m_iBaudRate) < 0)
+            if (cfsetispeed(&l_tAttribs, GetUnixBaudRate(m_iBaudRate)) < 0)
             {
                 dprintf("Uart::Connect> cfsetispeed failed (error %d: %s)\n", errno, strerror(errno));
                 return E_NEXUS_OPEN_FAIL;
