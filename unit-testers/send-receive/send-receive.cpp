@@ -12,7 +12,7 @@
 
 using namespace Nexus;
 
-#define SERVER_PORT 11111
+#define SERVER_PORT 6543
 #define CLIENT_IP "127.0.0.1"
 #define CLIENT_PORT 5123
 

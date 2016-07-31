@@ -1,4 +1,11 @@
 #include "CClientSocket.h"
+#include <sstream>
+
+#ifdef WIN32
+#include <Ws2tcpip.h>
+#include <winsock2.h>
+#endif
+
 
 #define dprintf if (m_pDebug != NULL) m_pDebug->Write
 
@@ -58,9 +65,9 @@ TCommErr CClientSocket::Connect()
 	l_oHints.ai_protocol = IPPROTO_TCP;
 
 
-	char *l_sPort = new char[20];
-	_itoa(m_wPort, l_sPort, 10);
-	l_iResult = getaddrinfo(m_sIP.c_str(), l_sPort, &l_oHints, &l_pAddrInfo);
+	stringstream ss;
+	ss << m_wPort;
+	l_iResult = getaddrinfo(m_sIP.c_str(), ss.str().c_str(), &l_oHints, &l_pAddrInfo);
 	if (l_iResult != 0)
 	{
 		WSACleanup();
