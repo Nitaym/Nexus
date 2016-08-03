@@ -1,13 +1,42 @@
 #include "CClientSocket.h"
 #include <sstream>
+#include <string.h>
 
-#ifdef WIN32
-#include <Ws2tcpip.h>
+#ifdef _WIN32
+/* See http://stackoverflow.com/questions/12765743/getaddrinfo-on-win32 */
+#ifndef _WIN32_WINNT
+#define _WIN32_WINNT 0x0501  /* Windows XP. */
+#endif
 #include <winsock2.h>
+#include <Ws2tcpip.h>
+#else
+/* Assume that any non-Windows platform uses POSIX-style sockets instead. */
+  #include <sys/socket.h>
+  #include <arpa/inet.h>
+  #include <netdb.h>  /* Needed for getaddrinfo() and freeaddrinfo() */
+  #include <unistd.h> /* Needed for close() */
 #endif
 
 
-#define dprintf if (m_pDebug != NULL) m_pDebug->Write
+#ifdef WIN32
+#define SOCKET_CLEANUP WSACleanup
+#define SOCKET_TEST(socket) (socket != INVALID_SOCKET)
+#define SOCKET_GETLASTERROR WSAGetLastError()
+#define SOCKET_TEST_RESULT(res) (res != SOCKET_ERROR)
+
+#define SOCKET_WRITE(socket, buffer, bufflen) 	send(socket, (char*)buffer, bufflen, 0)
+#define SOCKET_READ(socket, buffer, bufflen) 	recv(m_hSocket, (char*)l_pBuffer, m_iBufferSize, 0)
+
+#else
+#define SOCKET_CLEANUP
+#define SOCKET_TEST(socket) (socket >= 0)
+#define SOCKET_GETLASTERROR errno
+#define SOCKET_TEST_RESULT(res) (res >= 0)
+
+#define SOCKET_WRITE(socket, buffer, bufflen) 	write(socket, (char*)buffer, bufflen);
+#define SOCKET_READ(socket, buffer, bufflen) 	read(socket, (char*)buffer, bufflen);
+
+#endif
 
 using namespace Nexus;
 
@@ -15,8 +44,8 @@ CClientSocket::CClientSocket()
 {
 #ifdef WIN32
 	m_hSocket = INVALID_SOCKET;
-	m_iBufferSize = 4096;
 #endif
+	m_iBufferSize = 4096;
 }
 
 CClientSocket::~CClientSocket()
@@ -45,21 +74,24 @@ bool CClientSocket::IsConnected()
 
 TCommErr CClientSocket::Connect()
 {
+	int l_iResult;
+
 #ifdef WIN32
 	WSADATA l_oWSAData;
 
 	// Initialize Winsock
-	int l_iResult = WSAStartup(MAKEWORD(2,2), &l_oWSAData);
+	l_iResult = WSAStartup(MAKEWORD(2,2), &l_oWSAData);
 	if (l_iResult != 0)
 	{
 		dprintf("CSocket::CSocket> WSAStartup failed: %d\n", l_iResult);
 		return E_NEXUS_FAIL;
 	}
+#endif
 
 	addrinfo *l_pAddrInfo = NULL;
 	addrinfo l_oHints;
 
-	ZeroMemory(&l_oHints, sizeof(l_oHints) );
+	memset(&l_oHints, 0, sizeof(l_oHints) );
 	l_oHints.ai_family = AF_UNSPEC;
 	l_oHints.ai_socktype = SOCK_STREAM;
 	l_oHints.ai_protocol = IPPROTO_TCP;
@@ -70,17 +102,20 @@ TCommErr CClientSocket::Connect()
 	l_iResult = getaddrinfo(m_sIP.c_str(), ss.str().c_str(), &l_oHints, &l_pAddrInfo);
 	if (l_iResult != 0)
 	{
-		WSACleanup();
+		SOCKET_CLEANUP;
 		dprintf("CSocket::CSocket> getaddrinfo failed: %d\n", l_iResult);
 		return E_NEXUS_FAIL;
 	}
 
+#ifdef WIN32
 	m_hSocket = socket(l_pAddrInfo->ai_family, l_pAddrInfo->ai_socktype, l_pAddrInfo->ai_protocol);
-
-	if (m_hSocket == INVALID_SOCKET)
+#else
+	m_hSocket = socket(AF_INET, SOCK_STREAM, 0);
+#endif
+	if (!SOCKET_TEST(m_hSocket))
 	{
-		dprintf("CSocket::CSocket> Error at socket(): %ld\n", WSAGetLastError());
-		WSACleanup();
+		dprintf("CSocket::CSocket> Error at socket(): %ld\n", SOCKET_GETLASTERROR);
+		SOCKET_CLEANUP;
 		freeaddrinfo(l_pAddrInfo);
 		return E_NEXUS_FAIL;
 	}
@@ -88,10 +123,15 @@ TCommErr CClientSocket::Connect()
 
 	// Connect to server.
 	l_iResult = connect(m_hSocket, l_pAddrInfo->ai_addr, (int)l_pAddrInfo->ai_addrlen);
-	if (l_iResult == SOCKET_ERROR)
+	if (!SOCKET_TEST_RESULT(l_iResult))
 	{
+#ifdef WIN32
 		closesocket(m_hSocket);
-		m_hSocket= INVALID_SOCKET;
+		m_hSocket = INVALID_SOCKET;
+#else
+		close(m_hSocket);
+		m_hSocket = 0;
+#endif
 	}
 
 	// Should really try the next address returned by getaddrinfo
@@ -101,71 +141,83 @@ TCommErr CClientSocket::Connect()
 
 	freeaddrinfo(l_pAddrInfo);
 
-	if (m_hSocket == INVALID_SOCKET)
+	if (!SOCKET_TEST(m_hSocket))
 	{
 		dprintf("CClientSocket::Connect> Unable to connect to server!\n");
-		WSACleanup();
+		SOCKET_CLEANUP;
 		return E_NEXUS_FAIL;
 	}
-#endif
+
     m_bIsConnected = true;
 	return E_NEXUS_OK;
 }
 
 TCommErr CClientSocket::Disconnect()
 {
-#ifdef WIN32
     if (IsConnected())
     {
         m_bIsConnected = false;
+		int l_iResult;
 
         // shutdown the send half of the connection since no more data will be sent
-        int l_iResult = shutdown(m_hSocket, SD_SEND);
-        if (l_iResult == SOCKET_ERROR) {
-            dprintf("CClientSocket::Disconnect> shutdown failed: %d\n", WSAGetLastError());
-            closesocket(m_hSocket);
-            WSACleanup();
-            return E_NEXUS_FAIL;
-        }
+#ifdef WIN32
+        l_iResult = shutdown(m_hSocket, SD_BOTH);
+		if (l_iResult == SOCKET_ERROR) {
+			dprintf("CClientSocket::Disconnect> shutdown failed: %d\n", SOCKET_GETLASTERROR);
+			closesocket(m_hSocket);
+			WSACleanup();
+			return E_NEXUS_FAIL;
+		}
 
-        // cleanup
-        closesocket(m_hSocket);
-        WSACleanup();
+		// cleanup
+		closesocket(m_hSocket);
+		WSACleanup();
+#else
+		l_iResult = shutdown(m_hSocket, SHUT_RDWR);
+		if (l_iResult != 0) {
+			l_iResult = close(m_hSocket);
+			return E_NEXUS_FAIL;
+		}
+		close(m_hSocket);
+#endif
     }
 
-#endif
 	return E_NEXUS_OK;
 }
 
 TCommErr CClientSocket::Send(NX_IN CData *a_pData, NX_IN IMetaData *a_pMetaData /* = NULL */, NX_IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
 {
+	if (!m_bIsConnected)
+		return E_NEXUS_NOT_CONNECTED;
+
 	int l_iBufferLength = a_pData->GetSize();
 	byte *l_pBuffer = new byte[l_iBufferLength];
 	a_pData->GetData(l_pBuffer, 0, l_iBufferLength);
 
-#ifdef WIN32
-	int l_iResult = send(m_hSocket, (char*)l_pBuffer, l_iBufferLength, 0);
-	if (l_iResult == SOCKET_ERROR)
+	int l_iResult = SOCKET_WRITE(m_hSocket, (char*)l_pBuffer, l_iBufferLength);
+	if (!SOCKET_TEST_RESULT(l_iResult))
 	{
-		dprintf("CClientSocket::Send> Send failed: %d\n", WSAGetLastError());
+		dprintf("CClientSocket::Send> Send failed: %d\n", SOCKET_GETLASTERROR);
+#ifdef WIN32
 		closesocket(m_hSocket);
 		WSACleanup();
+#else
+		close(m_hSocket);
+#endif
 		SAFE_DELETE_ARRAY(l_pBuffer);
-
 		return E_NEXUS_FAIL;
 	}
 
-#endif
+	SAFE_DELETE_ARRAY(l_pBuffer);
 	return E_NEXUS_OK;
 }
 
 TCommErr CClientSocket::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMetaData /* = NULL */, NX_IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
 {
-#ifdef WIN32
     byte *l_pBuffer = new byte[m_iBufferSize];
 
     // Read
-    int l_iResult = recv(m_hSocket, (char*)l_pBuffer, m_iBufferSize, 0);
+    int l_iResult = SOCKET_READ(m_hSocket, (char*)l_pBuffer, m_iBufferSize);
     if (l_iResult > 0)
     {
         a_pData->SetData(l_pBuffer, l_iResult);
@@ -178,14 +230,13 @@ TCommErr CClientSocket::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMe
         if (l_iResult == 0)
             dprintf("CClientSocket::Receive> Connection closed\n");
         else
-            dprintf("CClientSocket::Receive> recv failed: %d\n", WSAGetLastError());
-		
+            dprintf("CClientSocket::Receive> recv failed: %d\n", SOCKET_GETLASTERROR);
+
 		Disconnect();
 
         return E_NEXUS_FAIL;
     }
 
-#endif
 	return E_NEXUS_OK;
 }
 
