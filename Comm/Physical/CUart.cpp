@@ -18,7 +18,7 @@
 #define DEFAULT_PORT "\\\\.\\COM1"
 #endif
 
-#define DEFAULT_RATE ubrBaud38400
+#define DEFAULT_RATE 19200
 
 // Defines
 #define MAX_READ_BUFFER_SIZE 256 // It is only for spare. Normally only a few bytes will return
@@ -47,7 +47,7 @@ CUart::CUart()
     m_fd = -1;
 #endif
     m_bIsConnected = false;
-    m_eBaudRate = DEFAULT_RATE;
+    m_iBaudRate = DEFAULT_RATE;
     m_eStopBits = esbOne;
     m_eParity = eupNoParity;
     strcpy(m_strPortName, DEFAULT_PORT);
@@ -66,9 +66,9 @@ CUart::CUart()
 *		None
 *
 *************************************************************/
-void CUart::SetBaudRate(EUartBaudRate a_eBaudRate)
+void CUart::SetBaudRate(unsigned int a_eBaudRate)
 {
-    m_eBaudRate = a_eBaudRate;
+    m_iBaudRate = a_eBaudRate;
 }
 
 /************************************************************
@@ -196,7 +196,7 @@ TCommErr CUart::Connect()
             }
 
             GetCommState(m_fd, &l_oDCB);
-            l_oDCB.BaudRate = m_eBaudRate;
+            l_oDCB.BaudRate = m_iBaudRate;
             l_oDCB.StopBits = m_eStopBits;
             l_oDCB.ByteSize = 8;
             l_oDCB.Parity = m_eParity;
@@ -260,14 +260,14 @@ TCommErr CUart::Connect()
             l_tAttribs.c_cc[VTIME] = 0;
 
             // Update out-speed in the info struct
-            if (cfsetospeed(&l_tAttribs, m_eBaudRate) < 0)
+            if (cfsetospeed(&l_tAttribs, GetUnixBaudRate(m_iBaudRate)) < 0)
             {
                 dprintf("Uart::Connect> cfsetospeed failed (error %d: %s)\n", errno, strerror(errno));
                 return E_NEXUS_OPEN_FAIL;
             }
 
             // Update in-speed in the info struct
-            if (cfsetispeed(&l_tAttribs, m_eBaudRate) < 0)
+            if (cfsetispeed(&l_tAttribs, GetUnixBaudRate(m_iBaudRate)) < 0)
             {
                 dprintf("Uart::Connect> cfsetispeed failed (error %d: %s)\n", errno, strerror(errno));
                 return E_NEXUS_OPEN_FAIL;
@@ -498,3 +498,4 @@ TCommErr CUart::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMetaData /
     delete[] pBuffer;
     return E_NEXUS_TIMEOUT;
 }
+

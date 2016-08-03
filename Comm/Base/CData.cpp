@@ -4,7 +4,8 @@
 * Defines a single packet. Managing its memory management of a dynamic length
 **********************************************************************/
 
-#include <string.h> // strlen
+#include <string> // strlen
+#include <cstring>
 #include <stdio.h> // printf
 #include <iostream> // cout
 #include <string>

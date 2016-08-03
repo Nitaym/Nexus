@@ -24,17 +24,17 @@
 #pragma comment (lib, "AdvApi32.lib")
 #endif
 
+#ifndef WIN32
+	typedef int SOCKET;
+#endif
+
 namespace Nexus
 {
 
 class CClientSocket : public ICommBase
 {
 private:
-#ifdef WIN32
 	SOCKET m_hSocket;
-#else
-	// Linux implementation
-#endif
 
 	// True if the module is connected
 	bool m_bIsConnected;

@@ -17,7 +17,7 @@ bool CLoggerComm::IsConnected()
 TCommErr CLoggerComm::Connect()
 {
 #ifdef WIN32
-	m_hFile = CreateFile(L"ICommLog.txt", GENERIC_WRITE | GENERIC_READ, FILE_SHARE_READ, NULL, CREATE_ALWAYS, 0, NULL);
+	m_hFile = CreateFile(TEXT("ICommLog.txt"), GENERIC_WRITE | GENERIC_READ, FILE_SHARE_READ, NULL, CREATE_ALWAYS, 0, NULL);
 
 	if (m_hFile == INVALID_HANDLE_VALUE)
 		return E_NEXUS_OPEN_FAIL;

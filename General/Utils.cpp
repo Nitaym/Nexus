@@ -28,6 +28,7 @@ HTHREAD Nexus::NexusCreateThread(typeCallbackFunc a_pFunction, void *a_pParam)
 
 #include <stdio.h>
 #include <unistd.h>
+#include <termios.h>
 #include <sys/time.h>
 #include <signal.h>
 #include "General/General.h"
@@ -132,3 +133,34 @@ void Nexus::PrintArrayAsHex(BYTE *pArray, DWORD dwSize)
         printf(" %02X", pArray[i]);
     printf("\n");
 }
+
+#ifndef WIN32
+int Nexus::GetUnixBaudRate(unsigned int a_eBaudRate)
+{
+	switch (a_eBaudRate)
+	{
+	case 1200:
+		return B1200;
+	case 2400:
+		return B2400;
+	case 4800:
+		return B4800;
+	case 9600:
+		return B9600;
+	case 19200:
+		return B19200;
+	case 38400:
+		return B38400;
+	case 57600:
+		return B57600;
+	case 115200:
+		return B115200;
+	case 230400:
+		return B230400;
+	case 460800:
+		return B460800;
+	}
+
+	return 0;
+}
+#endif

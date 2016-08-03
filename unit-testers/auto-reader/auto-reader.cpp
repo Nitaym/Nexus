@@ -36,9 +36,9 @@ int main(int argc, char* argv[])
     l_oAsyncRec.SetUnderlyingComm(&l_oUart);
 
 
-    l_oUart.SetBaudRate(Nexus::ubrBaud19200);
+    l_oUart.SetBaudRate(460800);
 #ifdef WIN32
-    l_oUart.SetPortName("\\\\.\\COM14");
+    l_oUart.SetPortName("\\\\.\\COM12");
 #else
     l_oUart.SetPortName("/dev/ttyUSB0");
 #endif
