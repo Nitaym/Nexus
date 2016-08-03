@@ -28,6 +28,7 @@ HTHREAD Nexus::NexusCreateThread(typeCallbackFunc a_pFunction, void *a_pParam)
 
 #include <stdio.h>
 #include <unistd.h>
+#include <termios.h>
 #include <sys/time.h>
 #include <signal.h>
 #include "General/General.h"

@@ -12,7 +12,7 @@
 
 using namespace Nexus;
 
-#define SERVER_PORT 6543
+//#define SERVER_PORT 6543
 #define CLIENT_IP "127.0.0.1"
 #define CLIENT_PORT 5123
 
@@ -22,14 +22,14 @@ typedef enum EComType
 {
 	COMTYPE_COMPORT,
 	COMTYPE_TCPCLIENT,
-	COMTYPE_TCPSERVER,
+//	COMTYPE_TCPSERVER,
 	COMTYPE_MAX,
 };
 
 
 Nexus::TReceiveCallback AsyncReceiverReceived(void* a_pUserParam, CData *a_pData, IMetaData *a_pMetaData)
 {
-    a_pData->PrintHex();
+//    a_pData->PrintHex();
 
     return Nexus::TReceiveCallback_DoNothing;
 }
@@ -51,7 +51,7 @@ EComType PrintMenu()
 		printf("Select comm type:\n");
 		printf("1. Comport (COM1, 19200, No parity, 1 Stop bit\n");
 		printf("2. TCP Client (connects to %s:%d)\n", CLIENT_IP, CLIENT_PORT);
-		printf("3. TCP Server (Listens on port %d)\n", SERVER_PORT);
+//		printf("3. TCP Server (Listens on port %d)\n", SERVER_PORT);
 		printf("4. Exit\n");
 		cin >> selection;
 
@@ -67,7 +67,6 @@ int main(int argc, char* argv[])
 	EComType comtype;
     
 	CUart l_oUart;
-	CServerSocket l_oServer;
 	CClientSocket l_oClient;
 
 	ICommBase* l_oComm;
@@ -98,10 +97,10 @@ int main(int argc, char* argv[])
 		l_oClient.SetConnectionParameters(CLIENT_IP, CLIENT_PORT);
 		l_oComm = &l_oClient;
 		break;
-	case COMTYPE_TCPSERVER:
-		l_oServer.Initialize(SERVER_PORT);
-		l_oComm = &l_oServer;
-		break;
+//	case COMTYPE_TCPSERVER:
+//		l_oServer.Initialize(SERVER_PORT);
+//		l_oComm = &l_oServer;
+//		break;
 	case COMTYPE_MAX:
 		exit(0);
 		break;
