@@ -11,6 +11,7 @@ The design is simple completely OO, giving a great baseline for the comm infrast
 *******************
 1. Getting Started
 *******************
+Easiest way to compile / cross-compile this library is to run `cmake ./`, then `make`.
 
 1.1 WINDOWS:
 ------------
@@ -18,6 +19,6 @@ If you're using the Socket module you need to link your project with the Ws2_32.
 
 1.2 LINUX
 ---------
-Simply call make
+If you don't like cmake - Use the makefile that comes with this library (Simply call `make`)
 
 If you want to compile for different architectures (for example, arm), use 'make CXX=arm-linux-gnueabi-g++'
