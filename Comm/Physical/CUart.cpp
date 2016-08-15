@@ -171,7 +171,7 @@ TCommErr CUart::Connect()
         if (m_fd == INVALID_HANDLE_VALUE)
 
 #else
-        m_fd = open(m_strPortName, O_RDWR | O_NOCTTY);//| O_NONBLOCK);
+        m_fd = open(m_strPortName, O_RDWR | O_NOCTTY | O_NONBLOCK);
 
         if (m_fd == -1)
 #endif
@@ -360,38 +360,49 @@ bool CUart::IsConnected()
 *			E_WRITE_ERROR
 *
 *************************************************************/
-TCommErr CUart::Send(NX_IN CData *a_pData, NX_IN IMetaData *a_pMetaData /* = NULL */, NX_IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
-{
-    // UNREFENCED_PARAMETER(a_pMetaData);
-    // UNREFENCED_PARAMETER(a_dwTimeoutMs);
+TCommErr CUart::Send(NX_IN CData *a_pData, NX_IN IMetaData *a_pMetaData /* = NULL */, NX_IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */) {
+	// UNREFENCED_PARAMETER(a_pMetaData);
+	// UNREFENCED_PARAMETER(a_dwTimeoutMs);
 
-    // Check if we are connected
-    if (!m_bIsConnected)
-    {
-        dprintf("Uart::Send> Not connected\n");
-        return E_NEXUS_NOT_CONNECTED;
-    }
+	// Check if we are connected
+	if (!m_bIsConnected) {
+		dprintf("Uart::Send> Not connected\n");
+		return E_NEXUS_NOT_CONNECTED;
+	}
 
-    // Get size
-    DWORD l_dwSize = a_pData->GetSize();
-    if (l_dwSize == 0)
-        return E_NEXUS_INVALID_PACKET;
+	// Get size
+	DWORD l_dwSize = a_pData->GetSize();
+	if (l_dwSize == 0)
+		return E_NEXUS_INVALID_PACKET;
 
-    // Write
-    int l_intBytesWritten;
+	// Write
+	int l_iBytesWritten;
 #ifdef WIN32
-    BOOL l_bResult = WriteFile(m_fd, a_pData->GetString().c_str(), l_dwSize, ((LPDWORD)&l_intBytesWritten), NULL);
-    if (!l_bResult)
+	BOOL l_bResult = WriteFile(m_fd, a_pData->GetString().c_str(), l_dwSize, ((LPDWORD) &l_iBytesWritten), NULL);
+	if (!l_bResult) {
+		dprintf("Uart::Send> Write error (error %d: %s)\n", errno, strerror(errno));
+		return E_NEXUS_WRITE_ERROR;
+	}
 #else
-    l_intBytesWritten = write(m_fd, a_pData->GetString().c_str(), l_dwSize);
-    if (l_intBytesWritten < 0)
+	while (l_dwSize > 0)
+	{
+		dprintf("Remaining length to send: %d", l_dwSize);
+		l_iBytesWritten = write(m_fd, a_pData->GetString().c_str(), l_dwSize);
+		if (l_iBytesWritten < 0)
+		{
+			if (l_iBytesWritten == EAGAIN || l_iBytesWritten == EWOULDBLOCK || (errno == 11))
+			{
+				dprintf("Uart::Send> Write returned (error %d: %s)\n", errno, strerror(errno));
+				continue;
+			}
+			dprintf("Uart::Send> Write error (write returned %d, error %d: %s)\n", l_iBytesWritten, errno, strerror(errno));
+			return E_NEXUS_WRITE_ERROR;
+		}
+	    l_dwSize -= l_iBytesWritten;
+	}
 #endif
-    {
-        dprintf("Uart::Send> Write error (error %d: %s)\n", errno, strerror(errno));
-        return E_NEXUS_WRITE_ERROR;
-    }
 
-    return E_NEXUS_OK;
+	return E_NEXUS_OK;
 }
 
 
