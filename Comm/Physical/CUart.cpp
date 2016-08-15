@@ -384,10 +384,11 @@ TCommErr CUart::Send(NX_IN CData *a_pData, NX_IN IMetaData *a_pMetaData /* = NUL
 		return E_NEXUS_WRITE_ERROR;
 	}
 #else
+	int l_iTotalBytesWritten = 0;
 	while (l_dwSize > 0)
 	{
 		dprintf("Remaining length to send: %d", l_dwSize);
-		l_iBytesWritten = write(m_fd, a_pData->GetString().c_str(), l_dwSize);
+		l_iBytesWritten = write(m_fd, a_pData->GetString().c_str() + l_iTotalBytesWritten, l_dwSize);
 		if (l_iBytesWritten < 0)
 		{
 			if (l_iBytesWritten == EAGAIN || l_iBytesWritten == EWOULDBLOCK || (errno == 11))
@@ -398,6 +399,7 @@ TCommErr CUart::Send(NX_IN CData *a_pData, NX_IN IMetaData *a_pMetaData /* = NUL
 			dprintf("Uart::Send> Write error (write returned %d, error %d: %s)\n", l_iBytesWritten, errno, strerror(errno));
 			return E_NEXUS_WRITE_ERROR;
 		}
+		l_iTotalBytesWritten += l_iBytesWritten;
 	    l_dwSize -= l_iBytesWritten;
 	}
 #endif
