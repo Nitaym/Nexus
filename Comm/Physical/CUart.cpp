@@ -171,7 +171,7 @@ TCommErr CUart::Connect()
         if (m_fd == INVALID_HANDLE_VALUE)
 
 #else
-        m_fd = open(m_strPortName, O_RDWR | O_NOCTTY | O_NONBLOCK);
+        m_fd = open(m_strPortName, O_RDWR | O_NOCTTY);//| O_NONBLOCK);
 
         if (m_fd == -1)
 #endif
