@@ -9,16 +9,16 @@
 
 #pragma once
 
-#ifdef WIN32
+#ifdef _WIN32
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>
 #endif
 
 #include "../../General/Utils.h"
 #include "../../Comm/Base/ICommBase.h"
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <Windows.h>
 #include <WS2tcpip.h>
 #include <stdlib.h>
@@ -74,7 +74,7 @@ public:
 class CServerSocket : public ICommBase
 {
 private:
-#ifdef WIN32
+#ifdef _WIN32
 	SOCKET m_hListenSocket;
 #else
 	// Linux implementation

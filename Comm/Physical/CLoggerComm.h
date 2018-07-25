@@ -3,7 +3,7 @@
 #include "../../General/Utils.h"
 #include "Comm/Base/ICommBase.h"
 
-#ifndef WIN32
+#ifndef _WIN32
 #include <fcntl.h>
 #include <unistd.h>
 #include <string.h>
@@ -21,7 +21,7 @@ private:
 	bool m_bIsConnected;
 
 	// file descriptor
-#ifdef WIN32
+#ifdef _WIN32
 	HANDLE m_hFile;
 #else
 	int m_hFile;

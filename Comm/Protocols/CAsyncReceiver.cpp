@@ -154,7 +154,7 @@ TCommErr CAsyncReceiver::Disconnect()
 *****************************************************************/
 TCommErr CAsyncReceiver::WaitOnDisconnect(int a_iTimeout)
 {
-#ifdef WIN32
+#ifdef _WIN32
     DWORD l_iResult = WaitForSingleObject(m_iReceiveThread, a_iTimeout);
 
     switch (l_iResult)

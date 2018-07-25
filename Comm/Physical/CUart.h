@@ -6,7 +6,7 @@
 
 #pragma once
 
-#ifndef WIN32
+#ifndef _WIN32
 // For changing baud rate
 #include <termios.h>
 #endif
@@ -21,7 +21,7 @@ namespace Nexus
 enum EUartStopBits
 {
 	esbOne = 0,
-#ifdef WIN32
+#ifdef _WIN32
 	esbOne5 = 1,
 #endif
 	esbTwo = 2,
@@ -32,7 +32,7 @@ enum EUartParity
 	eupNoParity          = 0,
 	eupOddParity         = 1,
 	eupEvenParity        = 2,
-#ifdef WIN32
+#ifdef _WIN32
 	eupMarkParity        = 3,
 	eupSpaceParity       = 4,
 #endif

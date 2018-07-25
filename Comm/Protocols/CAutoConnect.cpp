@@ -50,7 +50,7 @@ TCommErr CAutoConnect::Disconnect()
 
 TCommErr CAutoConnect::WaitOnDisconnect(int a_iTimeout)
 {
-#ifdef WIN32
+#ifdef _WIN32
     DWORD l_iResult = WaitForSingleObject(m_iConnectThread, a_iTimeout);
 
     switch (l_iResult)

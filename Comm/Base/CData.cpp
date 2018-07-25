@@ -21,6 +21,10 @@
 using namespace std;
 using namespace Nexus;
 
+#ifdef _WIN32
+#pragma warning(disable : 4996)
+#endif
+
 #define dprintf printf // prints directly to stdout, has no logger.
 
 static const std::string base64_chars = 
@@ -73,7 +77,7 @@ CData::CData(const char *a_strText, DWORD a_dwMaxDataSize)
 	SetMaxSize(a_dwMaxDataSize);
 
 	if (a_strText)
-		SetData((BYTE*)a_strText, strlen(a_strText));
+		SetData((BYTE*)a_strText, (DWORD)strlen(a_strText));
 }
 
 /*****************************************************************

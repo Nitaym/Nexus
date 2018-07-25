@@ -2,6 +2,9 @@
 
 using namespace Nexus;
 
+#ifdef _WIN32
+#pragma warning(disable : 4996)
+#endif
 
 CLoggerComm::CLoggerComm()
 {
@@ -16,7 +19,7 @@ bool CLoggerComm::IsConnected()
 
 TCommErr CLoggerComm::Connect()
 {
-#ifdef WIN32
+#ifdef _WIN32
 	m_hFile = CreateFile(TEXT("ICommLog.txt"), GENERIC_WRITE | GENERIC_READ, FILE_SHARE_READ, NULL, CREATE_ALWAYS, 0, NULL);
 
 	if (m_hFile == INVALID_HANDLE_VALUE)
@@ -42,7 +45,7 @@ TCommErr CLoggerComm::Send(NX_IN CData *a_pData, NX_IN IMetaData *a_pMetaData, N
 
 TCommErr CLoggerComm::Disconnect()
 {
-#ifdef WIN32
+#ifdef _WIN32
 	CloseHandle(m_hFile);
 #else
 	close(m_hFile);
@@ -69,7 +72,7 @@ bool CLoggerComm::WriteMessage(char* a_sMessage)
 {
 	DWORD l_iBytesWritten = 0;
 
-#ifdef WIN32
+#ifdef _WIN32
 	BOOL l_bRes = WriteFile(m_hFile, a_sMessage, strlen(a_sMessage), &l_iBytesWritten, NULL);
 	if (!l_bRes)
 		return false;

@@ -11,10 +11,11 @@
 #include "General/Utils.h"
 
 // Linux Only //
-#ifndef WIN32
+#ifndef _WIN32
 #include <unistd.h>
 #define DEFAULT_PORT "/dev/tty50"
 #else
+#pragma warning(disable : 4996)
 #define DEFAULT_PORT "\\\\.\\COM1"
 #endif
 
@@ -41,7 +42,7 @@ using namespace Nexus;
 *************************************************************/
 CUart::CUart()
 {
-#ifdef WIN32
+#ifdef _WIN32
     m_fd = INVALID_HANDLE_VALUE;
 #else
     m_fd = -1;
@@ -144,7 +145,7 @@ void CUart::SetParity(EUartParity a_eParity)
 *************************************************************/
 TCommErr CUart::Connect()
 {
-#ifdef WIN32
+#ifdef _WIN32
     COMMTIMEOUTS l_oTimeouts;
     DCB l_oDCB;
 #endif
@@ -159,7 +160,7 @@ TCommErr CUart::Connect()
     else
     {
         // Open COM port
-#ifdef WIN32
+#ifdef _WIN32
         m_fd = CreateFileA(
                    m_strPortName,
                    GENERIC_READ | GENERIC_WRITE,
@@ -182,7 +183,7 @@ TCommErr CUart::Connect()
         }
         else
         {
-#ifdef WIN32
+#ifdef _WIN32
             l_oTimeouts.ReadIntervalTimeout         = 0;
             l_oTimeouts.ReadTotalTimeoutMultiplier  = 0;
             l_oTimeouts.ReadTotalTimeoutConstant    = 100;
@@ -238,7 +239,7 @@ TCommErr CUart::Connect()
                     // Do nothing. Even parity is the default one
                     break;
                 case eupNoParity:
-#ifdef WIN32
+#ifdef _WIN32
                 case eupMarkParity:
                 case eupSpaceParity
 #endif
@@ -306,7 +307,7 @@ TCommErr CUart::Connect()
 TCommErr CUart::Disconnect()
 {
     // Check if we are connected
-#ifdef WIN32
+#ifdef _WIN32
     CloseHandle(m_fd);
     m_fd = INVALID_HANDLE_VALUE;
 #else
@@ -379,7 +380,7 @@ TCommErr CUart::Send(NX_IN CData *a_pData, NX_IN IMetaData *a_pMetaData /* = NUL
 
     // Write
     int l_intBytesWritten;
-#ifdef WIN32
+#ifdef _WIN32
     BOOL l_bResult = WriteFile(m_fd, a_pData->GetString().c_str(), l_dwSize, ((LPDWORD)&l_intBytesWritten), NULL);
     if (!l_bResult)
 #else
@@ -445,7 +446,7 @@ TCommErr CUart::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMetaData /
     do
     {
         // Assuming read for uart is non blocking
-#ifdef WIN32
+#ifdef _WIN32
         int l_iRes = ReadFile(m_fd, pBuffer, dwMaxSize, (LPDWORD)&iBytesRead, NULL);
 
         // This is the disconnect signal

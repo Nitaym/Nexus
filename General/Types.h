@@ -66,7 +66,7 @@ typedef unsigned char	bool;
 #endif
 
 
-#ifdef WIN32
+#ifdef _WIN32
 typedef dword	DWORD;
 typedef	byte	BYTE;
 

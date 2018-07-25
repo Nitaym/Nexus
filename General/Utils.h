@@ -7,7 +7,7 @@
 #pragma once
 
 // Include stuff for windows & linux
-#ifdef WIN32
+#ifdef _WIN32
 // Windows
 #include <Windows.h>
 
@@ -27,7 +27,7 @@ using namespace std;
 
 
 
-#ifdef WIN32
+#ifdef _WIN32
 
 typedef HANDLE HTHREAD;
 
@@ -55,7 +55,7 @@ namespace Nexus
 
 	inline void PrintArrayAsHex(BYTE *pArray, DWORD dwSize);
 
-#ifndef WIN32
+#ifndef _WIN32
 	int GetUnixBaudRate(unsigned int a_eBaudRate);
 #endif
 

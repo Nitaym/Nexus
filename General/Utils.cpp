@@ -6,7 +6,8 @@
 #include "General/Utils.h"
 
 
-#ifdef WIN32
+#ifdef _WIN32
+#pragma warning(disable : 4996)
 #include <Windows.h>
 
 using namespace Nexus;
@@ -134,7 +135,7 @@ void Nexus::PrintArrayAsHex(BYTE *pArray, DWORD dwSize)
     printf("\n");
 }
 
-#ifndef WIN32
+#ifndef _WIN32
 int Nexus::GetUnixBaudRate(unsigned int a_eBaudRate)
 {
 	switch (a_eBaudRate)

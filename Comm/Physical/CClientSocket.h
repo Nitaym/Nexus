@@ -6,14 +6,14 @@
 
 #pragma once
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>
 #endif
 
 #include "../../General/Utils.h"
 #include "../../Comm/Base/ICommBase.h"
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <Windows.h>
 #include <WS2tcpip.h>
 #include <stdlib.h>
@@ -24,7 +24,7 @@
 #pragma comment (lib, "AdvApi32.lib")
 #endif
 
-#ifndef WIN32
+#ifndef _WIN32
 	typedef int SOCKET;
 #endif
 

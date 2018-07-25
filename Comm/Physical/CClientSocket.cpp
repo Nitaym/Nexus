@@ -18,7 +18,7 @@
 #endif
 
 
-#ifdef WIN32
+#ifdef _WIN32
 #define SOCKET_CLEANUP WSACleanup
 #define SOCKET_TEST(socket) (socket != INVALID_SOCKET)
 #define SOCKET_GETLASTERROR WSAGetLastError()
@@ -42,7 +42,7 @@ using namespace Nexus;
 
 CClientSocket::CClientSocket()
 {
-#ifdef WIN32
+#ifdef _WIN32
 	m_hSocket = INVALID_SOCKET;
 #endif
 	m_iBufferSize = 4096;
@@ -76,7 +76,7 @@ TCommErr CClientSocket::Connect()
 {
 	int l_iResult;
 
-#ifdef WIN32
+#ifdef _WIN32
 	WSADATA l_oWSAData;
 
 	// Initialize Winsock
@@ -102,12 +102,12 @@ TCommErr CClientSocket::Connect()
 	l_iResult = getaddrinfo(m_sIP.c_str(), ss.str().c_str(), &l_oHints, &l_pAddrInfo);
 	if (l_iResult != 0)
 	{
-		SOCKET_CLEANUP;
+		SOCKET_CLEANUP();
 		dprintf("CSocket::CSocket> getaddrinfo failed: %d\n", l_iResult);
 		return E_NEXUS_FAIL;
 	}
 
-#ifdef WIN32
+#ifdef _WIN32
 	m_hSocket = socket(l_pAddrInfo->ai_family, l_pAddrInfo->ai_socktype, l_pAddrInfo->ai_protocol);
 #else
 	m_hSocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -115,7 +115,7 @@ TCommErr CClientSocket::Connect()
 	if (!SOCKET_TEST(m_hSocket))
 	{
 		dprintf("CSocket::CSocket> Error at socket(): %ld\n", SOCKET_GETLASTERROR);
-		SOCKET_CLEANUP;
+		SOCKET_CLEANUP();
 		freeaddrinfo(l_pAddrInfo);
 		return E_NEXUS_FAIL;
 	}
@@ -125,7 +125,7 @@ TCommErr CClientSocket::Connect()
 	l_iResult = connect(m_hSocket, l_pAddrInfo->ai_addr, (int)l_pAddrInfo->ai_addrlen);
 	if (!SOCKET_TEST_RESULT(l_iResult))
 	{
-#ifdef WIN32
+#ifdef _WIN32
 		closesocket(m_hSocket);
 		m_hSocket = INVALID_SOCKET;
 #else
@@ -144,7 +144,7 @@ TCommErr CClientSocket::Connect()
 	if (!SOCKET_TEST(m_hSocket))
 	{
 		dprintf("CClientSocket::Connect> Unable to connect to server!\n");
-		SOCKET_CLEANUP;
+		SOCKET_CLEANUP();
 		return E_NEXUS_FAIL;
 	}
 
@@ -160,7 +160,7 @@ TCommErr CClientSocket::Disconnect()
 		int l_iResult;
 
         // shutdown the send half of the connection since no more data will be sent
-#ifdef WIN32
+#ifdef _WIN32
         l_iResult = shutdown(m_hSocket, SD_BOTH);
 		if (l_iResult == SOCKET_ERROR) {
 			dprintf("CClientSocket::Disconnect> shutdown failed: %d\n", SOCKET_GETLASTERROR);
@@ -198,7 +198,7 @@ TCommErr CClientSocket::Send(NX_IN CData *a_pData, NX_IN IMetaData *a_pMetaData 
 	if (!SOCKET_TEST_RESULT(l_iResult))
 	{
 		dprintf("CClientSocket::Send> Send failed: %d\n", SOCKET_GETLASTERROR);
-#ifdef WIN32
+#ifdef _WIN32
 		closesocket(m_hSocket);
 		WSACleanup();
 #else

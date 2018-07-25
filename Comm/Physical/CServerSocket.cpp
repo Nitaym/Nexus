@@ -1,7 +1,7 @@
 #include "CServerSocket.h"
 
 
-#ifdef WIN32
+#ifdef _WIN32
 
 #define dprintf if (m_pDebug != NULL) m_pDebug->Write
 
@@ -29,7 +29,7 @@ DWORD WINAPI AcceptThreadFunc(LPVOID lpThreadParameter)
 
 CServerSocket::CServerSocket()
 {
-#ifdef WIN32
+#ifdef _WIN32
     m_iLastClientRead = 0;
     m_hListenSocket = INVALID_SOCKET;
     m_iBufferSize = 4096;
@@ -91,7 +91,7 @@ bool CServerSocket::IsConnected()
 
 TCommErr CServerSocket::Connect()
 {
-#ifdef WIN32
+#ifdef _WIN32
     // Start listening
     if (SOCKET_ERROR == listen(m_hListenSocket, SOMAXCONN))
         return E_NEXUS_OPEN_FAIL;
@@ -113,7 +113,7 @@ TCommErr CServerSocket::Connect()
 
 TCommErr CServerSocket::Disconnect()
 {
-#ifdef WIN32
+#ifdef _WIN32
     // Clean everything up
     shutdown(this->m_hListenSocket, SD_BOTH);
     closesocket(this->m_hListenSocket);
@@ -156,7 +156,7 @@ TCommErr CServerSocket::Send(NX_IN CData *a_pData, NX_IN IMetaData *a_pMetaData 
 	byte *l_pBuffer = new byte[l_iBufferLength];
 	a_pData->GetData(l_pBuffer, 0, l_iBufferLength);
 
-#ifdef WIN32
+#ifdef _WIN32
 	int l_iResult = send(l_pSelectedClient->ClientSocket, (char*)l_pBuffer, l_iBufferLength, 0);
 	if (l_iResult == SOCKET_ERROR)
 	{
@@ -185,7 +185,7 @@ TCommErr CServerSocket::Send(NX_IN CData *a_pData, NX_IN IMetaData *a_pMetaData 
 
 TCommErr CServerSocket::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMetaData /* = NULL */, NX_IN DWORD a_dwTimeoutMs /* = DEFAULT_TIMEOUT */)
 {
-#ifdef WIN32
+#ifdef _WIN32
     CServerSocketMetaData* l_pMetadata = (CServerSocketMetaData*)a_pMetaData;
     shared_ptr<TServerSocketClient> l_pSelectedClient;
     int l_iLastError;
@@ -268,7 +268,7 @@ TCommErr CServerSocket::Receive(NX_INOUT CData *a_pData, NX_OUT IMetaData *a_pMe
 
 int Nexus::CServerSocket::GetClientCount()
 {
-    return this->clients.size();
+    return (int)this->clients.size();
 }
 
 PServerSocketClient CServerSocket::GetClient(int a_iIndex)
