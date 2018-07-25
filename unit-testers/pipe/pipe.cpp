@@ -1,4 +1,4 @@
-#ifndef WIN32
+#ifndef _WIN32
 #include <unistd.h>
 #endif
 
@@ -114,7 +114,7 @@ int main(int argc, char* argv[])
     {
     case COMTYPE_COMPORT:
         l_oLeftUart.SetBaudRate(19200);
-#ifdef WIN32
+#ifdef _WIN32
         l_oLeftUart.SetPortName("\\\\.\\COM1");
 #else
         l_oLeftUart.SetPortName("/dev/ttyUSB0");
@@ -142,7 +142,7 @@ int main(int argc, char* argv[])
     {
     case COMTYPE_COMPORT:
         l_oRightUart.SetBaudRate(19200);
-#ifdef WIN32
+#ifdef _WIN32
         l_oRightUart.SetPortName("\\\\.\\COM1");
 #else
         l_oRightUart.SetPortName("/dev/ttyUSB0");

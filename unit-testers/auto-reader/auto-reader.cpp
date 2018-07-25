@@ -1,4 +1,4 @@
-#ifndef WIN32
+#ifndef _WIN32
 #include <unistd.h>
 #endif
 
@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
 
 
     l_oUart.SetBaudRate(460800);
-#ifdef WIN32
+#ifdef _WIN32
     l_oUart.SetPortName("\\\\.\\COM12");
 #else
     l_oUart.SetPortName("/dev/ttyUSB0");
